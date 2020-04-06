@@ -13,7 +13,8 @@ app.use(cors());
 app.use(morgan('combined'));
 
 app.get('/ping', function (req: Request, res: Response) {
-  return res.send('pong');
+  const numeroAleatorio = Math.floor(Math.random() * 1000);
+  return res.send(`Numero ${numeroAleatorio}`);
 });
 
 app.listen(process.env.PORT || 7001);
