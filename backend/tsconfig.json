@@ -1,14 +1,13 @@
 {
   "compilerOptions": {
+    "lib": ["es5", "es6"],
+    "target": "es5",
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist",
-    "declaration": true
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules", "dist"],
-  "lib": ["es2015"]
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true
+  }
 }

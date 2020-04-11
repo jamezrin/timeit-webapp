@@ -9,7 +9,8 @@ class ApiTestComponent extends Component {
   }
 
   async ping() {
-    const response = await fetch(process.env.REACT_APP_BACKEND_URL + '/ping').then((res) => res.text());
+    const pingApiUrl = process.env.REACT_APP_BACKEND_URL + '/ping';
+    const response = await fetch(pingApiUrl).then((res) => res.text());
 
     this.setState({
       response: response,
