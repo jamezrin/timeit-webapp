@@ -1,9 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {BaseEntity, Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {ProjectUser} from "./ProjectUser";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @CreateDateColumn({type: "timestamptz"})
+  createdAt: Date;
 
   @Column()
   firstName: string;
@@ -12,11 +16,16 @@ export class User {
   lastName: string;
 
   @Column()
+  @Index({ unique: true })
   emailAddress: string;
 
   @Column()
   passwordHash: string;
 
-  @Column((type) => Date)
+  @Column()
   dateOfBirth: Date;
+
+  @OneToMany(type => ProjectUser,
+          projectUser => projectUser.user)
+  projects: ProjectUser[];
 }

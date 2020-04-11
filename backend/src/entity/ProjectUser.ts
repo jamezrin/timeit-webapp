@@ -1,6 +1,6 @@
-import { Entity, Column, CreateDateColumn } from 'typeorm';
-import { Project } from './Project';
-import { User } from './User';
+import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {Project} from './Project';
+import {User} from './User';
 
 export enum ProjectUserRole {
   ADMIN = 'admin',
@@ -15,11 +15,21 @@ export enum ProjectUserStatus {
 }
 
 @Entity()
-export class ProjectUser {
-  @Column()
+export class ProjectUser extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @CreateDateColumn({type: "timestamptz"})
+  createdAt: Date;
+
+  @ManyToOne(type => Project,
+          project => project.users,
+      { onDelete: "CASCADE" })
   project: Project;
 
-  @Column()
+  @ManyToOne(type => User,
+          user => user.projects,
+      { onDelete: "CASCADE" })
   user: User;
 
   @Column()
@@ -27,7 +37,4 @@ export class ProjectUser {
 
   @Column()
   status: ProjectUserStatus;
-
-  @CreateDateColumn()
-  createdAt: Date;
 }
