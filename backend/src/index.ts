@@ -1,8 +1,7 @@
 import 'reflect-metadata';
-import { createConnection, Connection } from 'typeorm';
-import { User } from './entity/User';
+import {createConnection} from 'typeorm';
 
-import express, { Request, Response } from 'express';
+import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';

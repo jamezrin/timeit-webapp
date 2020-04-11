@@ -3,8 +3,6 @@ import {createConnection} from "typeorm";
 import {User} from "./entity/User";
 import {Project} from "./entity/Project";
 import {ProjectUser, ProjectUserRole, ProjectUserStatus} from "./entity/ProjectUser";
-import {SessionAppEvent} from "./entity/SessionAppEvent";
-import {Session} from "./entity/Session";
 
 createConnection().then(async connection => {
     console.log("Connected to the database")
