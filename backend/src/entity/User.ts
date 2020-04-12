@@ -1,6 +1,12 @@
 import {BaseEntity, Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {ProjectUser} from "./ProjectUser";
 
+export enum UserStatus {
+  NOT_CONFIRMED = "not_confirmed",
+  ACTIVE = "active",
+  DISABLED = "disabled"
+}
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -8,6 +14,9 @@ export class User extends BaseEntity {
 
   @CreateDateColumn({type: "timestamptz"})
   createdAt: Date;
+
+  @Column()
+  status: UserStatus
 
   @Column()
   firstName: string;

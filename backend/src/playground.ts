@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import {createConnection} from "typeorm";
-import {User} from "./entity/User";
+import {User, UserStatus} from "./entity/User";
 import {Project} from "./entity/Project";
 import {ProjectUser, ProjectUserRole, ProjectUserStatus} from "./entity/ProjectUser";
 
@@ -19,6 +19,7 @@ createConnection().then(async connection => {
     user.lastName = "Martínez Rincón";
     user.passwordHash = "some random hash";
     user.emailAddress = "jaime@jamezrin.name";
+    user.status = UserStatus.ACTIVE;
     await user.save()
 
     const project = new Project();

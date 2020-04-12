@@ -1,5 +1,5 @@
 import {
-    BaseEntity,
+    BaseEntity, Column,
     CreateDateColumn,
     Entity,
     ManyToOne,
@@ -21,6 +21,9 @@ export class Session extends BaseEntity {
 
     @UpdateDateColumn({type: "timestamptz"})
     updatedAt: Date;
+
+    @Column({type: "timestamptz"})
+    endedAt: Date;
 
     @ManyToOne(type => Project,
             project => project.sessions,

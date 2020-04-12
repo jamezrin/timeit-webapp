@@ -16,6 +16,8 @@ async function startExpress() {
   app.use(cors());
   app.use(morgan('combined'));
 
+
+
   app.get('/ping', function (req: Request, res: Response) {
     const numeroAleatorio = Math.floor(Math.random() * 1000);
     return res.send(`Numero ${numeroAleatorio}`);
