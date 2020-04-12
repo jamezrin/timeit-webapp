@@ -1,8 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
 
-import ApiTestComponent from './ApiTestComponent.js';
+import ApiTestComponent from "./components/ApiTestComponent";
+
+import "./App.css";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           Learn React
         </a>
 
-        <ApiTestComponent />
+        <ApiTestComponent/>
       </header>
     </div>
   );
