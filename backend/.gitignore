@@ -4,3 +4,7 @@ node_modules/
 build/
 tmp/
 temp/
+
+.env
+.env.development
+.env.production

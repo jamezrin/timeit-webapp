@@ -11,7 +11,7 @@ import { SessionAppEvent } from './entity/SessionAppEvent';
 import { Session } from './entity/Session';
 import { Project } from './entity/Project';
 import * as fs from 'fs';
-import { callbackify } from 'util';
+
 
 // https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
 const wrapAsync = fn => (req, res, next) => {
@@ -29,11 +29,12 @@ async function startExpress(connection: Connection) {
   app.use(morgan('combined'));
 
   app.get('/user');
+  app.patch('/user');
   app.post('/login');
   app.post('/register');
+  app.post('/register_confirmation_request');
   app.post('/recover_password');
-  app.post('/confirm_account');
-  app.patch('/user');
+  app.post('/recover_password_request');
 
   app.get('/projects');
   app.post('/project');
@@ -87,8 +88,12 @@ async function startExpress(connection: Connection) {
 
   app.get('/ping', function (req: Request, res: Response) {
     const numeroAleatorio = Math.floor(Math.random() * 1000);
-    return res.send(`Numero ${numeroAleatorio}`);
+    return res.send(`Number ${numeroAleatorio}`);
   });
+
+  app.get('/', function(req: Request, res: Response) {
+    throw new Error("Some error")
+  })
 
   fs.writeFile(
     "routes.json",

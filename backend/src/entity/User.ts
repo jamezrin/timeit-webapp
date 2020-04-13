@@ -35,6 +35,7 @@ export class User extends BaseEntity {
   dateOfBirth: Date;
 
   @OneToMany(type => ProjectUser,
-          projectUser => projectUser.user)
+          projectUser => projectUser.user,
+    { eager: true, onDelete: "CASCADE" })
   projects: ProjectUser[];
 }
