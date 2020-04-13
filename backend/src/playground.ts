@@ -3,10 +3,10 @@ import {createConnection} from "typeorm";
 import {User, UserStatus} from "./entity/User";
 import {Project} from "./entity/Project";
 import {ProjectUser, ProjectUserRole, ProjectUserStatus} from "./entity/ProjectUser";
+import { Session } from './entity/Session';
 
 createConnection().then(async connection => {
     console.log("Connected to the database")
-
     await User.delete({})
     await Project.delete({})
 
@@ -32,6 +32,10 @@ createConnection().then(async connection => {
     projectUser.role = ProjectUserRole.ADMIN;
     projectUser.status = ProjectUserStatus.ACTIVE;
     await projectUser.save();
+
+    const session = new Session();
+    session.projectUser = projectUser;
+    await session.save();
 
     await connection.close();
 }).catch(error => console.log(error))
