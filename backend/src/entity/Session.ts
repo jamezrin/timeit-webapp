@@ -10,6 +10,7 @@ import {
 import {SessionAppEvent} from "./SessionAppEvent";
 import {Project} from "./Project";
 import {SessionNote} from "./SessionNote";
+import { ProjectUser } from './ProjectUser';
 
 @Entity()
 export class Session extends BaseEntity {
@@ -22,13 +23,13 @@ export class Session extends BaseEntity {
     @UpdateDateColumn({type: "timestamptz"})
     updatedAt: Date;
 
-    @Column({type: "timestamptz"})
+    @Column({type: "timestamptz", nullable: true })
     endedAt: Date;
 
-    @ManyToOne(type => Project,
+    @ManyToOne(type => ProjectUser,
             project => project.sessions,
-        { onDelete: "CASCADE" })
-    project: Project;
+        { onDelete: "CASCADE", nullable: false })
+    projectUser: ProjectUser;
 
     @OneToMany(type => SessionAppEvent,
             activityUpdate => activityUpdate.session)

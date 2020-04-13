@@ -20,6 +20,6 @@ export class SessionAppEvent extends BaseEntity {
 
     @ManyToOne(type => Session,
             session => session.sessionAppEvents,
-        { onDelete: "CASCADE" })
+        { onDelete: "CASCADE", nullable: false })
     session: Session;
 }

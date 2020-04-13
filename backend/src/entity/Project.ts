@@ -16,8 +16,4 @@ export class Project extends BaseEntity {
     @OneToMany(type => ProjectUser,
             projectUser => projectUser.project)
     users: ProjectUser[];
-
-    @OneToMany(type => Session,
-            session => session.project)
-    sessions: Session[];
 }

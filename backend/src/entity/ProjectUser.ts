@@ -1,6 +1,7 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import {Project} from './Project';
 import {User} from './User';
+import { Session } from './Session';
 
 export enum ProjectUserRole {
   ADMIN = 'admin',
@@ -24,13 +25,18 @@ export class ProjectUser extends BaseEntity {
 
   @ManyToOne(type => Project,
           project => project.users,
-      { onDelete: "CASCADE" })
+      { onDelete: "CASCADE", nullable: false })
   project: Project;
 
   @ManyToOne(type => User,
           user => user.projects,
-      { onDelete: "CASCADE" })
+      { onDelete: "CASCADE", nullable: false })
   user: User;
+
+  @OneToMany(type => Session,
+      session => session.projectUser,
+    { onDelete: "SET NULL" })
+  sessions: Session[];
 
   @Column()
   role: ProjectUserRole;

@@ -14,6 +14,6 @@ export class SessionNote extends BaseEntity {
 
     @ManyToOne(type => Session,
         session => session.sessionNotes,
-        { onDelete: "CASCADE" })
+        { onDelete: "CASCADE", nullable: false })
     session: Session;
 }
