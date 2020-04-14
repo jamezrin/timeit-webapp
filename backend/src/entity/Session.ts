@@ -17,10 +17,10 @@ export class Session extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({type: "timestamptz"})
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
-    @UpdateDateColumn({type: "timestamptz"})
+    @UpdateDateColumn({ type: "timestamptz" })
     updatedAt: Date;
 
     @Column({type: "timestamptz", nullable: true })

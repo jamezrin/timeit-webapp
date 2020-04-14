@@ -12,7 +12,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({type: "timestamptz"})
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @Column()
@@ -31,7 +31,7 @@ export class User extends BaseEntity {
   @Column()
   passwordHash: string;
 
-  @Column()
+  @Column({ type: "date" })
   dateOfBirth: Date;
 
   @OneToMany(type => ProjectUser,

@@ -7,7 +7,7 @@ export class Project extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @CreateDateColumn({type: "timestamptz"})
+    @CreateDateColumn({ type: "timestamptz" })
     createdAt: Date;
 
     @Column()
