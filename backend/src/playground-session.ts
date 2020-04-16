@@ -1,9 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
-import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
 import './env';
 
@@ -13,13 +12,21 @@ app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: "http://localhost:3000" // from .env
+}));
+
 app.use(morgan('combined'));
 
 app.post('/set-cookie', (req, res) => {
-  return res.cookie("some_cookie", "blablabla",
-    { path: "/", httpOnly: true, secure: true }
-    ).sendStatus(200)
+  res.cookie("some_cookie", "blablabla", {
+    path: "/",
+    httpOnly: true,
+    domain: "localhost",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: 'lax'
+  }).send(200)
 });
 
 app.post('/see-cookie', (req, res) => {

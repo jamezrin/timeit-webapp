@@ -1,6 +1,5 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Session} from "./Session";
-import {ProjectUser} from "./ProjectUser";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ProjectUser } from './ProjectUser';
 
 @Entity()
 export class Project extends BaseEntity {

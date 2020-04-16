@@ -1,5 +1,5 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {Session} from "./Session";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Session } from './Session';
 
 @Entity()
 export class SessionNote extends BaseEntity {

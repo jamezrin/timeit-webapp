@@ -1,5 +1,16 @@
-import {BaseEntity, Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
-import {ProjectUser} from "./ProjectUser";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { ProjectUser } from './ProjectUser';
+import { UserToken } from './UserToken';
+import { MailRequest } from './MailRequest';
 
 export enum UserStatus {
   NOT_CONFIRMED = "not_confirmed",
@@ -38,4 +49,14 @@ export class User extends BaseEntity {
           projectUser => projectUser.user,
     { eager: true, onDelete: "CASCADE" })
   projects: ProjectUser[];
+
+  @OneToMany(type => UserToken,
+      token => token.user,
+    { onDelete: "CASCADE" })
+  tokens: UserToken[];
+
+  @OneToMany(type => MailRequest,
+      mailRequest => mailRequest.user,
+    { onDelete: "CASCADE" })
+  mailRequests: MailRequest[];
 }

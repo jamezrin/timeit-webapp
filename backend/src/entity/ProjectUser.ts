@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import {Project} from './Project';
-import {User} from './User';
+import { Project } from './Project';
+import { User } from './User';
 import { Session } from './Session';
 
 export enum ProjectUserRole {

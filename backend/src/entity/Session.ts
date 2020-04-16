@@ -1,15 +1,15 @@
 import {
-    BaseEntity, Column,
-    CreateDateColumn,
-    Entity,
-    ManyToOne,
-    OneToMany,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn
-} from "typeorm";
-import {SessionAppEvent} from "./SessionAppEvent";
-import {Project} from "./Project";
-import {SessionNote} from "./SessionNote";
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { SessionAppEvent } from './SessionAppEvent';
+import { SessionNote } from './SessionNote';
 import { ProjectUser } from './ProjectUser';
 
 @Entity()
