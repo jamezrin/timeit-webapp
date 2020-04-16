@@ -7,12 +7,11 @@ import { UserToken, UserTokenStatus } from '../entity/UserToken';
 
 const authRouter = express.Router();
 
+const accessTokenCookieName = "timeit_accessToken";
+
 // Authenticates (creates JWT)
 authRouter.post('/authenticate', wrapAsync(async (req: Request, res: Response) => {
   const { emailAddress, password } = req.body;
-
-  console.log(emailAddress)
-  console.log(password)
 
   const user = await User.findOneOrFail({
     where: { emailAddress }
@@ -50,7 +49,7 @@ authRouter.post('/authenticate', wrapAsync(async (req: Request, res: Response) =
   );
 
   res.cookie(
-    "accessToken",
+    accessTokenCookieName,
     accessToken,
     {
       path: "/",
@@ -68,7 +67,7 @@ authRouter.post('/authenticate', wrapAsync(async (req: Request, res: Response) =
 
 // Deauthenticate (revokes JWT)
 authRouter.post('/deauthenticate', wrapAsync(async (req: Request, res: Response) => {
-  const accessToken = req.cookies["accessToken"];
+  const accessToken = req.cookies[accessTokenCookieName];
 
   const tokenPayload = await jwt.verify(
     accessToken,
@@ -113,7 +112,7 @@ authRouter.post('/create-account', wrapAsync(async (req: Request, res: Response)
 
 // Verify authentication
 authRouter.post('/verify-auth', wrapAsync(async (req: Request, res: Response) => {
-  const accessToken = req.cookies["accessToken"];
+  const accessToken = req.cookies[accessTokenCookieName];
 
   const tokenPayload = await jwt.verify(
     accessToken,
