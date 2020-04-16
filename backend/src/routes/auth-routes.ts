@@ -11,6 +11,9 @@ const authRouter = express.Router();
 authRouter.post('/authenticate', wrapAsync(async (req: Request, res: Response) => {
   const { emailAddress, password } = req.body;
 
+  console.log(emailAddress)
+  console.log(password)
+
   const user = await User.findOneOrFail({
     where: { emailAddress }
   });

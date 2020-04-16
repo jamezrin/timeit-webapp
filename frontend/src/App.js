@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 
 import ApiTestComponent from './components/ApiTestComponent';
@@ -24,27 +24,33 @@ const Index = () => (
   </div>
 )
 
-async function seeCookies() {
-  const pingApiUrl = "http://localhost:7001/see-cookie";
-  const response = await fetch(pingApiUrl, {
+async function verifyAuth() {
+  const pingApiUrl = process.env.REACT_APP_BACKEND_URL + "/verify-auth";
+  return await fetch(pingApiUrl, {
     method: "POST",
     credentials: "include"
   }).then((res) => res.text());
-
-  console.log(response)
 }
 
-async function setCookies() {
-  const pingApiUrl = "http://localhost:7001/set-cookie";
-  const response = await fetch(pingApiUrl, {
+async function tryAuth() {
+  const pingApiUrl = process.env.REACT_APP_BACKEND_URL + "/authenticate";
+  return await fetch(pingApiUrl, {
     method: "POST",
-    credentials: "include"
+    credentials: "include",
+    body: JSON.stringify({
+      emailAddress: "asd@asd.com",
+      password: "superpass"
+    }),
+    headers: {
+      "Content-Type": "application/json"
+    },
   }).then((res) => res.text());
-
-  console.log(response)
 }
 
 function App() {
+  const [verifyRes, setVerifyRes] = useState("Unknown");
+  const [authRes, setAuthRes] = useState("Unknown");
+
   return (
     <BrowserRouter>
       <nav className="absolute bottom-0 py-2 px-4 m-3 z-10 rounded bg-white shadow-xl">
@@ -68,8 +74,15 @@ function App() {
           </LoggedOutWrapper>
         </Route>
         <Route path={"/test1"}>
-          <button onClick={seeCookies}>See cookie</button><br/>
-          <button onClick={setCookies}>Set cookie</button>
+          <p>Verification response: {verifyRes}</p>
+          <p>Authentication response: {authRes}</p>
+
+          <button onClick={() => verifyAuth().then(setVerifyRes)}>Verify auth</button>
+          <button onClick={() => tryAuth().then(setAuthRes)}>Authenticate</button>
+          <button onClick={() => {
+            setAuthRes("Unknown");
+            setVerifyRes("Unknown");
+          }}>Reset</button>
         </Route>
         <Route path={"/"}>
           <Index/>
