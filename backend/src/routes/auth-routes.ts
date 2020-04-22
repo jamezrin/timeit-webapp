@@ -56,7 +56,7 @@ authRouter.post('/authenticate', wrapAsync(async (req: Request, res: Response) =
       httpOnly: true,
       domain: process.env.TIMEIT_COOKIE_DOMAIN,
       secure: process.env.NODE_ENV === "production",
-      sameSite: 'lax'
+      sameSite: 'lax',
     }
   );
 

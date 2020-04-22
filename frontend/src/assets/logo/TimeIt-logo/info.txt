@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Brawler
+font link: https://fonts.google.com/specimen/Brawler
+font author: Cyreal
+font author site: http://www.cyreal.org/
+
+
+icon designer: Teekay
+icon designer link: /teekay
+        
+{"bg":"transparent","icon-gradient-0":"#410FF8","icon-gradient-1":"#410FF8","font":"#000000","slogan":"#141414"}
+      

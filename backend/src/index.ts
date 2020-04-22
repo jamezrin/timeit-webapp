@@ -17,18 +17,22 @@ async function startExpress(connection: Connection) {
 
   // Security middlewares
   app.use(helmet());
-
-  // Parsers middlewares
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
-  app.use(cookieParser());
   app.use(cors({
     credentials: true,
     origin: process.env.TIMEIT_CORS_ORIGIN
   }));
 
+  // Parsers middlewares
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(cookieParser());
+
   // Logging middleware
   app.use(morgan('combined'));
+
+  // Authentication middleware
+  // TODO: Check JWT in the cookie, if its valid and it's in the database and is active, set the payload as req.session.user
+
 
   // Routes
   app.use(authRouter);
