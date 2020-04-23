@@ -9,9 +9,26 @@ export default function LoginRegisterLayout({ children }) {
     <Flex height="100vh" width="100vw" direction={{ base: 'column', lg: 'row' }}>
       <Box bg="gray.100" width={{ base: '100%', lg: 6 / 10 }}>
         <Flex height="100%" direction="column" justifyContent="center" alignItems="center">
-          <Image width={'20rem'} src={mainAppCoverLogo} alt="" />
+          <Image
+            width={'20rem'}
+            src={mainAppCoverLogo}
+            alt=""
+            css={{
+              userSelect: 'none',
+              userDrag: 'none',
+            }}
+          />
 
-          <Image width={'24rem'} src={timeManagementSvg} alt="" />
+          <Image
+            width={'24rem'}
+            src={timeManagementSvg}
+            alt=""
+            css={{
+              userSelect: 'none',
+              userDrag: 'none',
+            }}
+          />
+
           <Text mt={8} width={'36rem'} textAlign="center">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tristique mi, ut faucibus sem. Integer eros
             purus, ultrices vitae lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla ultrices nisl et
