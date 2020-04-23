@@ -21,11 +21,10 @@
     "react-unsplash-wrapper": "^1.1.5"
   },
   "scripts": {
-    "start": "npm run build:tailwind && react-scripts start",
-    "build": "npm run build:tailwind && react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:tailwind": "postcss src/tailwind/tailwind.css -o src/tailwind/tailwind.out.css"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,11 +41,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^2.1.2",
-    "autoprefixer": "^9.7.6",
-    "node-sass": "^4.13.1",
-    "postcss-cli": "^7.1.0",
-    "tailwindcss": "^1.2.0"
-  }
+  "devDependencies": {}
 }
