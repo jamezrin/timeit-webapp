@@ -1,24 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { Box, List, ListItem } from '@chakra-ui/core';
 
 export default function DebugNav() {
   return (
-    <nav className="absolute bottom-0 py-2 px-4 m-3 z-10 rounded bg-white shadow-xl">
-      <ul>
-        <li>
+    <Box position="absolute" bottom="0" left="0" py={2} px={4} m={3} rounded="md" bg="white" shadow="xl">
+      <List>
+        <ListItem>
           <Link to="/login">Login</Link>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <Link to="/register">Register</Link>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <Link to="/test1">Test1</Link>
-        </li>
-        <li>
+        </ListItem>
+        <ListItem>
           <Link to="/home">Home</Link>
-        </li>
-      </ul>
-    </nav>
+        </ListItem>
+      </List>
+    </Box>
   );
 }

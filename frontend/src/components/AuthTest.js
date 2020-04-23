@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 
+import axios from 'axios';
+
 async function verifyAuth() {
   const pingApiUrl = process.env.REACT_APP_BACKEND_URL + '/verify-auth';
-  return await fetch(pingApiUrl, {
-    method: 'POST',
-    credentials: 'include',
-  }).then((res) => res.text());
+  return await axios
+    .post(
+      pingApiUrl,
+      {},
+      {
+        withCredentials: true,
+      },
+    )
+    .then((res) => JSON.stringify(res.data));
 }
 
 async function tryDeauth() {

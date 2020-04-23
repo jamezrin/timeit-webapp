@@ -1,36 +1,37 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-import RegisterForm from './components/RegisterForm';
-import LoginForm from './components/LoginForm';
+import LoginPage from './components/pages/LoginPage';
 import AuthTest from './components/AuthTest';
 import TestHome from './components/TestHome';
+import RegisterPage from './components/pages/RegisterPage';
 import DebugNav from './components/DebugNav';
 
-import {theme, ThemeProvider} from "@chakra-ui/core";
+import { CSSReset, theme, ThemeProvider } from '@chakra-ui/core';
 
 function App() {
   return (
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <DebugNav />
+    <ThemeProvider theme={theme}>
+      <CSSReset />
+      <BrowserRouter>
+        <DebugNav />
 
-          <Switch>
-            <Route path={'/login'}>
-              <LoginForm />
-            </Route>
-            <Route path={'/register'}>
-              <RegisterForm />
-            </Route>
-            <Route path={'/test1'}>
-              <AuthTest />
-            </Route>
-            <Route path={'/home'}>
-              <TestHome />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </ThemeProvider>
+        <Switch>
+          <Route path={'/login'}>
+            <LoginPage />
+          </Route>
+          <Route path={'/register'}>
+            <RegisterPage />
+          </Route>
+          <Route path={'/test1'}>
+            <AuthTest />
+          </Route>
+          <Route path={'/home'}>
+            <TestHome />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

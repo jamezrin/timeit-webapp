@@ -2,28 +2,27 @@ import React from 'react';
 
 import timeManagementSvg from '../assets/time_management.svg';
 import mainAppCoverLogo from '../assets/logo/TimeIt-logo/cover.png';
+import { Box, Flex, Image, Text } from '@chakra-ui/core';
 
 export default function LoginRegisterLayout({ children }) {
   return (
-    <div>
-      <div className="flex min-h-screen flex-col xl:flex-row">
-        <div className="w-full xl:w-8/12 bg-white p-3">
-          <div className="flex flex-col justify-center items-center min-h-full">
-            <div className="w-4/5 xl:w-2/5">
-              <img src={mainAppCoverLogo} className="" alt="" />
+    <Flex height="100vh" width="100vw" direction={{ base: 'column', lg: 'row' }}>
+      <Box bg="gray.100" width={{ base: '100%', lg: 6 / 10 }}>
+        <Flex height="100%" direction="column" justifyContent="center" alignItems="center">
+          <Image width={'20rem'} src={mainAppCoverLogo} alt="" />
 
-              <img src={timeManagementSvg} className="select-none max-w-sm m-auto" alt="" />
-              <p className="pt-5 text-lg font-sans">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tristique mi, ut faucibus sem. Integer
-                eros purus, ultrices vitae lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla ultrices nisl
-                et cursus
-              </p>
-            </div>
-          </div>
-        </div>
+          <Image width={'24rem'} src={timeManagementSvg} alt="" />
+          <Text mt={8} width={'36rem'} textAlign="center">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tristique mi, ut faucibus sem. Integer eros
+            purus, ultrices vitae lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla ultrices nisl et
+            cursus
+          </Text>
+        </Flex>
+      </Box>
 
-        <div className="flex-grow bg-gray-200 p-3">{children}</div>
-      </div>
-    </div>
+      <Box py={8} bg="gray.200" px={4} width={{ base: '100%', lg: 4 / 10 }}>
+        {children}
+      </Box>
+    </Flex>
   );
 }
