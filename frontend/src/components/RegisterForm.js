@@ -5,20 +5,32 @@ import LoginRegisterLayout from './LoginRegisterLayout';
 import FormInput from './base/FormInput';
 import Button from './base/Button';
 import FormLabel from './base/FormLabel';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import FormDatePicker from './base/FormDatePicker';
 import { RHFInput } from 'react-hook-form-input';
+import es from 'date-fns/locale/es';
+import 'antd/dist/antd.css';
+
+import esES from 'antd/es/date-picker/locale/es_ES'
+
+import "react-datepicker/dist/react-datepicker.css";
+import {DatePicker as X, registerLocale, setDefaultLocale } from 'react-datepicker';
+import {ConfigProvider, DatePicker} from 'antd';
+
+
 
 export default function RegisterForm() {
   //const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
   // todo: https://medium.com/@everdimension/how-to-handle-forms-with-just-react-ac066c48bd4f
   // todo: https://www.google.com/search?q=react+send+form+data+to+api&oq=react+send+form&aqs=chrome.1.69i57j0l7.4768j0j7&sourceid=chrome&ie=UTF-8#kpvalbx=_MbebXvvfO-njgwfL0qf4Bg16
 
-  const { handleSubmit, register, setValue, reset } = useForm();
+  const { handleSubmit, register, setValue, reset, control } = useForm();
 
   function onSubmit(data) {
     console.log(data)
   }
+
+  registerLocale('es', es)
 
   return (
     <LoginRegisterLayout>
@@ -53,18 +65,24 @@ export default function RegisterForm() {
 
         <div className="mt-4">
           <FormLabel htmlFor="dateOfBirth">Fecha de Nacimiento</FormLabel>
-          <RHFInput
-            as={<FormDatePicker/>}
-            rules={{ required: true }}
+          {/*<Controller
+            as={<DatePicker
+                locale="es"
+                dateFormat="dd/MM/yyyy"
+            />}
+            control={control}
+            valueName="selected"
+            onChange={([selected]) => selected}
             name="dateOfBirth"
-            id="dateOfBirth"
-            register={register}
-            setValue={setValue}
-          />
+            className="input"
+            placeholderText="Select date"
+          />*/}
+          <DatePicker/>
         </div>
 
         <div className="mt-4">
           <Button type="submit">Registrarme</Button>
+
         </div>
 
       </form>
