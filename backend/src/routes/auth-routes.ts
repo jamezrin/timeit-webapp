@@ -86,19 +86,12 @@ authRouter.post(
 authRouter.post(
   '/create-account',
   wrapAsync(async (req: Request, res: Response) => {
-    const {
-      emailAddress,
-      password,
-      firstName,
-      lastName,
-      dateOfBirth,
-    } = req.body;
+    const { emailAddress, password, firstName, lastName } = req.body;
 
     const user = new User();
     user.emailAddress = emailAddress;
     user.firstName = firstName;
     user.lastName = lastName;
-    user.dateOfBirth = new Date(dateOfBirth);
 
     // TODO: user.status = UserStatus.NOT_CONFIRMED;
     user.status = UserStatus.ACTIVE;

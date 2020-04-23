@@ -43,9 +43,6 @@ export class User extends BaseEntity {
   @Column()
   passwordHash: string;
 
-  @Column({ type: 'date' })
-  dateOfBirth: Date;
-
   @OneToMany((type) => ProjectUser, (projectUser) => projectUser.user, {
     eager: true,
     onDelete: 'CASCADE',

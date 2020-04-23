@@ -17,7 +17,6 @@ async function createEntities(connection: Connection) {
 
   console.log('Testing inserts...');
   const user = new User();
-  user.dateOfBirth = new Date(2020, 4, 11, 22, 30, 15);
   user.firstName = 'Jaime';
   user.lastName = 'Martínez Rincón';
   user.passwordHash = 'some random hash';
