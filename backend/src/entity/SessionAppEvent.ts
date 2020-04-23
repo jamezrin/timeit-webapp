@@ -1,25 +1,34 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
 import { Session } from './Session';
 
 @Entity()
 export class SessionAppEvent extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @CreateDateColumn({ type: "timestamptz" })
-    createdAt: Date;
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
 
-    @Column()
-    windowName: string;
+  @Column()
+  windowName: string;
 
-    @Column()
-    windowClass: string;
+  @Column()
+  windowClass: string;
 
-    @Column()
-    windowPid: number;
+  @Column()
+  windowPid: number;
 
-    @ManyToOne(type => Session,
-            session => session.sessionAppEvents,
-        { onDelete: "CASCADE", nullable: false })
-    session: Session;
+  @ManyToOne((type) => Session, (session) => session.sessionAppEvents, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  session: Session;
 }

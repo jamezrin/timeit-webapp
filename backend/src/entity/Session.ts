@@ -8,34 +8,37 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 import { SessionAppEvent } from './SessionAppEvent';
 import { SessionNote } from './SessionNote';
 import { ProjectUser } from './ProjectUser';
 
 @Entity()
 export class Session extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @CreateDateColumn({ type: "timestamptz" })
-    createdAt: Date;
+  @CreateDateColumn({ type: 'timestamptz' })
+  createdAt: Date;
 
-    @UpdateDateColumn({ type: "timestamptz" })
-    updatedAt: Date;
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updatedAt: Date;
 
-    @Column({type: "timestamptz", nullable: true })
-    endedAt: Date;
+  @Column({ type: 'timestamptz', nullable: true })
+  endedAt: Date;
 
-    @ManyToOne(type => ProjectUser,
-            project => project.sessions,
-        { onDelete: "CASCADE", nullable: false })
-    projectUser: ProjectUser;
+  @ManyToOne((type) => ProjectUser, (project) => project.sessions, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  projectUser: ProjectUser;
 
-    @OneToMany(type => SessionAppEvent,
-            activityUpdate => activityUpdate.session)
-    sessionAppEvents: SessionAppEvent[];
+  @OneToMany(
+    (type) => SessionAppEvent,
+    (activityUpdate) => activityUpdate.session,
+  )
+  sessionAppEvents: SessionAppEvent[];
 
-    @OneToMany(type => SessionNote,
-        activityNote => activityNote.session)
-    sessionNotes: SessionNote[];
+  @OneToMany((type) => SessionNote, (activityNote) => activityNote.session)
+  sessionNotes: SessionNote[];
 }

@@ -2,7 +2,13 @@ import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 import { User, UserStatus } from './entity/User';
 import { Project } from './entity/Project';
-import { ProjectUser, ProjectUserRole, ProjectUserStatus } from './entity/ProjectUser';
+
+import {
+  ProjectUser,
+  ProjectUserRole,
+  ProjectUserStatus,
+} from './entity/ProjectUser';
+
 import { Session } from './entity/Session';
 
 async function createEntities(connection: Connection) {

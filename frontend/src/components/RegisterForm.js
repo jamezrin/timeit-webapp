@@ -8,15 +8,8 @@ import FormLabel from './base/FormLabel';
 import { useForm, Controller } from 'react-hook-form';
 import FormDatePicker from './base/FormDatePicker';
 import { RHFInput } from 'react-hook-form-input';
-import es from 'date-fns/locale/es';
-import 'antd/dist/antd.css';
-
-import esES from 'antd/es/date-picker/locale/es_ES'
 
 import "react-datepicker/dist/react-datepicker.css";
-import {DatePicker as X, registerLocale, setDefaultLocale } from 'react-datepicker';
-import {ConfigProvider, DatePicker} from 'antd';
-
 
 
 export default function RegisterForm() {
@@ -29,8 +22,6 @@ export default function RegisterForm() {
   function onSubmit(data) {
     console.log(data)
   }
-
-  registerLocale('es', es)
 
   return (
     <LoginRegisterLayout>
@@ -77,7 +68,6 @@ export default function RegisterForm() {
             className="input"
             placeholderText="Select date"
           />*/}
-          <DatePicker/>
         </div>
 
         <div className="mt-4">
