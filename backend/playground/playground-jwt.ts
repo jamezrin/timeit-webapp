@@ -5,7 +5,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
-import './env';
+import '../src/env';
 
 const app = express();
 

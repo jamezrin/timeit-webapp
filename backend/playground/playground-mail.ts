@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import './env';
+import '../src/env';
 
 async function testMail() {
   const transport = nodemailer.createTransport({

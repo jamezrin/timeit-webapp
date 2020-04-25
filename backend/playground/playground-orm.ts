@@ -1,15 +1,15 @@
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
-import { User, UserStatus } from './entity/User';
-import { Project } from './entity/Project';
+import { User, UserStatus } from '../src/entity/User';
+import { Project } from '../src/entity/Project';
 
 import {
   ProjectUser,
   ProjectUserRole,
   ProjectUserStatus,
-} from './entity/ProjectUser';
+} from '../src/entity/ProjectUser';
 
-import { Session } from './entity/Session';
+import { Session } from '../src/entity/Session';
 
 async function createEntities(connection: Connection) {
   await User.delete({});
