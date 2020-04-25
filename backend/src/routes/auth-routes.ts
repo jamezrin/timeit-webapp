@@ -107,28 +107,6 @@ authRouter.post(
   }),
 );
 
-// Verify authentication
-authRouter.post(
-  '/verify-auth',
-  [mandatoryAuthMiddleware],
-  wrapAsync(async (req: Request, res: Response) => {
-    const token = await UserToken.findOneOrFail(
-      req['tokenPayload']['tokenId'],
-      {
-        loadEagerRelations: false,
-      },
-    );
-
-    if (token.status !== UserTokenStatus.ACTIVE) {
-      return res.status(401).json({
-        error: `Token is no longer active`,
-      });
-    }
-
-    res.status(201).send(token);
-  }),
-);
-
 // Confirm account
 authRouter.post(
   '/confirm-account',
