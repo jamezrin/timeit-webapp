@@ -4,10 +4,11 @@ import { User, UserStatus } from '../entity/User';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserToken, UserTokenStatus } from '../entity/UserToken';
+import mandatoryAuthMiddleware, {
+  accessTokenCookieName,
+} from '../auth-middleware';
 
 const authRouter = express.Router();
-
-const accessTokenCookieName = 'timeit_accessToken';
 
 // Authenticates (creates JWT)
 authRouter.post(
@@ -109,20 +110,17 @@ authRouter.post(
 // Verify authentication
 authRouter.post(
   '/verify-auth',
+  [mandatoryAuthMiddleware],
   wrapAsync(async (req: Request, res: Response) => {
-    const accessToken = req.cookies[accessTokenCookieName];
-
-    const tokenPayload = await jwt.verify(
-      accessToken,
-      process.env.TIMEIT_JWT_SECRET,
+    const token = await UserToken.findOneOrFail(
+      req['tokenPayload']['tokenId'],
+      {
+        loadEagerRelations: false,
+      },
     );
 
-    const token = await UserToken.findOneOrFail(tokenPayload['tokenId'], {
-      loadEagerRelations: false,
-    });
-
     if (token.status !== UserTokenStatus.ACTIVE) {
-      return res.status(401).send({
+      return res.status(401).json({
         error: `Token is no longer active`,
       });
     }

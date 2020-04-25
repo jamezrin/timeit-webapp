@@ -1,10 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, List, ListItem } from '@chakra-ui/core';
+import { Box, List, ListItem, useColorMode } from '@chakra-ui/core';
 
 export default function DebugNav() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Box position="absolute" bottom="0" left="0" py={2} px={4} m={3} rounded="md" bg="white" shadow="xl">
+    <Box
+      position="fixed"
+      zIndex="20"
+      bottom="0"
+      left="0"
+      p={4}
+      m={3}
+      rounded="md"
+      bg={colorMode === 'dark' ? 'gray.900' : 'white'}
+      shadow="xl"
+    >
       <List>
         <ListItem>
           <Link to="/login">Login</Link>

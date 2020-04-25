@@ -11,16 +11,19 @@ import authRouter from './routes/auth-routes';
 import userRouter from './routes/user-routes';
 import projectRouter from './routes/project-routes';
 import './env';
+import mandatoryAuthMiddleware from './auth-middleware';
 
 async function startExpress(connection: Connection) {
   const app = express();
 
   // Security middlewares
   app.use(helmet());
-  app.use(cors({
-    credentials: true,
-    origin: process.env.TIMEIT_CORS_ORIGIN
-  }));
+  app.use(
+    cors({
+      credentials: true,
+      origin: process.env.TIMEIT_CORS_ORIGIN,
+    }),
+  );
 
   // Parsers middlewares
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,18 +34,15 @@ async function startExpress(connection: Connection) {
   app.use(morgan('combined'));
 
   // Authentication middleware
-  // TODO: Check JWT in the cookie, if its valid and it's in the database and is active, set the payload as req.session.user
-
+  // This will cause routes inside these routers to also use this middleware
+  // So there is no need to use it in the inner routes
+  userRouter.use(mandatoryAuthMiddleware);
+  projectRouter.use(mandatoryAuthMiddleware);
 
   // Routes
   app.use(authRouter);
   app.use(userRouter);
   app.use(projectRouter);
-
-  app.get('/ping', function (req: Request, res: Response) {
-    const numeroAleatorio = Math.floor(Math.random() * 1000);
-    return res.send(`Number ${numeroAleatorio}`);
-  });
 
   app.listen(process.env.PORT || 7001);
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouteLink } from 'react-router-dom';
+import { Link as RouteLink, useHistory } from 'react-router-dom';
 
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
@@ -17,13 +17,16 @@ import {
   Link,
   Heading,
   Text,
+  Icon,
 } from '@chakra-ui/core';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 
 export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm();
+  const history = useHistory();
 
+  // https://tylermcginnis.com/react-router-protected-routes-authentication/
   function onSubmit(values) {
     axios
       .post(
@@ -37,6 +40,12 @@ export default function RegisterPage() {
       )
       .then(console.log)
       .catch(console.error);
+    history.push({
+      pathname: '/login',
+      state: {
+        accountCreated: true,
+      },
+    });
   }
 
   const [showPassword, setShowPassword] = useState(false);
@@ -44,6 +53,13 @@ export default function RegisterPage() {
   return (
     <LoginRegisterLayout>
       <Heading as="h1">Crea una cuenta</Heading>
+
+      <Text mt={4}>
+        O si ya tienes una cuenta,&nbsp;
+        <Link as={RouteLink} to="/login" color="blue.500">
+          inicia sesión
+        </Link>
+      </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={4} isInvalid={errors.emailAddress}>
@@ -83,17 +99,10 @@ export default function RegisterPage() {
 
           <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
         </FormControl>
-        <Button mt={4} variantColor="purple" isLoading={formState.isSubmitting} type="submit">
-          Continuar
+        <Button mt={4} variantColor="blue" isLoading={formState.isSubmitting} type="submit">
+          Continuar <Icon ml={4} name="arrow-right" />
         </Button>
       </form>
-
-      <Text mt={4}>
-        O si ya tienes una cuenta,&nbsp;
-        <Link as={RouteLink} to="/login" color="blue.500">
-          inicia sesión
-        </Link>
-      </Text>
     </LoginRegisterLayout>
   );
 }
