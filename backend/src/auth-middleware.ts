@@ -4,53 +4,58 @@ import { UserToken, UserTokenStatus } from './entity/UserToken';
 
 export const accessTokenCookieName = 'timeit_accessToken';
 
-export default async function mandatoryAuthMiddleware(
-  req: Request,
-  res: Response,
-  next: Function,
-) {
-  const accessToken = req.cookies[accessTokenCookieName];
+export function authMiddleware(ignoreExpiration: boolean) {
+  return async function (req: Request, res: Response, next: Function) {
+    console.log('called');
+    const accessToken = req.cookies[accessTokenCookieName];
 
-  if (!accessToken) {
-    return res.status(401).json({
-      error: {
-        type: 'NO_ACCESS_TOKEN',
-        message: 'No token provided',
-      },
-    });
-  }
-
-  try {
-    const decodedPayload = await jwt.verify(
-      accessToken,
-      process.env.TIMEIT_JWT_SECRET,
-    );
-
-    const token = await UserToken.findOneOrFail(decodedPayload['tokenId'], {
-      loadEagerRelations: false, // No need to load the user relation
-    });
-
-    if (token.status !== UserTokenStatus.ACTIVE) {
+    if (!accessToken) {
       return res.status(401).json({
         error: {
-          type: 'INACTIVE_TOKEN',
-          message: 'The token provided is inactive',
-          info: {
-            tokenStatus: token.status,
-          },
+          type: 'NO_ACCESS_TOKEN',
+          message: 'No token provided',
         },
       });
     }
 
-    // User is authenticated correctly, continue with the request
-    req['tokenPayload'] = decodedPayload;
-    next();
-  } catch (err) {
-    return res.status(401).json({
-      error: {
-        type: 'INVALID_TOKEN',
-        message: 'The token provided is invalid',
-      },
-    });
-  }
+    try {
+      const decodedPayload = await jwt.verify(
+        accessToken,
+        process.env.TIMEIT_JWT_SECRET,
+        {
+          ignoreExpiration: ignoreExpiration,
+        },
+      );
+
+      const tokenInfo = await UserToken.findOneOrFail(
+        decodedPayload['tokenId'],
+      );
+
+      if (tokenInfo.status !== UserTokenStatus.ACTIVE) {
+        await tokenInfo.remove();
+
+        return res.status(401).json({
+          error: {
+            type: 'INACTIVE_TOKEN',
+            message: 'The token provided is inactive',
+          },
+        });
+      }
+
+      // User is authenticated correctly, continue with the request
+      req['tokenPayload'] = decodedPayload;
+      req['tokenInfo'] = tokenInfo;
+      next();
+    } catch (err) {
+      return res.status(401).json({
+        error: {
+          type: 'INVALID_TOKEN',
+          message: 'The token provided is invalid',
+        },
+      });
+    }
+  };
 }
+
+export const defaultAuthMiddleware = authMiddleware(false);
+export default defaultAuthMiddleware;

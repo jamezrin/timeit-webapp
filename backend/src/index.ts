@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 
-import express, { Request, Response } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -10,8 +10,10 @@ import helmet from 'helmet';
 import authRouter from './routes/auth-routes';
 import userRouter from './routes/user-routes';
 import projectRouter from './routes/project-routes';
+import defaultAuthMiddleware from './auth-middleware';
+
+// Very important for getting env populated
 import './env';
-import mandatoryAuthMiddleware from './auth-middleware';
 
 async function startExpress(connection: Connection) {
   const app = express();
@@ -32,12 +34,6 @@ async function startExpress(connection: Connection) {
 
   // Logging middleware
   app.use(morgan('combined'));
-
-  // Authentication middleware
-  // This will cause routes inside these routers to also use this middleware
-  // So there is no need to use it in the inner routes
-  userRouter.use(mandatoryAuthMiddleware);
-  projectRouter.use(mandatoryAuthMiddleware);
 
   // Routes
   app.use(authRouter);

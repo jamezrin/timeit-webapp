@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
-import { wrapAsync } from '../utils';
+import { hashPassword, wrapAsync } from '../utils';
 import { User, UserStatus } from '../entity/User';
+import { UserToken, UserTokenStatus } from '../entity/UserToken';
+import { accessTokenCookieName, authMiddleware } from '../auth-middleware';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { UserToken, UserTokenStatus } from '../entity/UserToken';
-import mandatoryAuthMiddleware, {
-  accessTokenCookieName,
-} from '../auth-middleware';
+import { MailRequest, MailRequestType } from '../entity/MailRequest';
 
 const authRouter = express.Router();
 
@@ -16,21 +15,36 @@ authRouter.post(
   wrapAsync(async (req: Request, res: Response) => {
     const { emailAddress, password } = req.body;
 
-    const user = await User.findOneOrFail({
+    const user = await User.findOne({
       where: { emailAddress },
     });
+
+    if (!user) {
+      return res.status(401).send({
+        error: {
+          type: 'INVALID_CREDENTIALS',
+          message: 'Invalid credentials',
+        },
+      });
+    }
 
     const correctPassword = await bcrypt.compare(password, user.passwordHash);
 
     if (!correctPassword) {
       return res.status(401).send({
-        error: 'Incorrect password',
+        error: {
+          type: 'INVALID_CREDENTIALS',
+          message: 'Invalid credentials',
+        },
       });
     }
 
     if (user.status !== UserStatus.ACTIVE) {
       return res.status(401).send({
-        error: 'Account not active',
+        error: {
+          type: 'INACTIVE_ACCOUNT',
+          message: 'Account not active',
+        },
       });
     }
 
@@ -54,6 +68,7 @@ authRouter.post(
       domain: process.env.TIMEIT_COOKIE_DOMAIN,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
     });
 
     res.status(201).send({
@@ -65,18 +80,20 @@ authRouter.post(
 // Deauthenticate (revokes JWT)
 authRouter.post(
   '/deauthenticate',
+  [authMiddleware(true)],
   wrapAsync(async (req: Request, res: Response) => {
-    const accessToken = req.cookies[accessTokenCookieName];
+    const tokenInfo = req['tokenInfo'] as UserToken;
 
-    const tokenPayload = await jwt.verify(
-      accessToken,
-      process.env.TIMEIT_JWT_SECRET,
-      { ignoreExpiration: true },
-    );
+    if (!tokenInfo) {
+      return res.status(500).json({
+        error: {
+          type: 'UNKNOWN_SERVER_ERROR',
+          message: 'Unknown server error',
+        },
+      });
+    }
 
-    const token = await UserToken.findOneOrFail(tokenPayload['tokenId']);
-
-    await token.remove();
+    await tokenInfo.remove();
 
     res.sendStatus(201);
   }),
@@ -96,10 +113,7 @@ authRouter.post(
 
     // TODO: user.status = UserStatus.NOT_CONFIRMED;
     user.status = UserStatus.ACTIVE;
-    user.passwordHash = await bcrypt.hash(
-      password,
-      parseInt(process.env.TIMEIT_CRYPT_ROUNDS),
-    );
+    user.passwordHash = await hashPassword(password);
 
     await user.save();
 
@@ -119,7 +133,33 @@ authRouter.post(
 authRouter.post(
   '/request-password-reset',
   wrapAsync(async (req: Request, res: Response) => {
-    res.sendStatus(200);
+    const { emailAddress } = req.body;
+
+    try {
+      const user = await User.findOneOrFail({
+        where: {
+          emailAddress,
+        },
+      });
+
+      const mailRequest = new MailRequest();
+      mailRequest.type = MailRequestType.PASSWORD_RESET;
+      mailRequest.expiresIn = 12 * 60; // 12 hours
+      mailRequest.user = user;
+      await mailRequest.save();
+
+      res.status(200).json({
+        expiresIn: mailRequest.expiresIn,
+        uuid: mailRequest.id,
+      });
+    } catch (err) {
+      res.status(404).json({
+        error: {
+          type: 'ACCOUNT_NOT_FOUND',
+          message: 'Could not find an account with the provided email address',
+        },
+      });
+    }
   }),
 );
 

@@ -18,14 +18,17 @@ export enum MailRequestType {
 
 @Entity()
 export class MailRequest extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @Column({ type: 'timestamptz' })
-  status: MailRequestType;
+  @Column()
+  expiresIn: number;
+
+  @Column()
+  type: MailRequestType; // minutes
 
   @ManyToOne((type) => User, (user) => user.mailRequests, { eager: true })
   user: User;
