@@ -3,12 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import LoginPage from './components/pages/LoginPage';
 import AuthTest from './components/AuthTest';
-import TestHome from './components/TestHome';
 import RegisterPage from './components/pages/RegisterPage';
 import DebugNav from './components/DebugNav';
 
-import { ColorModeProvider, CSSReset, theme, ThemeProvider, Box } from '@chakra-ui/core';
-import Header from './components/Header';
+import { ColorModeProvider, CSSReset, theme, ThemeProvider } from '@chakra-ui/core';
 import HomePage from './components/pages/HomePage';
 
 const RecoverPasswordPage = () => 'Not yet implemented';

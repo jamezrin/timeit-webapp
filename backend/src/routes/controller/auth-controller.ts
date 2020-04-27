@@ -1,18 +1,14 @@
-import express, { Request, Response } from 'express';
-import { hashPassword, wrapAsync } from '../utils';
-import { User, UserStatus } from '../entity/User';
-import { UserToken, UserTokenStatus } from '../entity/UserToken';
-import { accessTokenCookieName, authMiddleware } from '../auth-middleware';
+import { Request, Response } from 'express';
+import { hashPassword } from '../../utils';
+import { User, UserStatus } from '../../entity/User';
+import { UserToken, UserTokenStatus } from '../../entity/UserToken';
+import { accessTokenCookieName } from '../auth-middleware';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { MailToken, MailRequestType } from '../entity/MailToken';
+import { MailRequestType, MailToken } from '../../entity/MailToken';
 
-const authRouter = express.Router();
-
-// Authenticates (creates JWT)
-authRouter.post(
-  '/authenticate',
-  wrapAsync(async (req: Request, res: Response) => {
+const authController = {
+  async authenticate(req: Request, res: Response) {
     const { emailAddress, password } = req.body;
 
     const user = await User.findOne({
@@ -71,17 +67,11 @@ authRouter.post(
       maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
     });
 
-    res.status(201).send({
+    res.status(201).json({
       accessToken,
     });
-  }),
-);
-
-// Deauthenticate (revokes JWT)
-authRouter.post(
-  '/deauthenticate',
-  [authMiddleware(true)],
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async deauthenticate(req: Request, res: Response) {
     const tokenInfo = req['tokenInfo'] as UserToken;
 
     if (!tokenInfo) {
@@ -96,14 +86,8 @@ authRouter.post(
     await tokenInfo.remove();
 
     res.sendStatus(201);
-  }),
-);
-
-// Create account
-// TODO: Sends email to the user, that will have to be confirmed
-authRouter.post(
-  '/create-account',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async createAccount(req: Request, res: Response) {
     const { emailAddress, password, firstName, lastName } = req.body;
 
     const user = new User();
@@ -118,28 +102,17 @@ authRouter.post(
     await user.save();
 
     res.sendStatus(200);
-  }),
-);
-
-// Confirm account
-authRouter.post(
-  '/confirm-account',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  // TODO: Sends email to the user, that will have to be confirmed
+  async confirmAccount(req: Request, res: Response) {
     res.sendStatus(200);
-  }),
-);
-
-// Creates password reset request (sends the email)
-authRouter.post(
-  '/request-password-reset',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async requestPasswordReset(req: Request, res: Response) {
     const { emailAddress } = req.body;
 
     try {
       const user = await User.findOneOrFail({
-        where: {
-          emailAddress,
-        },
+        where: { emailAddress },
       });
 
       const mailRequest = new MailToken();
@@ -160,15 +133,11 @@ authRouter.post(
         },
       });
     }
-  }),
-);
-
-// Resets the password
-authRouter.post(
-  '/reset-password',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  // TODO: Sends email to the user, that will have to be confirmed
+  async performPasswordReset(req: Request, res: Response) {
     res.sendStatus(200);
-  }),
-);
+  },
+};
 
-export default authRouter;
+export default authController;

@@ -3,9 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -29,7 +27,7 @@ export class UserToken extends BaseEntity {
   @Column()
   status: UserTokenStatus;
 
-  @ManyToOne((type) => User, (user) => user.tokens, {
+  @ManyToOne((type) => User, (user) => user.authTokens, {
     onDelete: 'CASCADE',
     nullable: false,
     eager: true,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Heading, Flex, Text, Button, IconButton, useColorMode } from '@chakra-ui/core';
+import { Box, Flex, Heading, IconButton, Text, useColorMode } from '@chakra-ui/core';
 
 const MenuItems = ({ children }) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block">

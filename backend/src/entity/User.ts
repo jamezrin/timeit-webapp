@@ -4,12 +4,11 @@ import {
   CreateDateColumn,
   Entity,
   Index,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { ProjectUser } from './ProjectUser';
+import { ProjectMember } from './ProjectMember';
 import { UserToken } from './UserToken';
 import { MailToken } from './MailToken';
 
@@ -43,13 +42,13 @@ export class User extends BaseEntity {
   @Column()
   passwordHash: string;
 
-  @OneToMany((type) => ProjectUser, (projectUser) => projectUser.user, {
+  @OneToMany((type) => ProjectMember, (projectUser) => projectUser.user, {
     eager: true,
   })
-  projects: ProjectUser[];
+  projects: ProjectMember[];
 
   @OneToMany((type) => UserToken, (token) => token.user)
-  tokens: UserToken[];
+  authTokens: UserToken[];
 
   @OneToMany((type) => MailToken, (mailToken) => mailToken.user)
   mailTokens: MailToken[];

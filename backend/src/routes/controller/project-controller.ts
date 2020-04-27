@@ -1,66 +1,23 @@
-import express, { Request, Response } from 'express';
-import { wrapAsync } from '../utils';
-
-import projectSessionRouter from './project-session-routes';
-import projectMemberRouter from './project-member-routes';
-import defaultAuthMiddleware from '../auth-middleware';
+import { Request, Response } from 'express';
 
 import {
-  ProjectUser,
+  ProjectMember,
   ProjectUserRole,
   ProjectUserStatus,
-} from '../entity/ProjectUser';
+} from '../../entity/ProjectMember';
 
-import { User } from '../entity/User';
-import { Project } from '../entity/Project';
-import { UserToken } from '../entity/UserToken';
+import { User } from '../../entity/User';
+import { Project } from '../../entity/Project';
+import { UserToken } from '../../entity/UserToken';
 
-const projectRouter = express.Router();
-
-// These routes have to be protected
-projectRouter.use(defaultAuthMiddleware);
-
-// List projects
-projectRouter.get(
-  '/projects',
-  wrapAsync(async (req: Request, res: Response) => {
+const projectController = {
+  async listProjects(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
     const user = await User.findOne(tokenPayload['userId']);
     const projects = user.projects || [];
     res.status(200).json(projects);
-  }),
-);
-
-// Get project user in a certain project
-projectRouter.get(
-  '/projects/:projectId',
-  wrapAsync(async (req: Request, res: Response) => {
-    const tokenPayload = req['tokenPayload'];
-
-    try {
-      const projectUser = await ProjectUser.findOneOrFail({
-        where: {
-          project: req.params['projectId'],
-          user: tokenPayload['userId'],
-        },
-      });
-
-      res.status(200).json(projectUser);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
-    }
-  }),
-);
-
-// Create project
-projectRouter.post(
-  '/projects',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async createProject(req: Request, res: Response) {
     const tokenInfo = req['tokenInfo'] as UserToken;
     const projectName = req.body['name'];
 
@@ -68,7 +25,7 @@ projectRouter.post(
     project.name = projectName;
     await project.save();
 
-    const projectUser = new ProjectUser();
+    const projectUser = new ProjectMember();
     projectUser.project = project;
     projectUser.status = ProjectUserStatus.ACTIVE;
     projectUser.role = ProjectUserRole.ADMIN;
@@ -87,17 +44,33 @@ projectRouter.post(
         },
       },
     });
-  }),
-);
-
-// Update project
-projectRouter.patch(
-  '/projects/:projectId',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async getProject(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
 
     try {
-      const projectUser = await ProjectUser.findOneOrFail({
+      const projectUser = await ProjectMember.findOneOrFail({
+        where: {
+          project: req.params['projectId'],
+          user: tokenPayload['userId'],
+        },
+      });
+
+      res.status(200).json(projectUser);
+    } catch (err) {
+      return res.status(404).json({
+        error: {
+          type: 'PROJECT_NOT_FOUND',
+          message: 'Could not find any project with the provided projectId',
+        },
+      });
+    }
+  },
+  async updateProject(req: Request, res: Response) {
+    const tokenPayload = req['tokenPayload'];
+
+    try {
+      const projectUser = await ProjectMember.findOneOrFail({
         where: {
           project: req.params['projectId'],
           user: tokenPayload['userId'],
@@ -118,17 +91,12 @@ projectRouter.patch(
         },
       });
     }
-  }),
-);
-
-// Delete project
-projectRouter.delete(
-  '/projects/:projectId',
-  wrapAsync(async (req: Request, res: Response) => {
+  },
+  async deleteProject(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
 
     try {
-      const projectUser = await ProjectUser.findOneOrFail({
+      const projectUser = await ProjectMember.findOneOrFail({
         where: {
           project: req.params['projectId'],
           user: tokenPayload['userId'],
@@ -145,7 +113,7 @@ projectRouter.delete(
       }
 
       const project = projectUser.project;
-      await project.remove(); // Cascades to ProjectUser and other entities
+      await project.remove(); // Cascades to ProjectMember and other entities
 
       res.sendStatus(200);
     } catch (err) {
@@ -156,10 +124,10 @@ projectRouter.delete(
         },
       });
     }
-  }),
-);
+  },
+  async projectInvite(req: Request, res: Response) {
+    res.sendStatus(200);
+  },
+};
 
-projectRouter.use('/projects/:projectId', projectMemberRouter);
-projectRouter.use('/projects/:projectId', projectSessionRouter);
-
-export default projectRouter;
+export default projectController;

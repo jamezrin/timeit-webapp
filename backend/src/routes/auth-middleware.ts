@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
-import { UserToken, UserTokenStatus } from './entity/UserToken';
+import { UserToken, UserTokenStatus } from '../entity/UserToken';
 
 export const accessTokenCookieName = 'timeit_accessToken';
 
 export function authMiddleware(ignoreExpiration: boolean) {
   return async function (req: Request, res: Response, next: Function) {
-    console.log('called');
     const accessToken = req.cookies[accessTokenCookieName];
 
     if (!accessToken) {

@@ -1,15 +1,15 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 
 import {
+  Box,
+  Button,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Button,
-  Box,
   useDisclosure,
 } from '@chakra-ui/core';
 

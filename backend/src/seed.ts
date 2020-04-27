@@ -5,10 +5,10 @@ import './env';
 import { User, UserStatus } from './entity/User';
 import { hashPassword } from './utils';
 import {
-  ProjectUser,
+  ProjectMember,
   ProjectUserRole,
   ProjectUserStatus,
-} from './entity/ProjectUser';
+} from './entity/ProjectMember';
 import { Project } from './entity/Project';
 import { Session } from './entity/Session';
 import { SessionAppEvent } from './entity/SessionAppEvent';
@@ -69,11 +69,11 @@ async function up(conn: Connection) {
   const userToken = await createUserToken(user2);
   await userToken.save();
 
-  await testInsertAppEvent(conn, project1.id, session1.id);
+  console.log(await UserToken.find());
 }
 
 function randomNumber() {
-  return Math.ceil(Math.random() * 100);
+  return Math.ceil(Math.random() * 10000);
 }
 
 async function createUserToken(user: User) {
@@ -123,31 +123,19 @@ async function createProject() {
   return project;
 }
 
-async function createSession(projectUser: ProjectUser) {
+async function createSession(projectUser: ProjectMember) {
   const session = new Session();
-  session.projectUser = projectUser;
+  session.projectMember = projectUser;
   return session;
 }
 
 async function createProjectUser(user: User, project: Project) {
-  const projectUser = new ProjectUser();
+  const projectUser = new ProjectMember();
   projectUser.role = ProjectUserRole.ADMIN;
   projectUser.status = ProjectUserStatus.ACTIVE;
   projectUser.project = project;
   projectUser.user = user;
   return projectUser;
-}
-
-async function testInsertAppEvent(
-  conn: Connection,
-  projectId: number,
-  sessionId: number,
-) {
-  // /projects/:projectId/sessions/:sessionId/app-events
-  const testAppEvent = new SessionAppEvent();
-  testAppEvent.windowName = 'test window name';
-  testAppEvent.windowClass = 'test window class';
-  testAppEvent.windowPid = 1337;
 }
 
 async function down(conn: Connection) {

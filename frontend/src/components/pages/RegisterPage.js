@@ -7,17 +7,17 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
 import {
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
   Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Icon,
+  Input,
   InputGroup,
   InputRightElement,
   Link,
-  Heading,
   Text,
-  Icon,
 } from '@chakra-ui/core';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';

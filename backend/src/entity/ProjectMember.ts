@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Project } from './Project';
 import { User } from './User';
+import { Project } from './Project';
 import { Session } from './Session';
 
 export enum ProjectUserRole {
@@ -25,17 +25,17 @@ export enum ProjectUserStatus {
 }
 
 @Entity()
-export class ProjectUser extends BaseEntity {
+export class ProjectMember extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @OneToMany((type) => Session, (session) => session.projectUser)
+  @OneToMany((type) => Session, (session) => session.projectMember)
   sessions: Session[];
 
-  @ManyToOne((type) => Project, (project) => project.users, {
+  @ManyToOne((type) => Project, (project) => project.members, {
     onDelete: 'CASCADE',
     nullable: false,
     eager: true,

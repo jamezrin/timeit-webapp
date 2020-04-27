@@ -7,13 +7,11 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
-import authRouter from './routes/auth-routes';
-import userRouter from './routes/user-routes';
-import projectRouter from './routes/project-routes';
-import defaultAuthMiddleware from './auth-middleware';
-
+import HttpStatus from 'http-status-codes';
 // Very important for getting env populated
 import './env';
+
+import mountRoutes from './routes/routes';
 
 async function startExpress(connection: Connection) {
   const app = express();
@@ -36,10 +34,11 @@ async function startExpress(connection: Connection) {
   app.use(morgan('combined'));
 
   // Routes
-  app.use(authRouter);
-  app.use(userRouter);
-  app.use(projectRouter);
+  mountRoutes(app);
 
+  app.all('/', (req, res) => {
+    res.sendStatus(HttpStatus.OK);
+  });
   app.listen(process.env.PORT || 7001);
 }
 

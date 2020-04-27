@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { ProjectUser } from './ProjectUser';
+import { ProjectMember } from './ProjectMember';
 
 @Entity()
 export class Project extends BaseEntity {
@@ -20,6 +20,6 @@ export class Project extends BaseEntity {
   @Column()
   name: string;
 
-  @OneToMany((type) => ProjectUser, (projectUser) => projectUser.project)
-  users: ProjectUser[];
+  @OneToMany((type) => ProjectMember, (projectUser) => projectUser.project)
+  members: ProjectMember[];
 }

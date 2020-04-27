@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
@@ -16,7 +16,6 @@ import {
   Link,
   List,
   ListItem,
-  Text,
 } from '@chakra-ui/core';
 
 import { Link as RouteLink, useLocation } from 'react-router-dom';

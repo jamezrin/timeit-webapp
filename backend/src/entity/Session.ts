@@ -9,9 +9,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { SessionAppEvent } from './SessionAppEvent';
 import { SessionNote } from './SessionNote';
-import { ProjectUser } from './ProjectUser';
+import { ProjectMember } from './ProjectMember';
+import { SessionAppEvent } from './SessionAppEvent';
 
 @Entity()
 export class Session extends BaseEntity {
@@ -27,11 +27,11 @@ export class Session extends BaseEntity {
   @Column({ type: 'timestamptz', nullable: true })
   endedAt: Date;
 
-  @ManyToOne((type) => ProjectUser, (project) => project.sessions, {
+  @ManyToOne((type) => ProjectMember, (project) => project.sessions, {
     onDelete: 'CASCADE',
     nullable: false,
   })
-  projectUser: ProjectUser;
+  projectMember: ProjectMember;
 
   @OneToMany(
     (type) => SessionAppEvent,

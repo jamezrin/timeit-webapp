@@ -4,10 +4,10 @@ import { User, UserStatus } from '../src/entity/User';
 import { Project } from '../src/entity/Project';
 
 import {
-  ProjectUser,
+  ProjectMember,
   ProjectUserRole,
   ProjectUserStatus,
-} from '../src/entity/ProjectUser';
+} from '../src/entity/ProjectMember';
 
 import { Session } from '../src/entity/Session';
 
@@ -28,7 +28,7 @@ async function createEntities(connection: Connection) {
   project.name = 'Un proyecto muy bueno';
   await project.save();
 
-  const projectUser = new ProjectUser();
+  const projectUser = new ProjectMember();
   projectUser.user = user;
   projectUser.project = project;
   projectUser.role = ProjectUserRole.ADMIN;
@@ -36,7 +36,7 @@ async function createEntities(connection: Connection) {
   await projectUser.save();
 
   const session = new Session();
-  session.projectUser = projectUser;
+  session.projectMember = projectUser;
   await session.save();
 }
 
