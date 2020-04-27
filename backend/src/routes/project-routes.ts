@@ -159,7 +159,7 @@ projectRouter.delete(
   }),
 );
 
-projectRouter.use('/project/:projectId', projectMemberRouter);
-projectRouter.use('/project/:projectId', projectSessionRouter);
+projectRouter.use('/projects/:projectId', projectMemberRouter);
+projectRouter.use('/projects/:projectId', projectSessionRouter);
 
 export default projectRouter;

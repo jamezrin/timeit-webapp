@@ -5,7 +5,7 @@ import { UserToken, UserTokenStatus } from '../entity/UserToken';
 import { accessTokenCookieName, authMiddleware } from '../auth-middleware';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { MailRequest, MailRequestType } from '../entity/MailRequest';
+import { MailToken, MailRequestType } from '../entity/MailToken';
 
 const authRouter = express.Router();
 
@@ -142,7 +142,7 @@ authRouter.post(
         },
       });
 
-      const mailRequest = new MailRequest();
+      const mailRequest = new MailToken();
       mailRequest.type = MailRequestType.PASSWORD_RESET;
       mailRequest.expiresIn = 12 * 60; // 12 hours
       mailRequest.user = user;

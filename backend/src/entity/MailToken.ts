@@ -17,7 +17,7 @@ export enum MailRequestType {
 }
 
 @Entity()
-export class MailRequest extends BaseEntity {
+export class MailToken extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -25,11 +25,15 @@ export class MailRequest extends BaseEntity {
   createdAt: Date;
 
   @Column()
-  expiresIn: number;
+  expiresIn: number; // minutes
 
   @Column()
-  type: MailRequestType; // minutes
+  type: MailRequestType;
 
-  @ManyToOne((type) => User, (user) => user.mailRequests, { eager: true })
+  @ManyToOne((type) => User, (user) => user.mailTokens, {
+    onDelete: 'CASCADE',
+    nullable: false,
+    eager: true,
+  })
   user: User;
 }

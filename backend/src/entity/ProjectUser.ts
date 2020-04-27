@@ -32,15 +32,13 @@ export class ProjectUser extends BaseEntity {
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @OneToMany((type) => Session, (session) => session.projectUser, {
-    onDelete: 'SET NULL',
-  })
+  @OneToMany((type) => Session, (session) => session.projectUser)
   sessions: Session[];
 
   @ManyToOne((type) => Project, (project) => project.users, {
-    eager: true,
     onDelete: 'CASCADE',
     nullable: false,
+    eager: true,
   })
   project: Project;
 

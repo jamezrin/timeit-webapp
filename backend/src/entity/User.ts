@@ -11,7 +11,7 @@ import {
 
 import { ProjectUser } from './ProjectUser';
 import { UserToken } from './UserToken';
-import { MailRequest } from './MailRequest';
+import { MailToken } from './MailToken';
 
 export enum UserStatus {
   NOT_CONFIRMED = 'not_confirmed',
@@ -45,17 +45,12 @@ export class User extends BaseEntity {
 
   @OneToMany((type) => ProjectUser, (projectUser) => projectUser.user, {
     eager: true,
-    onDelete: 'CASCADE',
   })
   projects: ProjectUser[];
 
-  @OneToMany((type) => UserToken, (token) => token.user, {
-    onDelete: 'CASCADE',
-  })
+  @OneToMany((type) => UserToken, (token) => token.user)
   tokens: UserToken[];
 
-  @OneToMany((type) => MailRequest, (mailRequest) => mailRequest.user, {
-    onDelete: 'CASCADE',
-  })
-  mailRequests: MailRequest[];
+  @OneToMany((type) => MailToken, (mailToken) => mailToken.user)
+  mailTokens: MailToken[];
 }

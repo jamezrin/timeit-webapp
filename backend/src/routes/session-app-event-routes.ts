@@ -17,30 +17,17 @@ sessionAppEventRouter.get(
 sessionAppEventRouter.post(
   '/app-events',
   wrapAsync(async (req: Request, res: Response) => {
-    const { authorization } = req.headers;
     const { projectId, sessionId } = req.params;
     const { windowName, windowClass, windowPid } = req.body;
 
-    console.log(req.headers);
-    console.log(req.params);
-    console.log(req.body);
-
-    console.log({
-      projectId,
-      sessionId,
-      authorization,
-      windowName,
-      windowClass,
-      windowPid,
-    });
-
     const session = await Session.findOneOrFail(sessionId);
-    const appEvent = new SessionAppEvent();
-    appEvent.windowName = windowName;
-    appEvent.windowClass = windowClass;
-    appEvent.windowPid = windowPid;
-    appEvent.session = session;
-    await appEvent.save();
+
+    const sessionAppEvent = new SessionAppEvent();
+    sessionAppEvent.windowName = windowName;
+    sessionAppEvent.windowClass = windowClass;
+    sessionAppEvent.windowPid = windowPid;
+    sessionAppEvent.session = session;
+    await sessionAppEvent.save();
 
     res.sendStatus(201);
   }),

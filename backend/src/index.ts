@@ -46,6 +46,5 @@ async function startExpress(connection: Connection) {
 createConnection()
   .then(async (connection) => {
     await startExpress(connection);
-    //await connection.close()
   })
   .catch((error) => console.log(error));

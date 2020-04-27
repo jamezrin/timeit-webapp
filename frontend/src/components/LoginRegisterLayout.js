@@ -32,6 +32,7 @@ export default function LoginRegisterLayout({ children }) {
           <Image
             maxWidth="24rem"
             src={timeManagementSvg}
+            display={{ base: 'none', lg: 'block' }}
             alt=""
             px={10}
             css={{

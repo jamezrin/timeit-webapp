@@ -29,6 +29,10 @@ export class UserToken extends BaseEntity {
   @Column()
   status: UserTokenStatus;
 
-  @ManyToOne((type) => User, (user) => user.tokens, { eager: true })
+  @ManyToOne((type) => User, (user) => user.tokens, {
+    onDelete: 'CASCADE',
+    nullable: false,
+    eager: true,
+  })
   user: User;
 }
