@@ -29,9 +29,7 @@ const userController = {
     user.firstName = firstName || user.firstName;
     user.lastName = lastName || user.lastName;
     user.emailAddress = emailAddress || user.emailAddress;
-    user.passwordHash = password
-      ? await hashPassword(password)
-      : user.passwordHash;
+    user.passwordHash = password ? await hashPassword(password) : user.passwordHash;
 
     res.sendStatus(HttpStatus.ACCEPTED);
   },

@@ -27,7 +27,7 @@ const projectMemberController = {
 
     res.sendStatus(200);
   },
-  async createMember(req: Request, res: Response) {},
+  async inviteMember(req: Request, res: Response) {},
   // TODO Check permissions for this
   async getMember(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];

@@ -37,10 +37,9 @@ export default function mountRoutes(app: express.Application) {
   protectedRouter.get('/projects/:projectId', wrapAsync(projectController.getProject));
   protectedRouter.patch('/projects/:projectId', wrapAsync(projectController.updateProject));
   protectedRouter.delete('/projects/:projectId', wrapAsync(projectController.deleteProject));
-  protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectController.projectInvite));
 
   protectedRouter.get('/projects/:projectId/members', wrapAsync(projectMemberController.listMembers));
-  protectedRouter.post('/projects/:projectId/members', wrapAsync(projectMemberController.createMember));
+  protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectMemberController.inviteMember));
   protectedRouter.get('/project_members/:memberId', wrapAsync(projectMemberController.getMember));
   protectedRouter.patch('/project_members/:memberId', wrapAsync(projectMemberController.updateMember));
   protectedRouter.delete('/project_members/:memberId', wrapAsync(projectMemberController.deleteMember));
@@ -52,14 +51,14 @@ export default function mountRoutes(app: express.Application) {
   protectedRouter.delete('/sessions/:sessionId', wrapAsync(projectSessionController.deleteSession));
   protectedRouter.post('/sessions/:sessionId/end', wrapAsync(projectSessionController.sessionEnd));
 
-  protectedRouter.get('/session/:sessionId/notes', wrapAsync(sessionNoteController.listNotes));
-  protectedRouter.post('/session/:sessionId/notes', wrapAsync(sessionNoteController.createNotes));
+  protectedRouter.get('/sessions/:sessionId/notes', wrapAsync(sessionNoteController.listNotes));
+  protectedRouter.post('/sessions/:sessionId/notes', wrapAsync(sessionNoteController.createNote));
   protectedRouter.get('/session_notes/:noteId', wrapAsync(sessionNoteController.getNote));
   protectedRouter.patch('/session_notes/:noteId', wrapAsync(sessionNoteController.updateNote));
   protectedRouter.delete('/session_notes/:noteId', wrapAsync(sessionNoteController.deleteNote));
 
-  protectedRouter.get('/session/:sessionId/app_events', wrapAsync(sessionAppEventController.listAppEvents));
-  protectedRouter.post('/session/:sessionId/app_events', wrapAsync(sessionAppEventController.createAppEvents));
+  protectedRouter.get('/sessions/:sessionId/app_events', wrapAsync(sessionAppEventController.listAppEvents));
+  protectedRouter.post('/sessions/:sessionId/app_events', wrapAsync(sessionAppEventController.createAppEvent));
   protectedRouter.get('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.getAppEvent));
   protectedRouter.patch('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.updateAppEvent));
   protectedRouter.delete('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.deleteAppEvent));

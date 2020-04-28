@@ -33,10 +33,7 @@ export class Session extends BaseEntity {
   })
   projectMember: ProjectMember;
 
-  @OneToMany(
-    (type) => SessionAppEvent,
-    (activityUpdate) => activityUpdate.session,
-  )
+  @OneToMany((type) => SessionAppEvent, (activityUpdate) => activityUpdate.session)
   sessionAppEvents: SessionAppEvent[];
 
   @OneToMany((type) => SessionNote, (activityNote) => activityNote.session)
