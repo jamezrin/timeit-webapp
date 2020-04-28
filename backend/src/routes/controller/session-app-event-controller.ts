@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { SessionAppEvent } from '../../entity/SessionAppEvent';
 import { Session } from '../../entity/Session';
 import HttpStatus from 'http-status-codes';
+import { resourceNotFoundError } from '../errors';
 
 const sessionAppEventController = {
   async listAppEvents(req: Request, res: Response) {
@@ -22,12 +23,7 @@ const sessionAppEventController = {
       .getOne();
 
     if (!session) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any session',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     res.status(HttpStatus.OK).json(session.sessionAppEvents);
@@ -50,12 +46,7 @@ const sessionAppEventController = {
       .getOne();
 
     if (!session) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any session',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     const sessionAppEvent = new SessionAppEvent();
@@ -85,12 +76,7 @@ const sessionAppEventController = {
       .getOne();
 
     if (!sessionAppEvent) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any app event',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     res.status(HttpStatus.OK).json(sessionAppEvent);
@@ -114,12 +100,7 @@ const sessionAppEventController = {
       .getOne();
 
     if (!sessionAppEvent) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any app event',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     sessionAppEvent.windowName = windowName || sessionAppEvent.windowName;
@@ -147,12 +128,7 @@ const sessionAppEventController = {
       .getOne();
 
     if (!sessionAppEvent) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any app event',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     await sessionAppEvent.remove();

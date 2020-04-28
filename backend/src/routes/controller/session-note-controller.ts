@@ -3,6 +3,7 @@ import { Session } from '../../entity/Session';
 import HttpStatus from 'http-status-codes';
 import { SessionNote } from '../../entity/SessionNote';
 import { ProjectMember } from '../../entity/ProjectMember';
+import { resourceNotFoundError } from '../errors';
 
 // TODO Aplicar roles a esto
 const sessionNoteController = {
@@ -24,12 +25,7 @@ const sessionNoteController = {
       .getOne();
 
     if (!session) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any session',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     res.status(HttpStatus.OK).json(session.sessionNotes);
@@ -52,12 +48,7 @@ const sessionNoteController = {
       .getOne();
 
     if (!session) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any session',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     const sessionNote = new SessionNote();
@@ -85,12 +76,7 @@ const sessionNoteController = {
       .getOne();
 
     if (!sessionNote) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any note',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     res.status(HttpStatus.OK).json(sessionNote);
@@ -114,12 +100,7 @@ const sessionNoteController = {
       .getOne();
 
     if (!sessionNote) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any note',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     sessionNote.noteText = noteText || sessionNote.noteText;
@@ -145,12 +126,7 @@ const sessionNoteController = {
       .getOne();
 
     if (!sessionNote) {
-      return res.status(HttpStatus.NOT_FOUND).json({
-        error: {
-          type: 'RESOURCE_NOT_FOUND',
-          message: 'Could not find any note',
-        },
-      });
+      return resourceNotFoundError(req, res);
     }
 
     await sessionNote.remove();

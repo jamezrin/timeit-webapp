@@ -2,56 +2,84 @@
 import { wrapAsync } from '../../utils';
 import express, { Request, Response } from 'express';
 import { ProjectMember } from '../../entity/ProjectMember';
+import HttpStatus from 'http-status-codes';
+import { accountNotFoundError, resourceNotFoundError } from '../errors';
+import { MailRequestType, MailToken } from '../../entity/MailToken';
+import { User } from '../../entity/User';
 
 const projectMemberController = {
   async listMembers(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const { projectId } = req.params;
 
-    try {
-      const projectUser = await ProjectMember.findOneOrFail({
-        where: {
-          project: req.params['projectId'],
-          user: tokenPayload['userId'],
-        },
-      });
+    const projectUser = await ProjectMember.findOne({
+      where: {
+        project: projectId,
+        user: currentUserId,
+      },
+    });
 
-      res.status(200).json(projectUser.project.members);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
+    if (!projectUser) {
+      return resourceNotFoundError(req, res);
     }
 
-    res.sendStatus(200);
+    res.status(HttpStatus.OK).json(projectUser.project.members);
   },
-  async inviteMember(req: Request, res: Response) {},
   // TODO Check permissions for this
   async getMember(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const { memberId } = req.params;
 
-    try {
-      const projectUser = await ProjectMember.findOneOrFail({
-        where: {
-          user: tokenPayload['userId'],
-          id: req.params['memberId'],
-        },
-      });
+    const projectUser = await ProjectMember.findOne({
+      where: {
+        user: currentUserId,
+        id: memberId,
+      },
+    });
 
-      res.status(200).json(projectUser);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
+    if (!projectUser) {
+      return resourceNotFoundError(req, res);
     }
+
+    res.status(HttpStatus.OK).json(projectUser);
   },
-  async updateMember(req: Request, res: Response) {},
-  async deleteMember(req: Request, res: Response) {},
+  async inviteMember(req: Request, res: Response) {
+    const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const { projectId } = req.params;
+    const { emailAddress } = req.body;
+
+    const user = await User.findOne({
+      emailAddress,
+    });
+
+    if (!user) {
+      return accountNotFoundError(req, res);
+    }
+
+    const mailToken = new MailToken();
+    mailToken.type = MailRequestType.PROJECT_INVITE;
+    mailToken.expiresIn = -1;
+    mailToken.user = user;
+    mailToken.payload = {
+      projectId: projectId,
+      invitedBy: currentUserId,
+    };
+
+    await mailToken.save();
+
+    // TODO Send email with token link and whatever
+
+    res.sendStatus(HttpStatus.OK);
+  },
+  async updateMember(req: Request, res: Response) {
+    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+  },
+  async deleteMember(req: Request, res: Response) {
+    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+  },
 };
 
 export default projectMemberController;

@@ -18,6 +18,11 @@ export enum UserStatus {
   DISABLED = 'disabled',
 }
 
+export enum UserType {
+  REGULAR = 'regular',
+  ADMIN = 'admin',
+}
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -26,8 +31,11 @@ export class User extends BaseEntity {
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
-  @Column()
+  @Column({ default: UserStatus.DISABLED })
   status: UserStatus;
+
+  @Column({ default: UserType.REGULAR })
+  type: UserType;
 
   @Column()
   firstName: string;

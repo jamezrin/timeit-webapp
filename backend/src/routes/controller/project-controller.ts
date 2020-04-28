@@ -1,21 +1,24 @@
 import { Request, Response } from 'express';
 
-import {
-  ProjectMember,
-  ProjectUserRole,
-  ProjectUserStatus,
-} from '../../entity/ProjectMember';
+import { ProjectMember, ProjectUserRole, ProjectUserStatus } from '../../entity/ProjectMember';
 
 import { User } from '../../entity/User';
 import { Project } from '../../entity/Project';
 import { UserToken } from '../../entity/UserToken';
+import HttpStatus from 'http-status-codes';
+import { insufficientPermissionsError, resourceNotFoundError } from '../errors';
 
 const projectController = {
   async listProjects(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
     const user = await User.findOne(tokenPayload['userId']);
+
+    if (!user) {
+      return resourceNotFoundError(req, res);
+    }
+
     const projects = user.projects || [];
-    res.status(200).json(projects);
+    res.status(HttpStatus.OK).json(projects);
   },
   async createProject(req: Request, res: Response) {
     const tokenInfo = req['tokenInfo'] as UserToken;
@@ -32,7 +35,7 @@ const projectController = {
     projectUser.user = tokenInfo.user;
     await projectUser.save();
 
-    res.status(202).json({
+    res.status(HttpStatus.ACCEPTED).json({
       project: {
         id: project.id,
         name: project.name,
@@ -47,86 +50,68 @@ const projectController = {
   },
   async getProject(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const { projectId } = req.params;
 
-    try {
-      const projectUser = await ProjectMember.findOneOrFail({
-        where: {
-          project: req.params['projectId'],
-          user: tokenPayload['userId'],
-        },
-      });
+    const projectUser = await ProjectMember.findOne({
+      where: {
+        user: currentUserId,
+        project: projectId,
+      },
+    });
 
-      res.status(200).json(projectUser);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
+    if (!projectUser) {
+      return resourceNotFoundError(req, res);
     }
+
+    res.status(HttpStatus.OK).json(projectUser);
   },
   async updateProject(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const projectName = req.body['name'];
+    const { projectId } = req.params;
 
-    try {
-      const projectUser = await ProjectMember.findOneOrFail({
-        where: {
-          project: req.params['projectId'],
-          user: tokenPayload['userId'],
-        },
-      });
+    const projectUser = await ProjectMember.findOne({
+      where: {
+        project: projectId,
+        user: currentUserId,
+      },
+    });
 
-      const project = projectUser.project;
-      const projectName = req.body['name'];
-      project.name = projectName || project.name;
-      await project.save();
-
-      res.sendStatus(202);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
+    if (!projectUser) {
+      return resourceNotFoundError(req, res);
     }
+
+    const project = projectUser.project;
+    project.name = projectName || project.name;
+    await project.save();
+
+    res.sendStatus(HttpStatus.ACCEPTED);
   },
   async deleteProject(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
+    const currentUserId = tokenPayload['userId'];
+    const { projectId } = req.params;
 
-    try {
-      const projectUser = await ProjectMember.findOneOrFail({
-        where: {
-          project: req.params['projectId'],
-          user: tokenPayload['userId'],
-        },
-      });
+    const projectUser = await ProjectMember.findOne({
+      where: {
+        project: projectId,
+        user: currentUserId,
+      },
+    });
 
-      if (projectUser.role !== ProjectUserRole.ADMIN) {
-        return res.status(403).json({
-          error: {
-            type: 'INSUFFICIENT_PRIVILEGES',
-            message: 'Insufficient permissions to perform this operation',
-          },
-        });
-      }
-
-      const project = projectUser.project;
-      await project.remove(); // Cascades to ProjectMember and other entities
-
-      res.sendStatus(200);
-    } catch (err) {
-      return res.status(404).json({
-        error: {
-          type: 'PROJECT_NOT_FOUND',
-          message: 'Could not find any project with the provided projectId',
-        },
-      });
+    if (!projectUser || !projectUser.project) {
+      return resourceNotFoundError(req, res);
     }
-  },
-  async projectInvite(req: Request, res: Response) {
-    res.sendStatus(200);
+
+    if (projectUser.role !== ProjectUserRole.ADMIN) {
+      return insufficientPermissionsError(req, res);
+    }
+
+    await projectUser.project.remove(); // Cascades to ProjectMember and other entities
+
+    res.sendStatus(HttpStatus.OK);
   },
 };
 

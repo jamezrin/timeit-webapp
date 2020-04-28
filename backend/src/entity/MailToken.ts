@@ -12,6 +12,7 @@ import { User } from './User';
 export enum MailRequestType {
   PASSWORD_RESET = 'password_reset',
   ACCOUNT_CONFIRMATION = 'account_confirmation',
+  PROJECT_INVITE = 'project_invite',
 }
 
 @Entity()
@@ -34,4 +35,7 @@ export class MailToken extends BaseEntity {
     eager: true,
   })
   user: User;
+
+  @Column({ type: 'jsonb', nullable: true })
+  payload: Object;
 }

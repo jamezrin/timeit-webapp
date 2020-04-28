@@ -1,21 +1,16 @@
 import jwt from 'jsonwebtoken';
-import { Request, Response } from 'express';
-import { UserToken, UserTokenStatus } from '../entity/UserToken';
-import HttpStatus from 'http-status-codes';
+import { NextFunction, Request, Response } from 'express';
+import { UserToken, UserTokenStatus } from '../../entity/UserToken';
+import { inactiveTokenError, invalidTokenError, noAccessTokenError } from '../errors';
 
 export const accessTokenCookieName = 'timeit_accessToken';
 
 export function authMiddleware(ignoreExpiration: boolean) {
-  return async function (req: Request, res: Response, next: Function) {
+  return async function (req: Request, res: Response, next: NextFunction) {
     const accessToken = req.cookies[accessTokenCookieName];
 
     if (!accessToken) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        error: {
-          type: 'NO_ACCESS_TOKEN',
-          message: 'No token provided',
-        },
-      });
+      return noAccessTokenError(req, res);
     }
 
     try {
@@ -27,13 +22,7 @@ export function authMiddleware(ignoreExpiration: boolean) {
 
       if (tokenInfo.status !== UserTokenStatus.ACTIVE) {
         await tokenInfo.remove();
-
-        return res.status(HttpStatus.UNAUTHORIZED).json({
-          error: {
-            type: 'INACTIVE_TOKEN',
-            message: 'The token provided is inactive',
-          },
-        });
+        return inactiveTokenError(req, res);
       }
 
       // User is authenticated correctly, continue with the request
@@ -41,15 +30,11 @@ export function authMiddleware(ignoreExpiration: boolean) {
       req['tokenInfo'] = tokenInfo;
       next();
     } catch (err) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({
-        error: {
-          type: 'INVALID_TOKEN',
-          message: 'The token provided is invalid',
-        },
-      });
+      return invalidTokenError(req, res);
     }
   };
 }
 
 export const defaultAuthMiddleware = authMiddleware(false);
+
 export default defaultAuthMiddleware;

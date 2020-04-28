@@ -2,28 +2,33 @@ import { Request, Response } from 'express';
 import { hashPassword } from '../../utils';
 import { User } from '../../entity/User';
 import HttpStatus from 'http-status-codes';
+import { resourceNotFoundError } from '../errors';
 
 const userController = {
   async currentUser(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
-    const user = await User.findOneOrFail(tokenPayload['userId'], {
+    const currentUserId = tokenPayload['userId'];
+
+    const user = await User.findOne(currentUserId, {
       loadEagerRelations: false,
+      select: ['id', 'createdAt', 'status', 'type', 'firstName', 'lastName', 'emailAddress'],
     });
 
-    res.status(HttpStatus.OK).send({
-      id: user.id,
-      createdAt: user.createdAt,
-      status: user.status,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      emailAddress: user.emailAddress,
-    });
+    if (!user) {
+      return resourceNotFoundError(req, res);
+    }
+
+    res.status(HttpStatus.OK).json(user);
   },
   async updateUser(req: Request, res: Response) {
     const tokenPayload = req['tokenPayload'];
-    const user = await User.findOneOrFail(tokenPayload['userId'], {
-      loadEagerRelations: false,
-    });
+    const currentUserId = tokenPayload['userId'];
+
+    const user = await User.findOne(currentUserId, { loadEagerRelations: false });
+
+    if (!user) {
+      return resourceNotFoundError(req, res);
+    }
 
     const { firstName, lastName, emailAddress, password } = req.body;
     user.firstName = firstName || user.firstName;

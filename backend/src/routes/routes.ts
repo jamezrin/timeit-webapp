@@ -1,7 +1,7 @@
 import express from 'express';
 import { wrapAsync } from '../utils';
 
-import defaultAuthMiddleware, { authMiddleware } from './auth-middleware';
+import defaultAuthMiddleware, { authMiddleware } from './middleware/auth-middleware';
 import authController from './controller/auth-controller';
 import userController from './controller/user-controller';
 import projectController from './controller/project-controller';
@@ -13,8 +13,10 @@ import projectMemberController from './controller/project-member-controller';
 // prettier-ignore
 export default function mountRoutes(app: express.Application) {
   app.post('/authenticate', wrapAsync(authController.authenticate));
+
   app.post('/create-account', wrapAsync(authController.createAccount));
   app.post('/confirm-account', wrapAsync(authController.confirmAccount));
+
   app.post('/request-password-reset', wrapAsync(authController.requestPasswordReset));
   app.post('/perform-password-reset', wrapAsync(authController.performPasswordReset));
 

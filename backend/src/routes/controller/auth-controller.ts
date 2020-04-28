@@ -2,10 +2,17 @@ import { Request, Response } from 'express';
 import { hashPassword } from '../../utils';
 import { User, UserStatus } from '../../entity/User';
 import { UserToken, UserTokenStatus } from '../../entity/UserToken';
-import { accessTokenCookieName } from '../auth-middleware';
+import { accessTokenCookieName } from '../middleware/auth-middleware';
+import { MailRequestType, MailToken } from '../../entity/MailToken';
+import HttpStatus from 'http-status-codes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { MailRequestType, MailToken } from '../../entity/MailToken';
+import {
+  accountNotFoundError,
+  inactiveAccountError,
+  invalidCredentialsError,
+  unknownServerError,
+} from '../errors';
 
 const authController = {
   async authenticate(req: Request, res: Response) {
@@ -16,32 +23,17 @@ const authController = {
     });
 
     if (!user) {
-      return res.status(401).send({
-        error: {
-          type: 'INVALID_CREDENTIALS',
-          message: 'Invalid credentials',
-        },
-      });
+      return invalidCredentialsError(req, res);
     }
 
     const correctPassword = await bcrypt.compare(password, user.passwordHash);
 
     if (!correctPassword) {
-      return res.status(401).send({
-        error: {
-          type: 'INVALID_CREDENTIALS',
-          message: 'Invalid credentials',
-        },
-      });
+      return invalidCredentialsError(req, res);
     }
 
     if (user.status !== UserStatus.ACTIVE) {
-      return res.status(401).send({
-        error: {
-          type: 'INACTIVE_ACCOUNT',
-          message: 'Account not active',
-        },
-      });
+      return inactiveAccountError(req, res);
     }
 
     const token = new UserToken();
@@ -67,7 +59,7 @@ const authController = {
       maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
     });
 
-    res.status(201).json({
+    res.status(HttpStatus.ACCEPTED).json({
       accessToken,
     });
   },
@@ -75,18 +67,14 @@ const authController = {
     const tokenInfo = req['tokenInfo'] as UserToken;
 
     if (!tokenInfo) {
-      return res.status(500).json({
-        error: {
-          type: 'UNKNOWN_SERVER_ERROR',
-          message: 'Unknown server error',
-        },
-      });
+      return unknownServerError(req, res);
     }
 
     await tokenInfo.remove();
 
-    res.sendStatus(201);
+    res.sendStatus(HttpStatus.ACCEPTED);
   },
+  // TODO: Sends email to the user, that will have to be confirmed
   async createAccount(req: Request, res: Response) {
     const { emailAddress, password, firstName, lastName } = req.body;
 
@@ -101,42 +89,36 @@ const authController = {
 
     await user.save();
 
-    res.sendStatus(200);
+    res.sendStatus(HttpStatus.ACCEPTED);
+  },
+  async confirmAccount(req: Request, res: Response) {
+    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
   },
   // TODO: Sends email to the user, that will have to be confirmed
-  async confirmAccount(req: Request, res: Response) {
-    res.sendStatus(200);
-  },
   async requestPasswordReset(req: Request, res: Response) {
     const { emailAddress } = req.body;
 
-    try {
-      const user = await User.findOneOrFail({
-        where: { emailAddress },
-      });
+    const user = await User.findOne({
+      where: { emailAddress },
+    });
 
-      const mailRequest = new MailToken();
-      mailRequest.type = MailRequestType.PASSWORD_RESET;
-      mailRequest.expiresIn = 12 * 60; // 12 hours
-      mailRequest.user = user;
-      await mailRequest.save();
-
-      res.status(200).json({
-        expiresIn: mailRequest.expiresIn,
-        uuid: mailRequest.id,
-      });
-    } catch (err) {
-      res.status(404).json({
-        error: {
-          type: 'ACCOUNT_NOT_FOUND',
-          message: 'Could not find an account with the provided email address',
-        },
-      });
+    if (!user) {
+      return accountNotFoundError(req, res);
     }
+
+    const mailToken = new MailToken();
+    mailToken.type = MailRequestType.PASSWORD_RESET;
+    mailToken.expiresIn = 12 * 60; // 12 hours
+    mailToken.user = user;
+    await mailToken.save();
+
+    res.status(HttpStatus.OK).json({
+      expiresIn: mailToken.expiresIn,
+      uuid: mailToken.id,
+    });
   },
-  // TODO: Sends email to the user, that will have to be confirmed
   async performPasswordReset(req: Request, res: Response) {
-    res.sendStatus(200);
+    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
   },
 };
 
