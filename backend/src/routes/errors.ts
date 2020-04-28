@@ -24,7 +24,7 @@ export const noAccessTokenError = (req: Request, res: Response) => {
 };
 
 export const unknownServerError = (req: Request, res: Response) => {
-  return res
+  res
     .status(HttpStatus.INTERNAL_SERVER_ERROR)
     .json(error('UNKNOWN_SERVER_ERROR', 'Unknown server error'));
 };
@@ -36,7 +36,7 @@ export const resourceNotFoundError = (req: Request, res: Response) => {
 };
 
 export const accountNotFoundError = (req: Request, res: Response) => {
-  return res
+  res
     .status(HttpStatus.NOT_FOUND)
     .json(error('ACCOUNT_NOT_FOUND', 'Could not find an account with the provided email address'));
 };
