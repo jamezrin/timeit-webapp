@@ -6,11 +6,12 @@ import HttpStatus from 'http-status-codes';
 import { accountNotFoundError, resourceNotFoundError } from '../errors';
 import { MailRequestType, MailToken } from '../../entity/MailToken';
 import { User } from '../../entity/User';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 const projectMemberController = {
   async listMembers(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
     const projectUser = await ProjectMember.findOne({
@@ -28,8 +29,8 @@ const projectMemberController = {
   },
   // TODO Check permissions for this
   async getMember(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { memberId } = req.params;
 
     const projectUser = await ProjectMember.findOne({
@@ -46,8 +47,8 @@ const projectMemberController = {
     res.status(HttpStatus.OK).json(projectUser);
   },
   async inviteMember(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
     const { emailAddress } = req.body;
 

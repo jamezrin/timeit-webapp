@@ -3,11 +3,12 @@ import { ProjectMember, ProjectUserRole, ProjectUserStatus } from '../../entity/
 import HttpStatus from 'http-status-codes';
 import { Session } from '../../entity/Session';
 import { resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 const projectSessionControler = {
   async listSessions(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
     const { memberIds } = req.query;
 
@@ -47,8 +48,8 @@ const projectSessionControler = {
     res.status(HttpStatus.OK).json(sessions);
   },
   async createSession(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
     const currentProjectMember = await ProjectMember.findOne({
@@ -69,8 +70,8 @@ const projectSessionControler = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getSession(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
 
     const currentProjectMember = await ProjectMember.createQueryBuilder('currentMember')
@@ -111,8 +112,8 @@ const projectSessionControler = {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
   },
   async sessionEnd(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
 
     const currentProjectMember = await ProjectMember.createQueryBuilder('currentMember')

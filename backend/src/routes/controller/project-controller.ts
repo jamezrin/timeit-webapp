@@ -7,11 +7,14 @@ import { Project } from '../../entity/Project';
 import { UserToken } from '../../entity/UserToken';
 import HttpStatus from 'http-status-codes';
 import { insufficientPermissionsError, resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 const projectController = {
   async listProjects(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const user = await User.findOne(tokenPayload['userId']);
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
+
+    const user = await User.findOne(currentUserId);
 
     if (!user) {
       return resourceNotFoundError(req, res);
@@ -21,7 +24,7 @@ const projectController = {
     res.status(HttpStatus.OK).json(projects);
   },
   async createProject(req: Request, res: Response) {
-    const tokenInfo = req['tokenInfo'] as UserToken;
+    const tokenInfo = res.locals.tokenInfo as UserToken;
     const projectName = req.body['name'];
 
     const project = new Project();
@@ -49,8 +52,8 @@ const projectController = {
     });
   },
   async getProject(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
     const projectUser = await ProjectMember.findOne({
@@ -67,8 +70,8 @@ const projectController = {
     res.status(HttpStatus.OK).json(projectUser);
   },
   async updateProject(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const projectName = req.body['name'];
     const { projectId } = req.params;
 
@@ -90,8 +93,8 @@ const projectController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async deleteProject(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
     const projectUser = await ProjectMember.findOne({

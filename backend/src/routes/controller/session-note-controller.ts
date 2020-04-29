@@ -4,12 +4,13 @@ import HttpStatus from 'http-status-codes';
 import { SessionNote } from '../../entity/SessionNote';
 import { ProjectMember } from '../../entity/ProjectMember';
 import { resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 // TODO Aplicar roles a esto
 const sessionNoteController = {
   async listNotes(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
 
     const session = await Session.createQueryBuilder('session')
@@ -31,8 +32,8 @@ const sessionNoteController = {
     res.status(HttpStatus.OK).json(session.sessionNotes);
   },
   async createNote(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
     const { noteText } = req.body;
 
@@ -59,8 +60,8 @@ const sessionNoteController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getNote(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { noteId } = req.params;
 
     const sessionNote = await SessionNote.createQueryBuilder('sessionNote')
@@ -82,8 +83,8 @@ const sessionNoteController = {
     res.status(HttpStatus.OK).json(sessionNote);
   },
   async updateNote(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { noteId } = req.params;
     const { noteText } = req.body;
 
@@ -109,8 +110,8 @@ const sessionNoteController = {
     res.status(HttpStatus.OK).json(sessionNote);
   },
   async deleteNote(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { noteId } = req.params;
 
     const sessionNote = await SessionNote.createQueryBuilder('sessionNote')

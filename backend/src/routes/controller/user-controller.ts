@@ -3,11 +3,12 @@ import { hashPassword } from '../../utils';
 import { User } from '../../entity/User';
 import HttpStatus from 'http-status-codes';
 import { resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 const userController = {
   async currentUser(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
 
     const user = await User.findOne(currentUserId, {
       loadEagerRelations: false,
@@ -21,8 +22,8 @@ const userController = {
     res.status(HttpStatus.OK).json(user);
   },
   async updateUser(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
 
     const user = await User.findOne(currentUserId, { loadEagerRelations: false });
 

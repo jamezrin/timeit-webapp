@@ -2,8 +2,14 @@ import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import { UserToken, UserTokenStatus } from '../../entity/UserToken';
 import { inactiveTokenError, invalidTokenError, noAccessTokenError } from '../errors';
+import { userInfo } from 'os';
 
 export const accessTokenCookieName = 'timeit_accessToken';
+
+export interface TokenPayload {
+  readonly tokenId: string;
+  readonly userId: string;
+}
 
 export function authMiddleware(ignoreExpiration: boolean) {
   return async function (req: Request, res: Response, next: NextFunction) {
@@ -14,11 +20,11 @@ export function authMiddleware(ignoreExpiration: boolean) {
     }
 
     try {
-      const decodedPayload = await jwt.verify(accessToken, process.env.TIMEIT_JWT_SECRET, {
+      const decodedPayload = (await jwt.verify(accessToken, process.env.TIMEIT_JWT_SECRET, {
         ignoreExpiration: ignoreExpiration,
-      });
+      })) as TokenPayload;
 
-      const tokenInfo = await UserToken.findOneOrFail(decodedPayload['tokenId']);
+      const tokenInfo = await UserToken.findOneOrFail(decodedPayload.tokenId);
 
       if (tokenInfo.status !== UserTokenStatus.ACTIVE) {
         await tokenInfo.remove();
@@ -26,8 +32,8 @@ export function authMiddleware(ignoreExpiration: boolean) {
       }
 
       // User is authenticated correctly, continue with the request
-      req['tokenPayload'] = decodedPayload;
-      req['tokenInfo'] = tokenInfo;
+      res.locals.tokenPayload = decodedPayload;
+      res.locals.tokenInfo = tokenInfo;
       next();
     } catch (err) {
       return invalidTokenError(req, res);

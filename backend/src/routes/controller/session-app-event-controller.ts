@@ -3,11 +3,12 @@ import { SessionAppEvent } from '../../entity/SessionAppEvent';
 import { Session } from '../../entity/Session';
 import HttpStatus from 'http-status-codes';
 import { resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
 
 const sessionAppEventController = {
   async listAppEvents(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
 
     const session = await Session.createQueryBuilder('session')
@@ -30,8 +31,8 @@ const sessionAppEventController = {
   },
   async createAppEvent(req: Request, res: Response) {
     const { windowName, windowClass, windowPid } = req.body;
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { sessionId } = req.params;
 
     const session = await Session.createQueryBuilder('session')
@@ -59,8 +60,8 @@ const sessionAppEventController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getAppEvent(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { appEventId } = req.params;
 
     const sessionAppEvent = await SessionAppEvent.createQueryBuilder('sessionAppEvent')
@@ -83,8 +84,8 @@ const sessionAppEventController = {
   },
   async updateAppEvent(req: Request, res: Response) {
     const { windowName, windowClass, windowPid } = req.body;
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { appEventId } = req.params;
 
     const sessionAppEvent = await SessionAppEvent.createQueryBuilder('sessionAppEvent')
@@ -111,8 +112,8 @@ const sessionAppEventController = {
     res.status(HttpStatus.OK).json(sessionAppEvent);
   },
   async deleteAppEvent(req: Request, res: Response) {
-    const tokenPayload = req['tokenPayload'];
-    const currentUserId = tokenPayload['userId'];
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
     const { appEventId } = req.params;
 
     const sessionAppEvent = await SessionAppEvent.createQueryBuilder('sessionAppEvent')

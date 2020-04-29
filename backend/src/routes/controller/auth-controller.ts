@@ -64,7 +64,7 @@ const authController = {
     });
   },
   async deauthenticate(req: Request, res: Response) {
-    const tokenInfo = req['tokenInfo'] as UserToken;
+    const tokenInfo = res.locals.tokenInfo as UserToken;
 
     if (!tokenInfo) {
       return unknownServerError(req, res);
