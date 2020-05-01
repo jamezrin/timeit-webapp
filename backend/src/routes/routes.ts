@@ -12,16 +12,17 @@ import projectMemberController from './controller/project-member-controller';
 
 // prettier-ignore
 export default function mountRoutes(app: express.Application) {
-  app.post('/authenticate', wrapAsync(authController.authenticate));
+  const apiRouter = express.Router();
+  apiRouter.post('/authenticate', wrapAsync(authController.authenticate));
 
-  app.post('/create-account', wrapAsync(authController.createAccount));
-  app.post('/confirm-account', wrapAsync(authController.confirmAccount));
+  apiRouter.post('/create-account', wrapAsync(authController.createAccount));
+  apiRouter.post('/confirm-account', wrapAsync(authController.confirmAccount));
 
-  app.post('/request-password-reset', wrapAsync(authController.requestPasswordReset));
-  app.post('/perform-password-reset', wrapAsync(authController.performPasswordReset));
+  apiRouter.post('/request-password-reset', wrapAsync(authController.requestPasswordReset));
+  apiRouter.post('/perform-password-reset', wrapAsync(authController.performPasswordReset));
 
   // Special route for deauthentication
-  app.post(
+  apiRouter.post(
     '/deauthenticate',
     [authMiddleware(true)],
     wrapAsync(authController.deauthenticate)
@@ -65,5 +66,6 @@ export default function mountRoutes(app: express.Application) {
   protectedRouter.patch('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.updateAppEvent));
   protectedRouter.delete('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.deleteAppEvent));
 
-  app.use(protectedRouter);
+  apiRouter.use(protectedRouter);
+  app.use('/api', apiRouter);
 }
