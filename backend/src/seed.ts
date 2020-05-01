@@ -4,11 +4,7 @@ import './env';
 
 import { User, UserStatus } from './entity/User';
 import { hashPassword } from './utils';
-import {
-  ProjectMember,
-  ProjectUserRole,
-  ProjectUserStatus,
-} from './entity/ProjectMember';
+import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from './entity/ProjectMember';
 import { Project } from './entity/Project';
 import { Session } from './entity/Session';
 import { SessionAppEvent } from './entity/SessionAppEvent';
@@ -88,6 +84,11 @@ async function createMailToken(user: User) {
   mailToken.type = MailRequestType.PASSWORD_RESET;
   mailToken.expiresIn = -1;
   mailToken.user = user;
+  mailToken.payload = {
+    sampleString: 'value',
+    sampleNumber: 10,
+  };
+
   return mailToken;
 }
 
@@ -131,11 +132,15 @@ async function createSession(projectUser: ProjectMember) {
 
 async function createProjectUser(user: User, project: Project) {
   const projectUser = new ProjectMember();
-  projectUser.role = ProjectUserRole.ADMIN;
-  projectUser.status = ProjectUserStatus.ACTIVE;
+  projectUser.role = ProjectMemberRole.ADMIN;
+  projectUser.status = ProjectMemberStatus.ACTIVE;
   projectUser.project = project;
   projectUser.user = user;
   return projectUser;
+}
+
+async function query(conn: Connection) {
+  console.log(await MailToken.find());
 }
 
 async function down(conn: Connection) {
@@ -146,6 +151,7 @@ async function down(conn: Connection) {
 createConnection()
   .then(async (connection) => {
     await up(connection);
+    await query(connection);
     //await down(connection);
   })
   .catch((error) => console.log(error));

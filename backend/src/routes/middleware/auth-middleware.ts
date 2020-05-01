@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import { UserToken, UserTokenStatus } from '../../entity/UserToken';
 import { inactiveTokenError, invalidTokenError, noAccessTokenError } from '../errors';
-import { userInfo } from 'os';
 
 export const accessTokenCookieName = 'timeit_accessToken';
 

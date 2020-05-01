@@ -37,5 +37,5 @@ export class MailToken extends BaseEntity {
   user: User;
 
   @Column({ type: 'jsonb', nullable: true })
-  payload: Object;
+  payload: object;
 }

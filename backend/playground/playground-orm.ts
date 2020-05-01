@@ -3,11 +3,7 @@ import { Connection, createConnection } from 'typeorm';
 import { User, UserStatus } from '../src/entity/User';
 import { Project } from '../src/entity/Project';
 
-import {
-  ProjectMember,
-  ProjectUserRole,
-  ProjectUserStatus,
-} from '../src/entity/ProjectMember';
+import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../src/entity/ProjectMember';
 
 import { Session } from '../src/entity/Session';
 
@@ -31,8 +27,8 @@ async function createEntities(connection: Connection) {
   const projectUser = new ProjectMember();
   projectUser.user = user;
   projectUser.project = project;
-  projectUser.role = ProjectUserRole.ADMIN;
-  projectUser.status = ProjectUserStatus.ACTIVE;
+  projectUser.role = ProjectMemberRole.ADMIN;
+  projectUser.status = ProjectMemberStatus.ACTIVE;
   await projectUser.save();
 
   const session = new Session();

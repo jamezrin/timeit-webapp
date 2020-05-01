@@ -1,9 +1,9 @@
 // List project members
-import { wrapAsync } from '../../utils';
-import express, { Request, Response } from 'express';
+import { isMemberPrivileged } from '../../utils';
+import { Request, Response } from 'express';
 import { ProjectMember } from '../../entity/ProjectMember';
 import HttpStatus from 'http-status-codes';
-import { accountNotFoundError, resourceNotFoundError } from '../errors';
+import { accountNotFoundError, forbiddenError, resourceNotFoundError } from '../errors';
 import { MailRequestType, MailToken } from '../../entity/MailToken';
 import { User } from '../../entity/User';
 import { TokenPayload } from '../middleware/auth-middleware';
@@ -14,43 +14,38 @@ const projectMemberController = {
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
-    const projectUser = await ProjectMember.findOne({
-      where: {
-        project: projectId,
-        user: currentUserId,
-      },
-    });
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .leftJoinAndSelect('projectMember.project', 'project')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoinAndSelect('project.members', 'members')
+      .getOne();
 
-    if (!projectUser) {
+    if (!currentProjectMember) {
       return resourceNotFoundError(req, res);
     }
 
-    res.status(HttpStatus.OK).json(projectUser.project.members);
-  },
-  // TODO Check permissions for this
-  async getMember(req: Request, res: Response) {
-    const tokenPayload = res.locals.tokenPayload as TokenPayload;
-    const currentUserId = tokenPayload.userId;
-    const { memberId } = req.params;
-
-    const projectUser = await ProjectMember.findOne({
-      where: {
-        user: currentUserId,
-        id: memberId,
-      },
-    });
-
-    if (!projectUser) {
-      return resourceNotFoundError(req, res);
-    }
-
-    res.status(HttpStatus.OK).json(projectUser);
+    res.status(HttpStatus.OK).json(currentProjectMember.project.members);
   },
   async inviteMember(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
     const { emailAddress } = req.body;
+
+    // Current user as a member of the current project
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
+      .getOne();
+
+    if (!currentProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    if (!isMemberPrivileged(currentProjectMember)) {
+      return forbiddenError(req, res);
+    }
 
     const user = await User.findOne({
       emailAddress,
@@ -72,8 +67,27 @@ const projectMemberController = {
     await mailToken.save();
 
     // TODO Send email with token link and whatever
+    // This has to wait until we have the frontend more or less ready
 
-    res.sendStatus(HttpStatus.OK);
+    res.sendStatus(HttpStatus.ACCEPTED);
+  },
+  async getMember(req: Request, res: Response) {
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
+    const { memberId } = req.params;
+
+    const projectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.user = :memberId', { memberId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.user = :currentUserId', { currentUserId })
+      .getOne();
+
+    if (!projectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    res.status(HttpStatus.OK).json(projectMember);
   },
   async updateMember(req: Request, res: Response) {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);

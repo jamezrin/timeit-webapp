@@ -8,10 +8,9 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import HttpStatus from 'http-status-codes';
+import mountRoutes from './routes/routes';
 // Very important for getting env populated
 import './env';
-
-import mountRoutes from './routes/routes';
 
 async function startExpress(connection: Connection) {
   const app = express();
@@ -33,12 +32,13 @@ async function startExpress(connection: Connection) {
   // Logging middleware
   app.use(morgan('combined'));
 
-  // Routes
+  app.all('/', (req, res) => {
+    res.status(HttpStatus.OK).send('API server is functioning normally');
+  });
+
+  // From now on, there are only protected routes
   mountRoutes(app);
 
-  app.all('/', (req, res) => {
-    res.sendStatus(HttpStatus.OK);
-  });
   app.listen(process.env.PORT || 7001);
 }
 

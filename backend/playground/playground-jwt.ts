@@ -35,12 +35,7 @@ app.post('/authenticate', (req, res) => {
 });
 
 app.post('/protected', (req, res) => {
-  console.log(
-    jwt.verify(
-      req.headers.authorization.split(' ')[1],
-      process.env.TIMEIT_JWT_SECRET,
-    ),
-  );
+  console.log(jwt.verify(req.headers.authorization.split(' ')[1], process.env.TIMEIT_JWT_SECRET));
 
   return res.sendStatus(200);
 });

@@ -12,13 +12,13 @@ import { User } from './User';
 import { Project } from './Project';
 import { Session } from './Session';
 
-export enum ProjectUserRole {
+export enum ProjectMemberRole {
   ADMIN = 'admin',
   EMPLOYER = 'employer',
   EMPLOYEE = 'employee',
 }
 
-export enum ProjectUserStatus {
+export enum ProjectMemberStatus {
   INVITED = 'invited',
   ACTIVE = 'active',
   INACTIVE = 'inactive',
@@ -49,8 +49,8 @@ export class ProjectMember extends BaseEntity {
   user: User;
 
   @Column()
-  role: ProjectUserRole;
+  role: ProjectMemberRole;
 
   @Column()
-  status: ProjectUserStatus;
+  status: ProjectMemberStatus;
 }

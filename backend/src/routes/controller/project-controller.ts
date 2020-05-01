@@ -1,26 +1,29 @@
 import { Request, Response } from 'express';
 
-import { ProjectMember, ProjectUserRole, ProjectUserStatus } from '../../entity/ProjectMember';
-
-import { User } from '../../entity/User';
+import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../../entity/ProjectMember';
 import { Project } from '../../entity/Project';
 import { UserToken } from '../../entity/UserToken';
 import HttpStatus from 'http-status-codes';
-import { insufficientPermissionsError, resourceNotFoundError } from '../errors';
+import { forbiddenError, resourceNotFoundError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
+import { isMemberPrivileged } from '../../utils';
 
 const projectController = {
   async listProjects(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
 
-    const user = await User.findOne(currentUserId);
+    const projects = await Project.createQueryBuilder('project')
+      .where('member.user = :currentUserId', { currentUserId })
+      .leftJoinAndMapOne(
+        'project.projectMember',
+        'project.members',
+        'member',
+        'member.user = :currentUserId',
+        { currentUserId },
+      )
+      .getMany();
 
-    if (!user) {
-      return resourceNotFoundError(req, res);
-    }
-
-    const projects = user.projects || [];
     res.status(HttpStatus.OK).json(projects);
   },
   async createProject(req: Request, res: Response) {
@@ -31,23 +34,23 @@ const projectController = {
     project.name = projectName;
     await project.save();
 
-    const projectUser = new ProjectMember();
-    projectUser.project = project;
-    projectUser.status = ProjectUserStatus.ACTIVE;
-    projectUser.role = ProjectUserRole.ADMIN;
-    projectUser.user = tokenInfo.user;
-    await projectUser.save();
+    const projectMember = new ProjectMember();
+    projectMember.project = project;
+    projectMember.status = ProjectMemberStatus.ACTIVE;
+    projectMember.role = ProjectMemberRole.ADMIN;
+    projectMember.user = tokenInfo.user;
+
+    await projectMember.save();
 
     res.status(HttpStatus.ACCEPTED).json({
-      project: {
-        id: project.id,
-        name: project.name,
-        projectUser: {
-          id: projectUser.id,
-          relatedUserId: projectUser.user.id,
-          status: projectUser.status,
-          role: projectUser.role,
-        },
+      id: project.id,
+      createdAt: project.createdAt,
+      name: project.name,
+      projectMember: {
+        id: projectMember.id,
+        createdAt: projectMember.createdAt,
+        role: projectMember.role,
+        status: projectMember.status,
       },
     });
   },
@@ -56,18 +59,23 @@ const projectController = {
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
-    const projectUser = await ProjectMember.findOne({
-      where: {
-        user: currentUserId,
-        project: projectId,
-      },
-    });
+    const project = await Project.createQueryBuilder('project')
+      .where('project.id = :projectId', { projectId })
+      .andWhere('member.user = :currentUserId', { currentUserId })
+      .leftJoinAndMapOne(
+        'project.projectMember',
+        'project.members',
+        'member',
+        'member.user = :currentUserId',
+        { currentUserId },
+      )
+      .getOne();
 
-    if (!projectUser) {
+    if (!project) {
       return resourceNotFoundError(req, res);
     }
 
-    res.status(HttpStatus.OK).json(projectUser);
+    res.status(HttpStatus.OK).json(project);
   },
   async updateProject(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
@@ -75,19 +83,27 @@ const projectController = {
     const projectName = req.body['name'];
     const { projectId } = req.params;
 
-    const projectUser = await ProjectMember.findOne({
-      where: {
-        project: projectId,
-        user: currentUserId,
-      },
-    });
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .leftJoinAndSelect('projectMember.project', 'project')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
+      .getOne();
 
-    if (!projectUser) {
+    if (!currentProjectMember) {
       return resourceNotFoundError(req, res);
     }
 
-    const project = projectUser.project;
+    if (!isMemberPrivileged(currentProjectMember)) {
+      return forbiddenError(req, res);
+    }
+
+    const project = currentProjectMember.project;
+    if (!project) {
+      return resourceNotFoundError(req, res);
+    }
+
     project.name = projectName || project.name;
+
     await project.save();
 
     res.sendStatus(HttpStatus.ACCEPTED);
@@ -97,22 +113,27 @@ const projectController = {
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
-    const projectUser = await ProjectMember.findOne({
-      where: {
-        project: projectId,
-        user: currentUserId,
-      },
-    });
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .leftJoinAndSelect('projectMember.project', 'project')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
+      .getOne();
 
-    if (!projectUser || !projectUser.project) {
+    if (!currentProjectMember) {
       return resourceNotFoundError(req, res);
     }
 
-    if (projectUser.role !== ProjectUserRole.ADMIN) {
-      return insufficientPermissionsError(req, res);
+    if (!isMemberPrivileged(currentProjectMember)) {
+      return forbiddenError(req, res);
     }
 
-    await projectUser.project.remove(); // Cascades to ProjectMember and other entities
+    const project = currentProjectMember.project;
+    if (!project) {
+      return resourceNotFoundError(req, res);
+    }
+
+    // Deletion cascades to ProjectMember, Session, SessionAppEvent and SessionNote
+    await project.remove();
 
     res.sendStatus(HttpStatus.OK);
   },
