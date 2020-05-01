@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-import LoginRegisterLayout from '../LoginRegisterLayout';
+import LoginRegisterLayout from '../layout/LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
@@ -20,38 +20,39 @@ import {
   ListItem,
 } from '@chakra-ui/core';
 
-import { Link as RouteLink, useLocation } from 'react-router-dom';
+import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
+import authenticationBackend, { refreshAuthStatus } from '../../utils/authenticationBackend';
 
 const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate';
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();
+  const location = useLocation();
+  const history = useHistory();
 
   async function onSubmit(values) {
-    axios.interceptors.response.use(
-      (response) => {
-        return response;
-      },
-      (error) => {
-        addToast(error.toString(), {
+    try {
+      await axios.post(authenticateEndpoint, values, { withCredentials: true });
+      /*refreshAuthStatus().then((authStatus) => {
+
+      });*/
+      addToast('Has iniciado sesión correctamente', {
+        appearance: 'success',
+        autoDismiss: true,
+      });
+
+      history.replace((location.state && location.state.previousLocation) || '/');
+    } catch (err) {
+      if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+        addToast('Las credenciales introducidas no son validas', {
           appearance: 'error',
           autoDismiss: true,
         });
-
-        throw error;
-      },
-    );
-
-    const response = await axios.post(authenticateEndpoint, values, { withCredentials: true });
-    addToast(response.toString(), {
-      appearance: 'success',
-      autoDismiss: true,
-    });
+      }
+    }
   }
-
-  const location = useLocation();
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <LoginRegisterLayout>

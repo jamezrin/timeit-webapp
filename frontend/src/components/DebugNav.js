@@ -25,9 +25,6 @@ export default function DebugNav() {
           <Link to="/register">Register</Link>
         </ListItem>
         <ListItem>
-          <Link to="/test1">Test1</Link>
-        </ListItem>
-        <ListItem>
           <Link to="/home">Home</Link>
         </ListItem>
       </List>

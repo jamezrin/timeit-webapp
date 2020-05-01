@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link as RouteLink, useHistory } from 'react-router-dom';
 
-import LoginRegisterLayout from '../LoginRegisterLayout';
+import LoginRegisterLayout from '../layout/LoginRegisterLayout';
+import { useToasts } from 'react-toast-notifications';
 import { useForm } from 'react-hook-form';
-
-import axios from 'axios';
 
 import {
   Button,
@@ -20,32 +19,34 @@ import {
   Text,
 } from '@chakra-ui/core';
 
+import axios from 'axios';
+
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 
 export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm();
   const history = useHistory();
+  const { addToast } = useToasts();
 
   // https://tylermcginnis.com/react-router-protected-routes-authentication/
-  function onSubmit(values) {
-    axios
-      .post(
-        registerEndpoint,
-        {
-          ...values,
+  async function onSubmit(values) {
+    try {
+      await axios.post(registerEndpoint, values, { withCredentials: true });
+
+      history.push({
+        pathname: '/login',
+        state: {
+          accountCreated: true,
         },
-        {
-          withCredentials: true,
-        },
-      )
-      .then(console.log)
-      .catch(console.error);
-    history.push({
-      pathname: '/login',
-      state: {
-        accountCreated: true,
-      },
-    });
+      });
+    } catch (err) {
+      if (err.response.data.error.type === 'ACCOUNT_ALREADY_EXISTS') {
+        addToast('Ya existe una cuenta con ese correo electronico', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
+    }
   }
 
   const [showPassword, setShowPassword] = useState(false);

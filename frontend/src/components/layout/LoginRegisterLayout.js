@@ -1,7 +1,7 @@
 import React from 'react';
 
-import timeManagementSvg from '../assets/time_management.svg';
-import mainAppCoverLogo from '../assets/logo/TimeIt-logo/cover.png';
+import timeManagementSvg from '../../assets/time_management.svg';
+import mainAppCoverLogo from '../../assets/logo/TimeIt-logo/cover.png';
 import { Box, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
 
 const noDragOrSelect = {
