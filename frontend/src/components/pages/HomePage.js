@@ -1,7 +1,5 @@
 import React from 'react';
 import Header from '../Header';
-
-import { Link as RouteLink } from 'react-router-dom';
 import {
   Button,
   Flex,
@@ -72,14 +70,15 @@ function EmptyHomePage() {
         height="100%"
         alignItems="center"
         justifyContent="center"
+        textAlign="center"
         direction="column"
       >
         <Image
           src={workTimeSvg}
-          maxWidth="30rem"
           css={{
             ...noDragOrSelect,
           }}
+          width="20rem"
         />
 
         <Heading as="h1" size="lg" color="blue.500" mt={8}>
@@ -109,25 +108,7 @@ function NotEmptyHomePage(props) {
       justifyContent="center"
       direction="column"
     >
-      <Image
-        src={workTimeSvg}
-        maxWidth="30rem"
-        css={{
-          ...noDragOrSelect,
-        }}
-      />
-
-      <Heading as="h1" size="lg" color="blue.500" mt={8}>
-        Todavía no eres miembro de ningún proyecto
-      </Heading>
-
-      <Heading as="h2" size="md" color="blue.500" mt={2}>
-        ¡Crea uno o haz que te inviten!
-      </Heading>
-
-      <Button as={RouteLink} to="/create_project" variantColor="blue" mt={4}>
-        Crear un proyecto
-      </Button>
+      Hello world
     </Flex>
   );
 }

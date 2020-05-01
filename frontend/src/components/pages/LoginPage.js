@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useToasts } from 'react-toast-notifications';
+
 import {
   Button,
   FormControl,
@@ -24,20 +26,28 @@ const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate'
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();
+  const { addToast } = useToasts();
 
-  function onSubmit(values) {
-    axios
-      .post(
-        authenticateEndpoint,
-        {
-          ...values,
-        },
-        {
-          withCredentials: true,
-        },
-      )
-      .then(console.log)
-      .catch(console.error);
+  async function onSubmit(values) {
+    axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        addToast(error.toString(), {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+
+        throw error;
+      },
+    );
+
+    const response = await axios.post(authenticateEndpoint, values, { withCredentials: true });
+    addToast(response.toString(), {
+      appearance: 'success',
+      autoDismiss: true,
+    });
   }
 
   const location = useLocation();
