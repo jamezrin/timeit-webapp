@@ -86,7 +86,7 @@ const sessionAppEventController = {
     // Current user as a member of the project that has this app event
     const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
       .where('projectMember.user = :currentUserId', { currentUserId })
-      .leftJoin('currentMember.project', 'project')
+      .leftJoin('projectMember.project', 'project')
       .leftJoin('project.members', 'otherMembers')
       .leftJoin('otherMembers.sessions', 'otherMemberSessions')
       .leftJoin('otherMemberSessions.sessionAppEvents', 'otherSessionAppEvents')
