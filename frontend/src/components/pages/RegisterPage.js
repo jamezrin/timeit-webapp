@@ -22,23 +22,23 @@ import {
 import axios from 'axios';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
+const requestRegister = (values) => axios.post(registerEndpoint, values, { withCredentials: true });
 
 export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm();
   const history = useHistory();
   const { addToast } = useToasts();
 
-  // https://tylermcginnis.com/react-router-protected-routes-authentication/
   async function onSubmit(values) {
     try {
-      await axios.post(registerEndpoint, values, { withCredentials: true });
+      await requestRegister(values);
 
-      history.push({
-        pathname: '/login',
-        state: {
-          accountCreated: true,
-        },
+      addToast('Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión', {
+        appearance: 'success',
+        autoDismiss: true,
       });
+
+      history.push('/login');
     } catch (err) {
       if (err.response.data.error.type === 'ACCOUNT_ALREADY_EXISTS') {
         addToast('Ya existe una cuenta con ese correo electronico', {

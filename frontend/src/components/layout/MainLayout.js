@@ -1,12 +1,16 @@
 import React from 'react';
 import Header from '../Header';
+import { Flex, Box } from '@chakra-ui/core';
 
 function MainLayout({ children }) {
   return (
-    <>
+    <Flex height="100vh" direction="column">
       <Header />
-      {children}
-    </>
+
+      <Flex direction="column" maxWidth={{ base: '100%', lg: '100rem' }} marginX="auto" width="100%" height="100%">
+        {children}
+      </Flex>
+    </Flex>
   );
 }
 

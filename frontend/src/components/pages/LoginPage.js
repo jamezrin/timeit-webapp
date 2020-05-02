@@ -57,10 +57,6 @@ export default function LoginPage() {
     <LoginRegisterLayout>
       <Heading as="h1">Inicia sesión</Heading>
 
-      {/* TODO: show something telling the user that login is available (or in the future, confirm the account) */}
-      {/* TODO: maybe use https://github.com/jossmac/react-toast-notifications for showing this info */}
-      {location?.state?.accountCreated && <p>Ya puedes iniciar sesión</p>}
-
       <List mt={4}>
         <ListItem>
           Si no tienes una cuenta,&nbsp;

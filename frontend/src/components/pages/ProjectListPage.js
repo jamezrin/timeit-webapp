@@ -104,7 +104,7 @@ function ProjectListPlaceholder() {
   const { openProjectCreationModal } = useContext(ProjectCreationModalContext);
 
   return (
-    <Flex height="100%" alignItems="center" justifyContent="center" textAlign="center" direction="column">
+    <Flex height="100%" width="100%" alignItems="center" justifyContent="center" textAlign="center" direction="column">
       <Image
         src={workTimeSvg}
         css={{
@@ -133,8 +133,8 @@ function ProjectListContent({ projects }) {
   const { colorMode } = useColorMode();
 
   return (
-    <Box py={10}>
-      <Flex mb={4}>
+    <Flex direction="column" py={10} mx={8}>
+      <Flex mb={12}>
         <Heading as="h1">Tus proyectos</Heading>
         <Button onClick={openProjectCreationModal} variantColor="blue" ml="auto">
           Crear un proyecto
@@ -143,11 +143,7 @@ function ProjectListContent({ projects }) {
       <List>
         {projects.map((project) => (
           <ListItem key={project.id}>
-            <Link
-              to={{
-                pathname: `/project/${project.id}`,
-              }}
-            >
+            <Link to={`/project/${project.id}`}>
               <PseudoBox
                 bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
                 shadow="md"
@@ -163,7 +159,7 @@ function ProjectListContent({ projects }) {
           </ListItem>
         ))}
       </List>
-    </Box>
+    </Flex>
   );
 }
 
@@ -179,17 +175,15 @@ function ProjectListPage() {
 
   return (
     <MainLayout>
-      <Box maxWidth={{ base: '100%', lg: '100rem' }} marginX="auto" height="100%">
-        {projects ? (
-          projects.length > 0 ? (
-            <ProjectListContent projects={projects} />
-          ) : (
-            <ProjectListPlaceholder />
-          )
+      {projects ? (
+        projects.length > 0 ? (
+          <ProjectListContent projects={projects} />
         ) : (
-          <FullPageLoadSpinner message="Cargando los proyectos" />
-        )}
-      </Box>
+          <ProjectListPlaceholder />
+        )
+      ) : (
+        <FullPageLoadSpinner message="Cargando los proyectos" />
+      )}
     </MainLayout>
   );
 }

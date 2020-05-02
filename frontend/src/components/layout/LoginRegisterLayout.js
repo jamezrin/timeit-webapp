@@ -9,7 +9,7 @@ export default function LoginRegisterLayout({ children }) {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex height="100vh" width="100vw" direction={{ base: 'column', lg: 'row' }}>
+    <Flex height="100vh" direction={{ base: 'column', lg: 'row' }}>
       <Box
         bg={colorMode === 'dark' ? 'gray.700' : { base: 'white', lg: 'gray.100' }}
         width={{ base: '100%', lg: 6 / 10 }}
