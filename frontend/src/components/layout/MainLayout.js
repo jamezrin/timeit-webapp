@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../Header';
-import { Flex, Box } from '@chakra-ui/core';
+import { Flex } from '@chakra-ui/core';
 
 function MainLayout({ children }) {
   return (

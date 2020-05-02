@@ -1,5 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import Header from '../Header';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Flex,
@@ -10,6 +9,8 @@ import {
   Icon,
   Image,
   Input,
+  List,
+  ListItem,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,21 +18,16 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  Stack,
   PseudoBox,
-  List,
-  Box,
-  useDisclosure,
-  ListItem,
   useColorMode,
+  useDisclosure,
 } from '@chakra-ui/core';
 
 import workTimeSvg from '../../assets/work_time.svg';
 import { useForm } from 'react-hook-form';
 import MainLayout from '../layout/MainLayout';
 import axios from 'axios';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { noDragOrSelectCss } from '../utils';
 import { useToasts } from 'react-toast-notifications';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
@@ -45,7 +41,7 @@ const ProjectCreationModalContext = React.createContext(null);
 function ProjectCreationModalProvider({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, errors, register, formState } = useForm();
-  const [projectsCreated, setProjectsCreated] = useState(0);
+  const [projectsCreatedCount, setProjectsCreatedCount] = useState(0);
   const { addToast } = useToasts();
 
   const onSubmit = async (data) => {
@@ -58,7 +54,7 @@ function ProjectCreationModalProvider({ children }) {
       autoDismiss: true,
     });
 
-    setProjectsCreated(projectsCreated + 1);
+    setProjectsCreatedCount(projectsCreatedCount + 1);
 
     onClose();
   };
@@ -69,7 +65,7 @@ function ProjectCreationModalProvider({ children }) {
         openProjectCreationModal: onOpen,
         closeProjectCreationModal: onClose,
         isProjectCreationModalOpen: isOpen,
-        projectsCreated,
+        projectsCreatedCount,
       }}
     >
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -165,13 +161,13 @@ function ProjectListContent({ projects }) {
 
 function ProjectListPage() {
   const [projects, setProjects] = useState(null);
-  const { projectsCreated } = useContext(ProjectCreationModalContext);
+  const { projectsCreatedCount } = useContext(ProjectCreationModalContext);
 
   useEffect(() => {
     requestProjectList().then((response) => {
       setProjects(response.data);
     });
-  }, [projectsCreated]);
+  }, [projectsCreatedCount]);
 
   return (
     <MainLayout>

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ColorModeProvider, CSSReset, ThemeProvider, theme } from '@chakra-ui/core';
+import { ColorModeProvider, CSSReset, theme, ThemeProvider } from '@chakra-ui/core';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
 import AuthContext, { AuthContextProvider } from './state/authenticationContext';
 
@@ -12,6 +12,7 @@ import RegisterPage from './components/pages/RegisterPage';
 import AuthenticatedUserRoute from './components/routes/AuthenticatedUserRoute';
 import ProjectPage from './components/pages/ProjectPage';
 import FullPageLoadSpinner from './components/FullPageLoadSpinner';
+
 const RecoverPasswordPage = () => 'Not yet implemented';
 
 const ProviderWrappedComponent = ({ children }) => {
