@@ -15,6 +15,7 @@ const projectController = {
 
     const projects = await Project.createQueryBuilder('project')
       .where('member.user = :currentUserId', { currentUserId })
+      .loadRelationCountAndMap('project.memberCount', 'project.members')
       .leftJoinAndMapOne(
         'project.projectMember',
         'project.members',
@@ -62,6 +63,7 @@ const projectController = {
     const project = await Project.createQueryBuilder('project')
       .where('project.id = :projectId', { projectId })
       .andWhere('member.user = :currentUserId', { currentUserId })
+      .loadRelationCountAndMap('project.memberCount', 'project.members')
       .leftJoinAndMapOne(
         'project.projectMember',
         'project.members',
