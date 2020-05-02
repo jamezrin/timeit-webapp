@@ -35,8 +35,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    // Hacer la carga de la app un poco lenta
-    setTimeout(refreshStatus, 1000);
+    refreshStatus();
   }, []);
 
   return (
