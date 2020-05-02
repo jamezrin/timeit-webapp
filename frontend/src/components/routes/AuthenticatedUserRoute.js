@@ -2,7 +2,7 @@ import React, { Component, useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import AuthContext from '../../state/authenticationContext';
 
-const AuthenticatedUserRoute = ({ component: Component, ...rest }) => {
+export default function AuthenticatedUserRoute({ component: Component, ...rest }) {
   const { authStatus } = useContext(AuthContext);
 
   return (
@@ -26,6 +26,4 @@ const AuthenticatedUserRoute = ({ component: Component, ...rest }) => {
       }}
     />
   );
-};
-
-export default AuthenticatedUserRoute;
+}

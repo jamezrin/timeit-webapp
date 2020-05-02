@@ -11,7 +11,7 @@ const MenuItems = ({ children }) => (
   </Text>
 );
 
-const Header = (props) => {
+export default function Header(props) {
   const [collapse, setCollapse] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
   const { refreshStatus } = useContext(AuthContext);
@@ -75,6 +75,4 @@ const Header = (props) => {
       </Box>
     </Flex>
   );
-};
-
-export default Header;
+}

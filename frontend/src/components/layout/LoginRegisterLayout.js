@@ -3,12 +3,7 @@ import React from 'react';
 import timeManagementSvg from '../../assets/time_management.svg';
 import mainAppCoverLogo from '../../assets/logo/TimeIt-logo/cover.png';
 import { Box, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
-
-const noDragOrSelectCss = {
-  userSelect: 'none',
-  userDrag: 'none',
-  pointerEvents: 'none',
-};
+import { noDragOrSelectCss } from '../utils';
 
 export default function LoginRegisterLayout({ children }) {
   const { colorMode } = useColorMode();
