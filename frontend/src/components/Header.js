@@ -64,14 +64,29 @@ export default function Header(props) {
         alignItems="center"
         flexGrow={1}
       >
+        {/*
         <MenuItems>Docs</MenuItems>
         <MenuItems>Examples</MenuItems>
         <MenuItems>Blog</MenuItems>
+        */}
       </Box>
 
       <Box display={{ base: collapse ? 'block' : 'none', md: 'block' }} mt={{ base: 4, md: 0 }}>
-        <IconButton variant="ghost" icon={colorMode === 'dark' ? 'sun' : 'moon'} onClick={toggleColorMode} mx={1} />
-        <IconButton variant="ghost" fontSize="24px" icon={RiLogoutBoxRLine} onClick={deauthenticateUser} mx={1} />
+        <IconButton
+          aria-label="Cambiar modo de color"
+          variant="ghost"
+          icon={colorMode === 'dark' ? 'sun' : 'moon'}
+          onClick={toggleColorMode}
+          mx={1}
+        />
+        <IconButton
+          aria-label="Cerrar sesión"
+          variant="ghost"
+          fontSize="24px"
+          icon={RiLogoutBoxRLine}
+          onClick={deauthenticateUser}
+          mx={1}
+        />
       </Box>
     </Flex>
   );

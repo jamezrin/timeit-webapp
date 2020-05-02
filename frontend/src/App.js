@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ColorModeProvider, CSSReset, theme, ThemeProvider } from '@chakra-ui/core';
+import { ColorModeProvider, CSSReset, theme, ThemeProvider, Flex } from '@chakra-ui/core';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
 import AuthContext, { AuthContextProvider } from './state/authenticationContext';
 
@@ -50,7 +50,9 @@ const RouterWrappedComponent = () => {
       </Switch>
     </BrowserRouter>
   ) : (
-    <FullPageLoadSpinner />
+    <Flex height="100vh" width="100vw" justifyContent="center" alignItems="center">
+      <FullPageLoadSpinner />
+    </Flex>
   );
 };
 
