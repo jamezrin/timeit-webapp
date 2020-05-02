@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import LoginRegisterLayout from '../layout/LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
 
 import {
@@ -21,9 +20,7 @@ import {
 } from '@chakra-ui/core';
 
 import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
-import authenticationBackend, { refreshAuthStatus } from '../../utils/authenticationBackend';
-
-const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate';
+import AuthContext, { fetchAuthStatus, requestAuthentication } from '../../state/authenticationContext';
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();
@@ -31,19 +28,21 @@ export default function LoginPage() {
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
+  const { setAuthStatus } = useContext(AuthContext);
 
   async function onSubmit(values) {
     try {
-      await axios.post(authenticateEndpoint, values, { withCredentials: true });
-      /*refreshAuthStatus().then((authStatus) => {
+      await requestAuthentication(values);
+      fetchAuthStatus().then((authStatus) => {
+        setAuthStatus(authStatus);
 
-      });*/
-      addToast('Has iniciado sesión correctamente', {
-        appearance: 'success',
-        autoDismiss: true,
+        addToast('Has iniciado sesión correctamente', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+
+        history.replace((location.state && location.state.previousLocation) || '/');
       });
-
-      history.replace((location.state && location.state.previousLocation) || '/');
     } catch (err) {
       if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
         addToast('Las credenciales introducidas no son validas', {

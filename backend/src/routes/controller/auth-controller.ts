@@ -8,6 +8,7 @@ import HttpStatus from 'http-status-codes';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import {
+  accountAlreadyExistsError,
   accountNotFoundError,
   inactiveAccountError,
   invalidCredentialsError,
@@ -87,9 +88,18 @@ const authController = {
     user.status = UserStatus.ACTIVE;
     user.passwordHash = await hashPassword(password);
 
-    await user.save();
+    try {
+      await user.save();
 
-    res.sendStatus(HttpStatus.ACCEPTED);
+      res.sendStatus(HttpStatus.ACCEPTED);
+    } catch (err) {
+      // duplicated key constraint error
+      if (err.code === '23505') {
+        return accountAlreadyExistsError(req, res);
+      }
+
+      return unknownServerError(req, res);
+    }
   },
   async confirmAccount(req: Request, res: Response) {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);

@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import LoginPage from './components/pages/LoginPage';
 import RegisterPage from './components/pages/RegisterPage';
-import DebugNav from './components/DebugNav';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ColorModeProvider, CSSReset, theme, Spinner, Flex, Heading, Text, ThemeProvider } from '@chakra-ui/core';
+import { ColorModeProvider, CSSReset, Flex, Spinner, Text, theme, ThemeProvider } from '@chakra-ui/core';
 import HomePage from './components/pages/HomePage';
-import AuthenticatedUserRoute from './components/routing/AuthenticatedUserRoute';
-import authenticationBackend, { refreshAuthStatus } from './utils/authenticationBackend';
-import UnauthenticatedUserRoute from './components/routing/UnauthenticatedUserRoute';
-import AuthenticationContext from './utils/authenticationBackend';
+import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
+
+import AuthContext, { AuthContextProvider } from './state/authenticationContext';
 
 const RecoverPasswordPage = () => 'Not yet implemented';
 
@@ -20,55 +18,44 @@ const ProviderWrappedComponent = ({ children }) => {
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <ToastProvider>
-          <CSSReset />
-          {children}
+          <AuthContextProvider>{children}</AuthContextProvider>
         </ToastProvider>
       </ColorModeProvider>
     </ThemeProvider>
   );
 };
 
-const RouterWrappedComponent = ({ children }) => {
-  const [authStatus, setAuthStatus] = useState(null);
+const FullPageLoadSpinner = () => (
+  <Flex height="100vh" width="100vw" justifyContent="center" alignItems="center" direction="column">
+    <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
+    <Text mt={4}>Cargando la aplicación</Text>
+  </Flex>
+);
 
-  useEffect(() => {
-    refreshAuthStatus().then((authStatus) => {
-      // Intencionalmente hacer lenta la carga de la app
-      setTimeout(() => {
-        setAuthStatus(authStatus);
-      }, 500);
-    });
-  }, []);
+const RouterWrappedComponent = () => {
+  const { authStatus } = useContext(AuthContext);
 
-  return (
-    <>
-      {authStatus ? (
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/">
-              {authStatus.isAuthenticated ? <HomePage /> : <Redirect to="/login" />}
-            </Route>
+  return authStatus ? (
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/">
+          {authStatus.isAuthenticated ? <HomePage /> : <Redirect to="/login" />}
+        </Route>
 
-            <UnauthenticatedUserRoute path="/login" component={LoginPage} />
-            <UnauthenticatedUserRoute path="/register" component={RegisterPage} />
-            <UnauthenticatedUserRoute path="/recover_password" component={RecoverPasswordPage} />
-          </Switch>
-
-          {children}
-        </BrowserRouter>
-      ) : (
-        <Flex height="100vh" width="100vw" justifyContent="center" alignItems="center" direction="column">
-          <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
-          <Text mt={4}>Cargando la aplicación</Text>
-        </Flex>
-      )}
-    </>
+        <UnauthenticatedUserRoute path="/login" component={LoginPage} />
+        <UnauthenticatedUserRoute path="/register" component={RegisterPage} />
+        <UnauthenticatedUserRoute path="/recover_password" component={RecoverPasswordPage} />
+      </Switch>
+    </BrowserRouter>
+  ) : (
+    <FullPageLoadSpinner />
   );
 };
 
 function App() {
   return (
     <ProviderWrappedComponent>
+      <CSSReset />
       <RouterWrappedComponent />
     </ProviderWrappedComponent>
   );

@@ -46,3 +46,9 @@ export const forbiddenError = (req: Request, res: Response) => {
     .status(HttpStatus.FORBIDDEN)
     .json(error('INSUFFICIENT_PRIVILEGES', 'Insufficient permissions to perform this operation'));
 };
+
+export const accountAlreadyExistsError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_ACCEPTABLE)
+    .json(error('ACCOUNT_ALREADY_EXISTS', 'There is already an account with that email address'));
+};
