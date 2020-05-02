@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Header';
 import {
   Button,
@@ -17,18 +17,28 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
+  Stack,
+  Box,
   useDisclosure,
 } from '@chakra-ui/core';
 
 import workTimeSvg from '../../assets/work_time.svg';
 import { useForm } from 'react-hook-form';
+import MainLayout from '../layout/MainLayout';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const noDragOrSelect = {
   userSelect: 'none',
   userDrag: 'none',
+  pointerEvents: 'none',
 };
 
-function EmptyHomePage() {
+const listProjectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
+const requestProjectList = () => axios.get(listProjectsEndpoint, { withCredentials: true });
+
+function ProjectListPlaceholder() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, errors, register, formState } = useForm();
 
@@ -45,6 +55,7 @@ function EmptyHomePage() {
         <ModalContent>
           <ModalHeader>Crear un proyecto</ModalHeader>
           <ModalCloseButton />
+
           <form onSubmit={handleSubmit(onSubmit)}>
             <ModalBody>
               <FormControl mt={4} isInvalid={errors.emailAddress}>
@@ -63,16 +74,7 @@ function EmptyHomePage() {
         </ModalContent>
       </Modal>
 
-      <Flex
-        maxWidth={{ base: '100%', lg: '80rem' }}
-        marginX="auto"
-        marginTop="4rem"
-        height="100%"
-        alignItems="center"
-        justifyContent="center"
-        textAlign="center"
-        direction="column"
-      >
+      <Flex height="100%" alignItems="center" justifyContent="center" textAlign="center" direction="column">
         <Image
           src={workTimeSvg}
           css={{
@@ -82,7 +84,7 @@ function EmptyHomePage() {
         />
 
         <Heading as="h1" size="lg" color="blue.500" mt={8}>
-          Todavía no eres miembro de ningún proyecto
+          Todavía no eres miembro de un proyecto
         </Heading>
 
         <Heading as="h2" size="md" color="blue.500" mt={2}>
@@ -97,30 +99,49 @@ function EmptyHomePage() {
   );
 }
 
-function NotEmptyHomePage(props) {
+function ProjectListContent({ projects }) {
   return (
-    <Flex
-      maxWidth={{ base: '100%', lg: '100rem' }}
-      marginX="auto"
-      marginTop="4rem"
-      height="100%"
-      alignItems="center"
-      justifyContent="center"
-      direction="column"
-    >
-      Hello world
-    </Flex>
+    <Box marginTop="4rem">
+      <Heading as="h1" mb={10}>
+        Tus proyectos
+      </Heading>
+      {projects.map((project) => (
+        <Link
+          to={{
+            pathname: `/project/${project.id}`,
+          }}
+        >
+          <Text bg="red.500" p={6} mb={2}>
+            {JSON.stringify(project)}
+          </Text>
+        </Link>
+      ))}
+    </Box>
   );
 }
 
-function HomePage(props) {
-  const hasProjects = false;
+function ProjectListWrapper({ children }) {
+  return children;
+}
+
+function ProjectListPage() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    requestProjectList().then((response) => {
+      setProjects(response.data);
+    });
+  }, []);
+
   return (
-    <Flex height="100vh" width="100vw" direction="column">
-      <Header />
-      {hasProjects ? <NotEmptyHomePage /> : <EmptyHomePage />}
-    </Flex>
+    <MainLayout>
+      <Box maxWidth={{ base: '100%', lg: '100rem' }} marginX="auto" height="100%">
+        <ProjectListWrapper>
+          {projects.length > 0 ? <ProjectListContent projects={projects} /> : <ProjectListPlaceholder />}
+        </ProjectListWrapper>
+      </Box>
+    </MainLayout>
   );
 }
 
-export default HomePage;
+export default ProjectListPage;

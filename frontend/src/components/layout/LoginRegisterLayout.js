@@ -4,9 +4,10 @@ import timeManagementSvg from '../../assets/time_management.svg';
 import mainAppCoverLogo from '../../assets/logo/TimeIt-logo/cover.png';
 import { Box, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
 
-const noDragOrSelect = {
+const noDragOrSelectCss = {
   userSelect: 'none',
   userDrag: 'none',
+  pointerEvents: 'none',
 };
 
 export default function LoginRegisterLayout({ children }) {
@@ -25,7 +26,7 @@ export default function LoginRegisterLayout({ children }) {
             src={mainAppCoverLogo}
             alt=""
             css={{
-              ...noDragOrSelect,
+              ...noDragOrSelectCss,
             }}
           />
 
@@ -36,7 +37,7 @@ export default function LoginRegisterLayout({ children }) {
             alt=""
             px={10}
             css={{
-              ...noDragOrSelect,
+              ...noDragOrSelectCss,
             }}
           />
 

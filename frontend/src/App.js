@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import LoginPage from './components/pages/LoginPage';
-import RegisterPage from './components/pages/RegisterPage';
-
 import { ToastProvider } from 'react-toast-notifications';
 import { ColorModeProvider, CSSReset, Flex, Spinner, Text, theme, ThemeProvider } from '@chakra-ui/core';
-import HomePage from './components/pages/HomePage';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
-
 import AuthContext, { AuthContextProvider } from './state/authenticationContext';
 
+import LoginPage from './components/pages/LoginPage';
+import ProjectListPage from './components/pages/ProjectListPage';
+import RegisterPage from './components/pages/RegisterPage';
+import AuthenticatedUserRoute from './components/routes/AuthenticatedUserRoute';
+import ProjectPage from './components/pages/ProjectPage';
 const RecoverPasswordPage = () => 'Not yet implemented';
 
 const ProviderWrappedComponent = ({ children }) => {
@@ -39,12 +39,18 @@ const RouterWrappedComponent = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          {authStatus.isAuthenticated ? <HomePage /> : <Redirect to="/login" />}
+          {authStatus.isAuthenticated ? <ProjectListPage /> : <Redirect to="/login" />}
         </Route>
 
         <UnauthenticatedUserRoute path="/login" component={LoginPage} />
         <UnauthenticatedUserRoute path="/register" component={RegisterPage} />
         <UnauthenticatedUserRoute path="/recover_password" component={RecoverPasswordPage} />
+
+        <AuthenticatedUserRoute path="/project/:projectId" component={ProjectPage} />
+
+        <Route>
+          <Redirect to="/" />
+        </Route>
       </Switch>
     </BrowserRouter>
   ) : (

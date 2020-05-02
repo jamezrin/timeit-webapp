@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Box, Flex, Heading, IconButton, Text, useColorMode } from '@chakra-ui/core';
+import { RiLogoutBoxRLine } from 'react-icons/ri';
+import AuthContext, { requestDeauthentication } from '../state/authenticationContext';
+import { useToasts } from 'react-toast-notifications';
 
 const MenuItems = ({ children }) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
@@ -11,6 +14,19 @@ const MenuItems = ({ children }) => (
 const Header = (props) => {
   const [collapse, setCollapse] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
+  const { refreshStatus } = useContext(AuthContext);
+  const { addToast } = useToasts();
+
+  const deauthenticateUser = () => {
+    requestDeauthentication().then(() => {
+      addToast('Has cerrado tu sesión correctamente', {
+        appearance: 'info',
+        autoDismiss: true,
+      });
+
+      refreshStatus();
+    });
+  };
 
   return (
     <Flex
@@ -54,7 +70,8 @@ const Header = (props) => {
       </Box>
 
       <Box display={{ base: collapse ? 'block' : 'none', md: 'block' }} mt={{ base: 4, md: 0 }}>
-        <IconButton variant="ghost" icon={colorMode === 'dark' ? 'sun' : 'moon'} onClick={toggleColorMode} />
+        <IconButton variant="ghost" icon={colorMode === 'dark' ? 'sun' : 'moon'} onClick={toggleColorMode} mx={1} />
+        <IconButton variant="ghost" fontSize="24px" icon={RiLogoutBoxRLine} onClick={deauthenticateUser} mx={1} />
       </Box>
     </Flex>
   );

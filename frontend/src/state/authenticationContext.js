@@ -15,10 +15,13 @@ export const fetchAuthStatus = () =>
       currentUser: response.data,
       isAuthenticated: true,
     }))
-    .catch((err) => ({
-      currentUser: null,
-      isAuthenticated: false,
-    }));
+    .catch(
+      (err) =>
+        err.response && {
+          currentUser: null,
+          isAuthenticated: false,
+        },
+    );
 
 const AuthContext = React.createContext(null);
 

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 
+import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
 import LoginRegisterLayout from '../layout/LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
@@ -19,7 +20,6 @@ import {
   ListItem,
 } from '@chakra-ui/core';
 
-import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
 import AuthContext, { fetchAuthStatus, requestAuthentication } from '../../state/authenticationContext';
 
 export default function LoginPage() {
@@ -44,7 +44,7 @@ export default function LoginPage() {
         history.replace((location.state && location.state.previousLocation) || '/');
       });
     } catch (err) {
-      if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+      if (err.response && err.response.data.error.type === 'INVALID_CREDENTIALS') {
         addToast('Las credenciales introducidas no son validas', {
           appearance: 'error',
           autoDismiss: true,

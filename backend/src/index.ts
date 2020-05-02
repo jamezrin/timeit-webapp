@@ -20,7 +20,7 @@ async function startExpress(connection: Connection) {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.TIMEIT_CORS_ORIGIN,
+      origin: process.env.TIMEIT_CORS_ORIGINS.split(','),
     }),
   );
 
