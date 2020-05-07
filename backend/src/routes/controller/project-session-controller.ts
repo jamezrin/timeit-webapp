@@ -61,7 +61,7 @@ const projectSessionControler = {
     session.projectMember = currentProjectMember;
     await session.save();
 
-    res.sendStatus(HttpStatus.ACCEPTED);
+    res.status(HttpStatus.ACCEPTED).json(session);
   },
   async getSession(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
