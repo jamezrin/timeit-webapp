@@ -3,7 +3,7 @@ import { Session } from '../../entity/Session';
 import HttpStatus from 'http-status-codes';
 import { SessionNote } from '../../entity/SessionNote';
 import { ProjectMember } from '../../entity/ProjectMember';
-import { resourceNotFoundError } from '../errors';
+import { resourceNotFoundError, sessionEndedError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { isMemberPrivileged } from '../../utils';
 
@@ -71,6 +71,10 @@ const sessionNoteController = {
 
     if (!session) {
       return resourceNotFoundError(req, res);
+    }
+
+    if (session.endedAt) {
+      return sessionEndedError(req, res);
     }
 
     const sessionNote = new SessionNote();

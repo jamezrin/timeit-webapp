@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { SessionAppEvent } from '../../entity/SessionAppEvent';
 import { Session } from '../../entity/Session';
 import HttpStatus from 'http-status-codes';
-import { resourceNotFoundError } from '../errors';
+import { resourceNotFoundError, sessionEndedError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { ProjectMember } from '../../entity/ProjectMember';
 import { isMemberPrivileged } from '../../utils';
@@ -67,6 +67,10 @@ const sessionAppEventController = {
 
     if (!session) {
       return resourceNotFoundError(req, res);
+    }
+
+    if (session.endedAt) {
+      return sessionEndedError(req, res);
     }
 
     const sessionAppEvent = new SessionAppEvent();

@@ -35,6 +35,12 @@ export const resourceNotFoundError = (req: Request, res: Response) => {
     .json(error('RESOURCE_NOT_FOUND', 'Could not find any matching entity'));
 };
 
+export const sessionEndedError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_ACCEPTABLE)
+    .json(error('SESSION_ENDED', 'The session has already ended'));
+};
+
 export const accountNotFoundError = (req: Request, res: Response) => {
   res
     .status(HttpStatus.NOT_FOUND)
