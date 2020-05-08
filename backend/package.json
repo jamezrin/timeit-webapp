@@ -6,8 +6,8 @@
    "types": "dist/index.d.ts",
    "scripts": {
       "build": "tsc",
-      "start": "NODE_ENV=production ts-node src/index.ts",
-      "start:dev": "NODE_ENV=development ts-node-dev src/index.ts",
+      "start": "cross-env NODE_ENV=production ts-node src/index.ts",
+      "start:dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
       "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
    },
    "keywords": [],
@@ -41,6 +41,7 @@
       "@types/nodemailer": "^6.4.0",
       "@typescript-eslint/eslint-plugin": "^2.29.0",
       "@typescript-eslint/parser": "^2.29.0",
+      "cross-env": "^7.0.2",
       "eslint": "^6.8.0",
       "eslint-config-prettier": "^6.10.1",
       "eslint-plugin-prettier": "^3.1.2",
