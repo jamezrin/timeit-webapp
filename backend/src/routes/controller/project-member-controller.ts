@@ -1,4 +1,3 @@
-// List project members
 import { isMemberPrivileged } from '../../utils';
 import { Request, Response } from 'express';
 import { ProjectMember } from '../../entity/ProjectMember';
@@ -13,11 +12,12 @@ const projectMemberController = {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
+    const { exclude } = req.query;
 
     const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
-      .leftJoinAndSelect('projectMember.project', 'project')
       .where('projectMember.project = :projectId', { projectId })
       .andWhere('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoinAndSelect('projectMember.project', 'project')
       .leftJoinAndSelect('project.members', 'members')
       .getOne();
 
@@ -25,7 +25,25 @@ const projectMemberController = {
       return resourceNotFoundError(req, res);
     }
 
-    res.status(HttpStatus.OK).json(currentProjectMember.project.members);
+    const allProjectMembersQueryBuilder = ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.project = :projectId', { projectId })
+      .leftJoinAndSelect('projectMember.user', 'user')
+      .select(['projectMember']);
+
+    const exclusions = [].concat(exclude);
+    if (!exclusions.includes('user')) {
+      allProjectMembersQueryBuilder.addSelect([
+        'user.id',
+        'user.createdAt',
+        'user.firstName',
+        'user.lastName',
+        'user.emailAddress',
+      ]);
+    }
+
+    const allProjectMembers = await allProjectMembersQueryBuilder.getMany();
+
+    res.status(HttpStatus.OK).json(allProjectMembers);
   },
   async inviteMember(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
@@ -75,14 +93,28 @@ const projectMemberController = {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
     const { memberId } = req.params;
+    const { exclude } = req.query;
 
-    const projectMember = await ProjectMember.createQueryBuilder('projectMember')
+    const projectMemberQueryBuilder = ProjectMember.createQueryBuilder('projectMember')
       .where('projectMember.user = :memberId', { memberId })
       .leftJoin('projectMember.project', 'project')
       .leftJoin('project.members', 'otherMembers')
       .andWhere('otherMembers.user = :currentUserId', { currentUserId })
-      .getOne();
+      .leftJoinAndSelect('projectMember.user', 'user')
+      .select(['projectMember']);
 
+    const exclusions = [].concat(exclude);
+    if (!exclusions.includes('user')) {
+      projectMemberQueryBuilder.addSelect([
+        'user.id',
+        'user.createdAt',
+        'user.firstName',
+        'user.lastName',
+        'user.emailAddress',
+      ]);
+    }
+
+    const projectMember = await projectMemberQueryBuilder.getOne();
     if (!projectMember) {
       return resourceNotFoundError(req, res);
     }

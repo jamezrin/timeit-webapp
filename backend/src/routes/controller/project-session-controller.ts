@@ -5,6 +5,8 @@ import { Session } from '../../entity/Session';
 import { resourceNotFoundError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { isMemberPrivileged } from '../../utils';
+import { BaseEntity, Connection } from 'typeorm';
+import { SessionAppEvent } from '../../entity/SessionAppEvent';
 
 const projectSessionControler = {
   async listSessions(req: Request, res: Response) {

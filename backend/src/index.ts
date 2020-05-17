@@ -12,7 +12,7 @@ import mountRoutes from './routes/routes';
 // Very important for getting env populated
 import './env';
 
-async function startExpress(connection: Connection) {
+async function startExpress(conn: Connection) {
   const app = express();
 
   // Security middlewares
@@ -37,7 +37,7 @@ async function startExpress(connection: Connection) {
   });
 
   // From now on, there are only protected routes
-  mountRoutes(app);
+  mountRoutes(app, conn);
 
   app.listen(process.env.PORT || 7001);
 }
