@@ -15,6 +15,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  Box,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
@@ -56,7 +57,8 @@ function ProjectCreationModalProvider({ children }) {
 
     setProjectsCreatedCount(projectsCreatedCount + 1);
 
-    onClose();
+    // Close the modal
+    if (isOpen) onClose();
   };
 
   return (
@@ -129,7 +131,7 @@ function ProjectListContent({ projects }) {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex direction="column" py={10} mx={8}>
+    <Box py={10} mx={8}>
       <Flex mb={12}>
         <Heading as="h1">Tus proyectos</Heading>
         <Button onClick={openProjectCreationModal} variantColor="blue" ml="auto">
@@ -155,7 +157,7 @@ function ProjectListContent({ projects }) {
           </ListItem>
         ))}
       </List>
-    </Flex>
+    </Box>
   );
 }
 
@@ -189,4 +191,5 @@ const WrappedProjectListPage = () => (
     <ProjectListPage />
   </ProjectCreationModalProvider>
 );
+
 export default WrappedProjectListPage;

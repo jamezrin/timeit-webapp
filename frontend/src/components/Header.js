@@ -35,9 +35,12 @@ export default function Header(props) {
       justify="space-between"
       wrap="wrap"
       padding="1rem"
-      bg="white.500"
+      bg={colorMode === 'dark' ? 'gray.800' : 'white'}
       color="blue.500"
       shadow="md"
+      position="sticky"
+      top="0"
+      zIndex="9999"
       {...props}
     >
       <Flex align="center" mr={5}>
