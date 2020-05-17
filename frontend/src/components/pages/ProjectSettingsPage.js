@@ -3,7 +3,7 @@ import axios from 'axios';
 import MainLayout from '../layout/MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import { IconButton, Icon, Link, Button, ButtonGroup, Flex, Heading, List, ListItem, PseudoBox } from '@chakra-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(projectsEndpoint + '/' + projectId, { withCredentials: true });
@@ -30,7 +30,7 @@ function ProjectPageContent({ projectInfo }) {
           size="lg"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
-          {projectInfo.name}
+          {projectInfo.name || 'Proyecto sin nombre'}
         </Button>
       </Flex>
 
@@ -43,7 +43,7 @@ function ProjectPageContent({ projectInfo }) {
 
 function ProjectSettingsPage(props) {
   const [projectInfo, setProjectInfo] = useState(null);
-  const projectId = props.match.params.projectId;
+  const { projectId } = useParams();
 
   useEffect(() => {
     requestProjectInfo(projectId).then((res) => {

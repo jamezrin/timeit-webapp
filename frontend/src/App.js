@@ -13,6 +13,7 @@ import AuthenticatedUserRoute from './components/routes/AuthenticatedUserRoute';
 import ProjectPage from './components/pages/ProjectPage';
 import FullPageLoadSpinner from './components/FullPageLoadSpinner';
 import ProjectSettingsPage from './components/pages/ProjectSettingsPage';
+import ProjectSessionPage from './components/pages/ProjectSessionPage';
 
 const RecoverPasswordPage = () => 'Not yet implemented';
 
@@ -44,6 +45,7 @@ const RouterWrappedComponent = () => {
 
         <AuthenticatedUserRoute path="/project/:projectId" component={ProjectPage} exact />
         <AuthenticatedUserRoute path="/project/:projectId/settings" component={ProjectSettingsPage} exact />
+        <AuthenticatedUserRoute path="/project/:projectId/session/:sessionId" component={ProjectSessionPage} exact />
 
         {/* Fallback route that redirects to the root */}
         <Route>

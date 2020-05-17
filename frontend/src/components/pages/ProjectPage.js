@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../layout/MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
-import { Box, Button, Flex } from '@chakra-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Box, Button, Flex, List, ListItem, PseudoBox, useColorMode } from '@chakra-ui/core';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
@@ -18,13 +18,23 @@ function ProjectPageMemberSelect({ projectInfo, updateSelectedProjectMembers }) 
 
   const projectMemberOptions = useMemo(() => {
     if (!projectMembers) return null;
-    return projectMembers.map((projectMember) => {
-      return {
-        label: `${projectMember.user.firstName} ${projectMember.user.lastName}`,
-        value: projectMember.id,
-      };
-    });
-  }, [projectMembers]);
+    return projectMembers
+      .filter((projectMember) => {
+        // If we are ourselves, we obviously have access to our own metrics
+        // If we are admins or employers, we have access to the metrics of everyone
+        return (
+          projectMember.id === projectInfo.projectMember.id ||
+          projectInfo.projectMember.role === 'admin' ||
+          projectInfo.projectMember.role === 'employer'
+        );
+      })
+      .map((projectMember) => {
+        return {
+          label: `${projectMember.user.firstName} ${projectMember.user.lastName}`,
+          value: projectMember.id,
+        };
+      });
+  }, [projectInfo, projectMembers]);
 
   const defaultProjectMember = useMemo(() => {
     if (!projectMemberOptions) return null;
@@ -73,12 +83,9 @@ function ProjectPageMemberSelect({ projectInfo, updateSelectedProjectMembers }) 
 }
 
 function ProjectPageContent({ projectInfo }) {
-  const history = useHistory();
   const [sessions, setSessions] = useState(null);
-
-  useEffect(() => {
-    requestProjectSessions(projectInfo.id).then((res) => {});
-  }, [projectInfo]);
+  const { colorMode } = useColorMode();
+  const history = useHistory();
 
   const updateSelectedProjectMembers = useCallback(
     (projectMembers) => {
@@ -116,16 +123,34 @@ function ProjectPageContent({ projectInfo }) {
           projectInfo={projectInfo}
           updateSelectedProjectMembers={updateSelectedProjectMembers}
         />
-
-        <pre>{JSON.stringify(sessions, null, 2)}</pre>
+        <List mt={12}>
+          {sessions &&
+            sessions.map((session) => (
+              <ListItem key={session.id}>
+                <Link to={`/project/${projectInfo.id}/session/${session.id}`}>
+                  <PseudoBox
+                    bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
+                    shadow="md"
+                    p={6}
+                    mb={4}
+                    _hover={{
+                      transform: 'scale(1.03)',
+                    }}
+                  >
+                    Sesión {session.id}
+                  </PseudoBox>
+                </Link>
+              </ListItem>
+            ))}
+        </List>
       </Box>
     </Box>
   );
 }
 
-function ProjectPage(props) {
+function ProjectPage() {
   const [projectInfo, setProjectInfo] = useState(null);
-  const projectId = props.match.params.projectId;
+  const { projectId } = useParams();
 
   useEffect(() => {
     requestProjectInfo(projectId).then((res) => {

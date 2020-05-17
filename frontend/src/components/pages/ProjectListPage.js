@@ -55,6 +55,7 @@ function ProjectCreationModalProvider({ children }) {
       autoDismiss: true,
     });
 
+    // This will cause an side effect we can use to reload the project list
     setProjectsCreatedCount(projectsCreatedCount + 1);
 
     // Close the modal
@@ -132,13 +133,13 @@ function ProjectListContent({ projects }) {
 
   return (
     <Box py={10} mx={8}>
-      <Flex mb={12}>
+      <Flex>
         <Heading as="h1">Tus proyectos</Heading>
         <Button onClick={openProjectCreationModal} variantColor="blue" ml="auto">
           Crear un proyecto
         </Button>
       </Flex>
-      <List>
+      <List mt={12}>
         {projects.map((project) => (
           <ListItem key={project.id}>
             <Link to={`/project/${project.id}`}>
