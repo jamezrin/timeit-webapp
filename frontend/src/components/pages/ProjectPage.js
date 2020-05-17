@@ -1,34 +1,19 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../layout/MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
-import {
-  IconButton,
-  Icon,
-  Code,
-  Box,
-  Button,
-  ButtonGroup,
-  Flex,
-  Heading,
-  List,
-  ListItem,
-  PseudoBox,
-} from '@chakra-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { Box, Button, Flex } from '@chakra-ui/core';
+import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(projectsEndpoint + '/' + projectId, { withCredentials: true });
-const requestProjectSessions = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}/sessions`, { withCredentials: true });
+const requestProjectSessions = (projectId, memberIds = []) =>
+  axios.get(`${projectsEndpoint}/${projectId}/sessions`, { withCredentials: true, params: { memberIds } });
 const requestProjectMembers = (projectId) =>
   axios.get(`${projectsEndpoint}/${projectId}/members`, { withCredentials: true });
 
-function ProjectPageContent({ projectInfo }) {
-  const history = useHistory();
-
-  const [sessions, setSessions] = useState(null);
+function ProjectPageMemberSelect({ projectInfo, updateSelectedProjectMembers }) {
   const [projectMembers, setProjectMembers] = useState(null);
 
   const projectMemberOptions = useMemo(() => {
@@ -49,14 +34,65 @@ function ProjectPageContent({ projectInfo }) {
   }, [projectMemberOptions, projectInfo]);
 
   useEffect(() => {
-    requestProjectSessions(projectInfo.id).then((res) => {
-      setSessions(res.data);
-    });
-
     requestProjectMembers(projectInfo.id).then((res) => {
       setProjectMembers(res.data);
     });
   }, [projectInfo]);
+
+  useEffect(() => {
+    if (defaultProjectMember) {
+      updateSelectedProjectMembers([defaultProjectMember]);
+    } else {
+      updateSelectedProjectMembers(null);
+    }
+  }, [updateSelectedProjectMembers, defaultProjectMember]);
+
+  const handleSelectChange = useCallback(
+    (data) => {
+      if (!data || data.length === 0) {
+        updateSelectedProjectMembers(null);
+      } else {
+        updateSelectedProjectMembers(data);
+      }
+    },
+    [updateSelectedProjectMembers],
+  );
+
+  return (
+    <Box maxWidth="20rem">
+      {projectMemberOptions && (
+        <Select
+          defaultValue={[defaultProjectMember]}
+          options={projectMemberOptions}
+          onChange={handleSelectChange}
+          isMulti
+        />
+      )}
+    </Box>
+  );
+}
+
+function ProjectPageContent({ projectInfo }) {
+  const history = useHistory();
+  const [sessions, setSessions] = useState(null);
+
+  useEffect(() => {
+    requestProjectSessions(projectInfo.id).then((res) => {});
+  }, [projectInfo]);
+
+  const updateSelectedProjectMembers = useCallback(
+    (projectMembers) => {
+      if (projectMembers) {
+        requestProjectSessions(
+          projectInfo.id,
+          projectMembers.map((member) => member.value),
+        ).then((res) => setSessions(res.data));
+      } else {
+        setSessions(null);
+      }
+    },
+    [projectInfo],
+  );
 
   return (
     <Box py={10} mx={8}>
@@ -76,17 +112,12 @@ function ProjectPageContent({ projectInfo }) {
       </Flex>
 
       <Box mx={8}>
-        <Box maxWidth="20rem">
-          {projectMemberOptions && (
-            <Select defaultValue={[defaultProjectMember]} options={projectMemberOptions} isMulti />
-          )}
-        </Box>
+        <ProjectPageMemberSelect
+          projectInfo={projectInfo}
+          updateSelectedProjectMembers={updateSelectedProjectMembers}
+        />
 
-        <pre>{JSON.stringify(projectMembers, '', 4)}</pre>
-        <pre>{JSON.stringify(projectMemberOptions, '', 4)}</pre>
-
-        <pre>{JSON.stringify(projectInfo, '', 4)}</pre>
-        <pre>{sessions ? JSON.stringify(sessions, '', 4) : 'Loading...'}</pre>
+        <pre>{JSON.stringify(sessions, null, 2)}</pre>
       </Box>
     </Box>
   );
