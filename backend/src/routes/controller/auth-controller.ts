@@ -60,9 +60,7 @@ const authController = {
       maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
     });
 
-    res.status(HttpStatus.ACCEPTED).json({
-      accessToken,
-    });
+    res.sendStatus(HttpStatus.OK);
   },
   async deauthenticate(req: Request, res: Response) {
     const tokenInfo = res.locals.tokenInfo as UserToken;
