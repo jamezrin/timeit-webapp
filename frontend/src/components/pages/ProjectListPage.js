@@ -72,7 +72,7 @@ function ProjectCreationModalProvider({ children }) {
       }}
     >
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay zIndex="1000" />
         <ModalContent>
           <ModalHeader>Crear un proyecto</ModalHeader>
           <ModalCloseButton />

@@ -7,11 +7,12 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import Select from 'react-select';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) => axios.get(projectsEndpoint + '/' + projectId, { withCredentials: true });
-const requestProjectSessions = (projectId, memberIds = []) =>
-  axios.get(`${projectsEndpoint}/${projectId}/sessions`, { withCredentials: true, params: { memberIds } });
-const requestProjectMembers = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}/members`, { withCredentials: true });
+const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
+const requestProjectMembers = (projectId) => axios.get(`${projectsEndpoint}/${projectId}/members`, { withCredentials: true }); // prettier-ignore
+const requestProjectSessions = (projectId, memberIds = []) => axios.get(`${projectsEndpoint}/${projectId}/sessions`, {
+  withCredentials: true,
+  params: { memberIds }
+}); // prettier-ignore
 
 function ProjectPageMemberSelect({ projectInfo, updateSelectedProjectMembers }) {
   const [projectMembers, setProjectMembers] = useState(null);

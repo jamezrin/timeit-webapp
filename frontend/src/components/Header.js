@@ -40,8 +40,8 @@ export default function Header(props) {
       shadow="md"
       position="sticky"
       top="0"
-      zIndex="9999"
       {...props}
+      zIndex="100"
     >
       <Flex align="center" mr={5}>
         <Heading as="h1" size="lg">

@@ -85,6 +85,7 @@ const projectMemberController = {
     await mailToken.save();
 
     // TODO Send email with token link and whatever
+    // TODO Make sure this user is not already a member
     // This has to wait until we have the frontend more or less ready
 
     res.sendStatus(HttpStatus.ACCEPTED);
