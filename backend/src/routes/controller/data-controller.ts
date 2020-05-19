@@ -15,6 +15,8 @@ const dataController = {
       const { projectId } = req.params;
       const { memberIds } = req.query;
 
+      // TODO: Include from/to period
+
       // Current user as a member of the current project
       const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
         .where('projectMember.project = :projectId', { projectId })
@@ -25,31 +27,115 @@ const dataController = {
         return resourceNotFoundError(req, res);
       }
 
-      /* TODO
-      const sampleResponse = {
-        timeSpentTotal: 0,
-        timeSpentPerDayAvg: 0,
-        timeSpentLastMonth: 0,
-        timeSpentLastDay: 0,
-        sessions: [
-          {
-            memberId: 0,
-            sessionId: 0,
-            timestampStart: 0,
-            timestampEnd: 0,
-            appEventCount: 0,
-            appEventVariety: 0,
-            noteCount: 0,
-          },
-        ],
-      };
+      // TODO: Actually implement all these types of stats
+      /*
+      const allStats = await conn.query(
+        `
+         SELECT 
+           (SELECT 1 AS x) AS "lastMonthStats_hoursSum",
+           (SELECT 1 AS x) AS "lastMonthStats_hoursAvg",
+           (SELECT 1 AS x) AS "lastMonthStats_hoursMin",
+           (SELECT 1 AS x) AS "lastMonthStats_hoursMax",
+           (SELECT 1 AS x) AS "lastWeekStats_hoursSum",
+           (SELECT 1 AS x) AS "lastWeekStats_hoursAvg",
+           (SELECT 1 AS x) AS "lastWeekStats_hoursMin",
+           (SELECT 1 AS x) AS "lastWeekStats_hoursMax",
+           (SELECT 1 AS x) AS "lastDayStats_hoursSum",
+           (SELECT 1 AS x) AS "lastDayStats_hoursAvg",
+           (SELECT 1 AS x) AS "lastDayStats_hoursMin",
+           (SELECT 1 AS x) AS "lastDayStats_hoursMax",
+           (SELECT 1 AS x) AS "periodStats_hoursSum",
+           (SELECT 1 AS x) AS "periodStats_periodDays",
+           (SELECT 1 AS x) AS "periodStats_daysWithTracking";
+      `,
+        //[projectId, memberIds],
+      );
       */
 
-      res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+      /*
+      SUM(session.id) AS theSum,
+      AVG(session.id) AS theAvg,
+      MIN(session.id) AS theMin,
+      MAX(session.id) AS theMax
+      */
+
+      const allStats = await conn.query(
+        `
+        SELECT lastMonthStats.*, 
+          lastWeekStats.*, 
+          lastDayStats.*, 
+          periodStats.*
+        FROM (
+          SELECT 
+            SUM(session.id) AS "lastMonthStats_hoursSum",
+            AVG(session.id) AS "lastMonthStats_hoursAvg",
+            MIN(session.id) AS "lastMonthStats_hoursMin",
+            MAX(session.id) AS "lastMonthStats_hoursMax"
+          FROM session
+          WHERE session.id < 10
+        ) AS lastMonthStats, (
+          SELECT 
+            SUM(session.id) AS "lastWeekStats_hoursSum",
+            AVG(session.id) AS "lastWeekStats_hoursAvg",
+            MIN(session.id) AS "lastWeekStats_hoursMin",
+            MAX(session.id) AS "lastWeekStats_hoursMax"
+          FROM session
+          WHERE session.id < 20
+        ) AS lastWeekStats, (
+          SELECT 
+            SUM(session.id) AS "lastDayStats_hoursSum",
+            AVG(session.id) AS "lastDayStats_hoursAvg",
+            MIN(session.id) AS "lastDayStats_hoursMin",
+            MAX(session.id) AS "lastDayStats_hoursMax"
+          FROM session
+          WHERE session.id < 30
+        ) AS lastDayStats, (
+          SELECT 
+            SUM(session.id) AS "periodStats_hoursSum",
+            AVG(session.id) AS "periodStats_hoursAvg",
+            MIN(session.id) AS "periodStats_hoursMin",
+            MAX(session.id) AS "periodStats_hoursMax"
+          FROM session
+          WHERE session.id < 40
+        ) AS periodStats;
+        `,
+        [],
+      );
+
+      /*
+      {
+        lastMonthStats: {
+          hoursSum: 400,
+          hoursAvg: 200,
+          hoursMin: 200,
+          hoursMax: 200,
+        },
+        lastWeekStats: {
+          hoursSum: 80,
+          hoursAvg: 40,
+          hoursMin: 40,
+          hoursMax: 40,
+        },
+        lastDayStats: {
+          hoursSum: 16,
+          hoursAvg: 8,
+          hoursMin: 8,
+          hoursMax: 8,
+        },
+        periodStats: {
+          hoursSum: 400,
+          periodDays: 30,
+          daysWithTracking: 30,
+        },
+      }
+      */
+
+      res.status(HttpStatus.OK).json(allStats[0]);
     };
   },
   sessionEvents(conn: Connection) {
     // TODO: This should be paginated
+    // TODO: Include from/to period
     return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
@@ -123,6 +209,7 @@ const dataController = {
   },
   rawSessionEvents(conn: Connection) {
     // TODO: This should be paginated
+    // TODO: Include from/to period
     return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
