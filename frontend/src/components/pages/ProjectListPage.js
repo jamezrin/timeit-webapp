@@ -29,7 +29,7 @@ import { useForm } from 'react-hook-form';
 import MainLayout from '../layout/MainLayout';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { noDragOrSelectCss } from '../utils';
+import { noDragOrSelectCss } from '../../utils';
 import { useToasts } from 'react-toast-notifications';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 

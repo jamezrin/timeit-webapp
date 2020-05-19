@@ -59,6 +59,17 @@ const projectSessionControler = {
       return resourceNotFoundError(req, res);
     }
 
+    // Ends previous sessions
+    await Session.createQueryBuilder()
+      .update()
+      .set({
+        endedAt: new Date(Date.now()),
+      })
+      .where('projectMember = :currentProjectMemberId', {
+        currentProjectMemberId: currentProjectMember.id,
+      })
+      .execute();
+
     const session = new Session();
     session.projectMember = currentProjectMember;
     await session.save();

@@ -3,7 +3,7 @@ import React from 'react';
 import timeManagementSvg from '../../assets/time_management.svg';
 import mainAppCoverLogo from '../../assets/brand-logo.svg';
 import { Box, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
-import { noDragOrSelectCss } from '../utils';
+import { noDragOrSelectCss } from '../../utils';
 
 export default function LoginRegisterLayout({ children }) {
   const { colorMode } = useColorMode();

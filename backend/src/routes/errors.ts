@@ -58,3 +58,9 @@ export const accountAlreadyExistsError = (req: Request, res: Response) => {
     .status(HttpStatus.NOT_ACCEPTABLE)
     .json(error('ACCOUNT_ALREADY_EXISTS', 'There is already an account with that email address'));
 };
+
+export const alreadyProjectMemberError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_ACCEPTABLE)
+    .json(error('ALREADY_PROJECT_MEMBER', 'This user is already a member in the project'));
+};

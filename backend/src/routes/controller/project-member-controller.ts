@@ -2,7 +2,12 @@ import { isMemberPrivileged } from '../../utils';
 import { Request, Response } from 'express';
 import { ProjectMember } from '../../entity/ProjectMember';
 import HttpStatus from 'http-status-codes';
-import { accountNotFoundError, forbiddenError, resourceNotFoundError } from '../errors';
+import {
+  accountNotFoundError,
+  alreadyProjectMemberError,
+  forbiddenError,
+  resourceNotFoundError,
+} from '../errors';
 import { MailRequestType, MailToken } from '../../entity/MailToken';
 import { User } from '../../entity/User';
 import { TokenPayload } from '../middleware/auth-middleware';
@@ -73,6 +78,16 @@ const projectMemberController = {
       return accountNotFoundError(req, res);
     }
 
+    const currentMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.project = :projectId', { projectId })
+      .leftJoin('projectMember.user', 'user')
+      .andWhere('user.emailAddress = :emailAddress', { emailAddress })
+      .getOne();
+
+    if (currentMember) {
+      return alreadyProjectMemberError(req, res);
+    }
+
     const mailToken = new MailToken();
     mailToken.type = MailRequestType.PROJECT_INVITE;
     mailToken.expiresIn = -1;
@@ -85,7 +100,7 @@ const projectMemberController = {
     await mailToken.save();
 
     // TODO Send email with token link and whatever
-    // TODO Make sure this user is not already a member
+    // TODO Create the project member as soon as the user accepts the invitation
     // This has to wait until we have the frontend more or less ready
 
     res.sendStatus(HttpStatus.ACCEPTED);

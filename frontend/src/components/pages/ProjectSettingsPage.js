@@ -21,6 +21,7 @@ import {
   FormControl,
   Divider,
   InputGroup,
+  useColorMode,
 } from '@chakra-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
@@ -34,6 +35,7 @@ const requestProjectInvite = (projectId, emailAddress) => axios.post(`${projects
 
 function ProjectDeleteComponent({ projectInfo }) {
   const [typedProjectName, setTypedProjectName] = useState('');
+  const { colorMode } = useColorMode();
   const { addToast } = useToasts();
   const history = useHistory();
 
@@ -55,7 +57,7 @@ function ProjectDeleteComponent({ projectInfo }) {
   }, [projectInfo, history, addToast]);
 
   return (
-    <Box p={4} mt={12} bg="gray.100" rounded="md">
+    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
       <Heading as="h2" size="md">
         Borrar proyecto
       </Heading>
@@ -93,6 +95,7 @@ function ProjectDeleteComponent({ projectInfo }) {
 
 function ProjectInviteComponent({ projectInfo }) {
   const [emailAddress, setEmailAddress] = useState('');
+  const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
   const inviteUser = useCallback(() => {
@@ -112,6 +115,11 @@ function ProjectInviteComponent({ projectInfo }) {
               appearance: 'error',
               autoDismiss: true,
             });
+          } else if (err.response.data.error.type === 'ALREADY_PROJECT_MEMBER') {
+            addToast('Este usuario ya es un miembro del proyecto', {
+              appearance: 'error',
+              autoDismiss: true,
+            });
           }
         } else {
           addToast(`Ha ocurrido un error desconocido: ${err}`, {
@@ -123,7 +131,7 @@ function ProjectInviteComponent({ projectInfo }) {
   }, [projectInfo, emailAddress, addToast]);
 
   return (
-    <Box p={4} mt={12} bg="gray.100" rounded="md">
+    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
       <Heading as="h2" size="md">
         Invitar a usuario
       </Heading>
@@ -155,6 +163,7 @@ function ProjectInviteComponent({ projectInfo }) {
 
 function ProjectRenameComponent({ projectInfo, setProjectInfo }) {
   const [projectName, setProjectName] = useState('');
+  const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
   const inviteUser = useCallback(() => {
@@ -181,7 +190,7 @@ function ProjectRenameComponent({ projectInfo, setProjectInfo }) {
   }, [projectInfo, setProjectInfo, projectName, addToast]);
 
   return (
-    <Box p={4} mt={12} bg="gray.100" rounded="md">
+    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
       <Heading as="h2" size="md">
         Cambiar nombre de proyecto
       </Heading>
@@ -210,6 +219,7 @@ function ProjectRenameComponent({ projectInfo, setProjectInfo }) {
 
 function ProjectMembersComponent({ projectInfo }) {
   const [members, setMembers] = useState(null);
+  const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
   useEffect(() => {
@@ -226,7 +236,7 @@ function ProjectMembersComponent({ projectInfo }) {
   }, [addToast, projectInfo]);
 
   return (
-    <Box p={4} mt={12} bg="gray.100" rounded="md">
+    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
       <Heading as="h2" size="md">
         Miembros del proyecto
       </Heading>
@@ -238,7 +248,7 @@ function ProjectMembersComponent({ projectInfo }) {
           members.map((member) => (
             <ListItem
               key={member.id}
-              bg="white"
+              bg={colorMode === 'dark' ? 'gray.600' : 'gray.200'}
               p="3"
               _hover={{
                 transform: 'scale(1.01)',
@@ -288,7 +298,7 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
   );
 }
 
-function ProjectSettingsPage(props) {
+function ProjectSettingsPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const { projectId } = useParams();
 

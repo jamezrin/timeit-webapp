@@ -15,9 +15,8 @@ const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/se
 const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
-  const history = useHistory();
-
   const [sessionEvents, setSessionEvents] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     requestSessionEvents(sessionInfo.id).then((res) => {
@@ -46,11 +45,10 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
   );
 }
 
-function ProjectSessionPage(props) {
-  const { projectId, sessionId } = useParams();
-
+function ProjectSessionPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const [sessionInfo, setSessionInfo] = useState(null);
+  const { projectId, sessionId } = useParams();
 
   useEffect(() => {
     requestProjectInfo(projectId).then((response) => {
@@ -66,7 +64,7 @@ function ProjectSessionPage(props) {
 
   return (
     <MainLayout>
-      {sessionInfo ? (
+      {projectInfo && sessionInfo ? (
         <ProjectSessionContent projectInfo={projectInfo} sessionInfo={sessionInfo} />
       ) : (
         <FullPageLoadSpinner message="Cargando la sesión seleccionada" />
