@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { Box, Flex, Heading, IconButton, Text, useColorMode } from '@chakra-ui/core';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
-import AuthContext, { requestDeauthentication } from '../state/authenticationContext';
+import AuthContext, { requestDeauthentication } from '../../state/authenticationContext';
 import { useToasts } from 'react-toast-notifications';
 
 const MenuItems = ({ children }) => (

@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { Link as RouteLink, useHistory } from 'react-router-dom';
 
-import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
-import LoginRegisterLayout from '../layout/LoginRegisterLayout';
-import { useForm } from 'react-hook-form';
+import LoginRegisterLayout from '../../LoginRegisterLayout';
 import { useToasts } from 'react-toast-notifications';
+import { useForm } from 'react-hook-form';
 
 import {
   Button,
@@ -16,36 +16,32 @@ import {
   InputGroup,
   InputRightElement,
   Link,
-  List,
-  ListItem,
+  Text,
 } from '@chakra-ui/core';
 
-import AuthContext, { fetchAuthStatus, requestAuthentication } from '../../state/authenticationContext';
+import axios from 'axios';
 
-export default function LoginPage() {
+const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
+const requestRegister = (values) => axios.post(registerEndpoint, values, { withCredentials: true });
+
+export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm();
-  const [showPassword, setShowPassword] = useState(false);
-  const { addToast } = useToasts();
-  const location = useLocation();
   const history = useHistory();
-  const { setAuthStatus } = useContext(AuthContext);
+  const { addToast } = useToasts();
 
   async function onSubmit(values) {
     try {
-      await requestAuthentication(values);
-      fetchAuthStatus().then((authStatus) => {
-        setAuthStatus(authStatus);
+      await requestRegister(values);
 
-        addToast('Has iniciado sesión correctamente', {
-          appearance: 'success',
-          autoDismiss: true,
-        });
-
-        history.replace((location.state && location.state.previousLocation) || '/');
+      addToast('Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión', {
+        appearance: 'success',
+        autoDismiss: true,
       });
+
+      history.push('/login');
     } catch (err) {
-      if (err.response && err.response.data.error.type === 'INVALID_CREDENTIALS') {
-        addToast('Las credenciales introducidas no son validas', {
+      if (err.response.data.error.type === 'ACCOUNT_ALREADY_EXISTS') {
+        addToast('Ya existe una cuenta con ese correo electronico', {
           appearance: 'error',
           autoDismiss: true,
         });
@@ -53,30 +49,36 @@ export default function LoginPage() {
     }
   }
 
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <LoginRegisterLayout>
-      <Heading as="h1">Inicia sesión</Heading>
+      <Heading as="h1">Crea una cuenta</Heading>
 
-      <List mt={4}>
-        <ListItem>
-          Si no tienes una cuenta,&nbsp;
-          <Link as={RouteLink} to="/register" color="blue.500">
-            crea una nueva cuenta
-          </Link>
-        </ListItem>
-        <ListItem>
-          Si no te acuerdas de tu contraseña,&nbsp;
-          <Link as={RouteLink} to="/recover_password" color="blue.500">
-            recupera tu contraseña
-          </Link>
-        </ListItem>
-      </List>
+      <Text mt={4}>
+        O si ya tienes una cuenta,&nbsp;
+        <Link as={RouteLink} to="/login" color="blue.500">
+          inicia sesión
+        </Link>
+      </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={4} isInvalid={errors.emailAddress}>
           <FormLabel htmlFor="emailAddress">Correo electrónico</FormLabel>
           <Input name="emailAddress" id="emailAddress" type="email" placeholder="usuario@ejemplo.org" ref={register} />
           <FormErrorMessage>{errors.emailAddress && errors.emailAddress.message}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl mt={4} isInvalid={errors.firstName}>
+          <FormLabel htmlFor="firstName">Nombre</FormLabel>
+          <Input name="firstName" id="firstName" placeholder="John" ref={register} />
+          <FormErrorMessage>{errors.firstName && errors.firstName.message}</FormErrorMessage>
+        </FormControl>
+
+        <FormControl mt={4} isInvalid={errors.lastName}>
+          <FormLabel htmlFor="lastName">Apellidos</FormLabel>
+          <Input name="lastName" id="lastName" placeholder="Smith" ref={register} />
+          <FormErrorMessage>{errors.lastName && errors.lastName.message}</FormErrorMessage>
         </FormControl>
 
         <FormControl mt={4} isInvalid={errors.password}>

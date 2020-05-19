@@ -2,18 +2,18 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ColorModeProvider, CSSReset, theme, ThemeProvider, Flex } from '@chakra-ui/core';
+import { ColorModeProvider, CSSReset, Flex, theme, ThemeProvider } from '@chakra-ui/core';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
 import AuthContext, { AuthContextProvider } from './state/authenticationContext';
 
-import LoginPage from './components/pages/LoginPage';
-import ProjectListPage from './components/pages/ProjectListPage';
-import RegisterPage from './components/pages/RegisterPage';
+import LoginPage from './components/pages/LoginPage/LoginPage';
+import ProjectListPage from './components/pages/ProjectListPage/ProjectListPage';
+import RegisterPage from './components/pages/RegisterPage/RegisterPage';
 import AuthenticatedUserRoute from './components/routes/AuthenticatedUserRoute';
-import ProjectPage from './components/pages/ProjectPage';
-import FullPageLoadSpinner from './components/FullPageLoadSpinner';
-import ProjectSettingsPage from './components/pages/ProjectSettingsPage';
-import ProjectSessionPage from './components/pages/ProjectSessionPage';
+import ProjectPage from './components/pages/ProjectPage/ProjectPage';
+import FullPageLoadSpinner from './components/base/FullPageLoadSpinner';
+import ProjectSettingsPage from './components/pages/ProjectSettingsPage/ProjectSettingsPage';
+import ProjectSessionPage from './components/pages/ProjectSessionPage/ProjectSessionPage';
 
 const RecoverPasswordPage = () => 'Not yet implemented';
 

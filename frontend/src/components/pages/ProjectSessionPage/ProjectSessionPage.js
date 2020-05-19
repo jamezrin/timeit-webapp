@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import MainLayout from '../layout/MainLayout';
+import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button, Flex } from '@chakra-ui/core';
-import FullPageLoadSpinner from '../FullPageLoadSpinner';
+import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
-
 const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions';
 const requestSessionInfo = (sessionId) => axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true });
-
 const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/session_events';
 const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
 
