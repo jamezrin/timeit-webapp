@@ -7,7 +7,7 @@ import axios from 'axios';
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectMembers = (projectId) => axios.get(`${projectsEndpoint}/${projectId}/members`, { withCredentials: true }); // prettier-ignore
 
-function SelectProjectMember({ projectInfo, updateSelectedProjectMembers }) {
+function SelectProjectMember({ projectInfo, updateSelectedProjectMembers: updateProjectMembers }) {
   const [projectMembers, setProjectMembers] = useState(null);
   const { colorMode } = useColorMode();
   const chakraTheme = useTheme();
@@ -44,21 +44,21 @@ function SelectProjectMember({ projectInfo, updateSelectedProjectMembers }) {
 
   useEffect(() => {
     if (defaultProjectMember) {
-      updateSelectedProjectMembers([defaultProjectMember]);
+      updateProjectMembers([defaultProjectMember]);
     } else {
-      updateSelectedProjectMembers(null);
+      updateProjectMembers(null);
     }
-  }, [updateSelectedProjectMembers, defaultProjectMember]);
+  }, [updateProjectMembers, defaultProjectMember]);
 
   const handleSelectChange = useCallback(
     (data) => {
-      if (!data || data.length === 0) {
-        updateSelectedProjectMembers(null);
+      if (data && data.length > 0) {
+        updateProjectMembers(data);
       } else {
-        updateSelectedProjectMembers(data);
+        updateProjectMembers(null);
       }
     },
-    [updateSelectedProjectMembers],
+    [updateProjectMembers],
   );
 
   const selectStyles = useMemo(() => {
@@ -133,19 +133,15 @@ function SelectProjectMember({ projectInfo, updateSelectedProjectMembers }) {
   }, [chakraTheme, colorMode]);
 
   return (
-    <Box maxWidth="20rem">
-      {projectMemberOptions && (
-        <>
-          <Select
-            defaultValue={[defaultProjectMember]}
-            options={projectMemberOptions}
-            onChange={handleSelectChange}
-            styles={selectStyles}
-            isMulti
-          />
-        </>
-      )}
-    </Box>
+    projectMemberOptions && (
+      <Select
+        defaultValue={[defaultProjectMember]}
+        options={projectMemberOptions}
+        onChange={handleSelectChange}
+        styles={selectStyles}
+        isMulti
+      />
+    )
   );
 }
 

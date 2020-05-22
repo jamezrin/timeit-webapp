@@ -13,7 +13,7 @@ const projectSessionControler = {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
-    const { memberIds } = req.query;
+    const { memberIds, startDate, endDate } = req.query;
 
     // Current user as a member of the current project
     const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
@@ -27,7 +27,9 @@ const projectSessionControler = {
 
     const sessionQueryBuilder = Session.createQueryBuilder('session')
       .leftJoin('session.projectMember', 'projectMember')
-      .where('projectMember.project = :projectId', { projectId });
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('session.createdAt BETWEEN :startDate AND :endDate', { startDate, endDate })
+      .orderBy('session.updatedAt', 'DESC');
 
     if (isMemberPrivileged(currentProjectMember)) {
       if (memberIds) {

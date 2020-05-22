@@ -62,6 +62,8 @@ function InviteProjectSettings({ projectInfo }) {
 
       <InputGroup mt={4}>
         <Input
+          width="auto"
+          flexGrow="1"
           name="projectName"
           id="projectName"
           type="text"
@@ -70,7 +72,7 @@ function InviteProjectSettings({ projectInfo }) {
           onChange={(e) => setEmailAddress(e.target.value)}
         />
 
-        <Button ml={6} px={6} variantColor="blue" onClick={inviteUser}>
+        <Button ml={6} variantColor="blue" onClick={inviteUser}>
           Invitar usuario
         </Button>
       </InputGroup>

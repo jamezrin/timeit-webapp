@@ -13,7 +13,7 @@ const dataController = {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
       const { projectId } = req.params;
-      const { memberIds } = req.query;
+      const { memberIds, startDate, endDate } = req.query;
 
       // TODO: Include from/to period
 
@@ -130,7 +130,12 @@ const dataController = {
       }
       */
 
-      res.status(HttpStatus.OK).json(allStats[0]);
+      res.status(HttpStatus.OK).json({
+        queryRes: allStats[0],
+        memberIds: memberIds,
+        startDate: startDate,
+        endDate: endDate,
+      });
     };
   },
   sessionEvents(conn: Connection) {

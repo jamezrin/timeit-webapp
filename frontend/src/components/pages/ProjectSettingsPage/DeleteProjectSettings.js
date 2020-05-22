@@ -45,6 +45,8 @@ function DeleteProjectSettings({ projectInfo }) {
 
       <InputGroup mt={4}>
         <Input
+          width="auto"
+          flexGrow="1"
           name="projectName"
           id="projectName"
           type="text"
@@ -53,13 +55,7 @@ function DeleteProjectSettings({ projectInfo }) {
           onChange={(e) => setTypedProjectName(e.target.value)}
         />
 
-        <Button
-          ml={6}
-          px={6}
-          variantColor="red"
-          disabled={typedProjectName !== projectInfo.name}
-          onClick={deleteProject}
-        >
+        <Button ml={6} variantColor="red" disabled={typedProjectName !== projectInfo.name} onClick={deleteProject}>
           Borrar proyecto
         </Button>
       </InputGroup>

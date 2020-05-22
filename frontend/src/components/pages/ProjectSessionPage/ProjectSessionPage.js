@@ -22,6 +22,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
     });
   }, [sessionInfo]);
 
+  // TODO: https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md
   return (
     <Flex direction="column" py={10} mx={8}>
       <Flex mb={12}>

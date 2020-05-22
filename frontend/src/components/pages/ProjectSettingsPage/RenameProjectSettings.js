@@ -46,6 +46,8 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
 
       <InputGroup mt={4}>
         <Input
+          width="auto"
+          flexGrow="1"
           name="projectName"
           id="projectName"
           type="text"
@@ -54,7 +56,7 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
           onChange={(e) => setProjectName(e.target.value)}
         />
 
-        <Button ml={6} px={6} variantColor="blue" onClick={inviteUser}>
+        <Button ml={6} variantColor="blue" onClick={inviteUser}>
           Cambiar nombre
         </Button>
       </InputGroup>
