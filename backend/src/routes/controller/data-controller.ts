@@ -6,6 +6,7 @@ import HttpStatus from 'http-status-codes';
 import { Connection } from 'typeorm';
 import { Session } from '../../entity/Session';
 import { isMemberPrivileged } from '../../utils';
+import { start } from 'repl';
 
 const dataController = {
   projectStats(conn: Connection) {
@@ -67,12 +68,12 @@ const dataController = {
           periodStats.*
         FROM (
           SELECT 
-            SUM(session.id) AS "lastMonthStats_hoursSum",
-            AVG(session.id) AS "lastMonthStats_hoursAvg",
-            MIN(session.id) AS "lastMonthStats_hoursMin",
-            MAX(session.id) AS "lastMonthStats_hoursMax"
+            SUM(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursSum",
+            AVG(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursAvg",
+            MIN(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursMin",
+            MAX(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursMax"
           FROM session
-          WHERE session.id < 10
+          WHERE session."createdAt" BETWEEN $1 AND $2
         ) AS lastMonthStats, (
           SELECT 
             SUM(session.id) AS "lastWeekStats_hoursSum",
@@ -80,7 +81,7 @@ const dataController = {
             MIN(session.id) AS "lastWeekStats_hoursMin",
             MAX(session.id) AS "lastWeekStats_hoursMax"
           FROM session
-          WHERE session.id < 20
+          WHERE session."createdAt" BETWEEN $1 AND $2
         ) AS lastWeekStats, (
           SELECT 
             SUM(session.id) AS "lastDayStats_hoursSum",
@@ -88,7 +89,7 @@ const dataController = {
             MIN(session.id) AS "lastDayStats_hoursMin",
             MAX(session.id) AS "lastDayStats_hoursMax"
           FROM session
-          WHERE session.id < 30
+          WHERE session."createdAt" BETWEEN $1 AND $2
         ) AS lastDayStats, (
           SELECT 
             SUM(session.id) AS "periodStats_hoursSum",
@@ -96,46 +97,13 @@ const dataController = {
             MIN(session.id) AS "periodStats_hoursMin",
             MAX(session.id) AS "periodStats_hoursMax"
           FROM session
-          WHERE session.id < 40
+          WHERE session."createdAt" BETWEEN $1 AND $2
         ) AS periodStats;
         `,
-        [],
+        [startDate, endDate],
       );
 
-      /*
-      {
-        lastMonthStats: {
-          hoursSum: 400,
-          hoursAvg: 200,
-          hoursMin: 200,
-          hoursMax: 200,
-        },
-        lastWeekStats: {
-          hoursSum: 80,
-          hoursAvg: 40,
-          hoursMin: 40,
-          hoursMax: 40,
-        },
-        lastDayStats: {
-          hoursSum: 16,
-          hoursAvg: 8,
-          hoursMin: 8,
-          hoursMax: 8,
-        },
-        periodStats: {
-          hoursSum: 400,
-          periodDays: 30,
-          daysWithTracking: 30,
-        },
-      }
-      */
-
-      res.status(HttpStatus.OK).json({
-        queryRes: allStats[0],
-        memberIds: memberIds,
-        startDate: startDate,
-        endDate: endDate,
-      });
+      res.status(HttpStatus.OK).json(allStats[0]);
     };
   },
   sessionEvents(conn: Connection) {

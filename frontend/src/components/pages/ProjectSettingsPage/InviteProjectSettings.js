@@ -56,8 +56,8 @@ function InviteProjectSettings({ projectInfo }) {
       <Divider />
 
       <Text mt={4}>
-        Invita a un usuario para monitorizar su trabajo. Podrás cambiar su rol en la lista de miembros. Aparecerá al
-        aceptar la invitación.
+        Invita a un usuario para monitorizar su trabajo. Podrás cambiar su rol en la lista de miembros. Aparecerá como
+        un miembro cuando acepte la invitación.
       </Text>
 
       <InputGroup mt={4}>
