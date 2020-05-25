@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, useColorMode, useTheme } from '@chakra-ui/core';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useColorMode, useTheme } from '@chakra-ui/core';
 import { isMemberPrivileged } from '../../../utils';
 import Select from 'react-select';
-import axios from 'axios';
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectMembers = (projectId) => axios.get(`${projectsEndpoint}/${projectId}/members`, { withCredentials: true }); // prettier-ignore
-
-function SelectProjectMember({ projectInfo, updateSelectedProjectMembers: updateProjectMembers }) {
-  const [projectMembers, setProjectMembers] = useState(null);
+function SelectProjectMember({
+  projectInfo,
+  projectMembers,
+  onSelectedMemberChange: _onSelectedMemberChange,
+}) {
   const { colorMode } = useColorMode();
   const chakraTheme = useTheme();
 
@@ -36,29 +35,29 @@ function SelectProjectMember({ projectInfo, updateSelectedProjectMembers: update
     });
   }, [projectMemberOptions, projectInfo]);
 
-  useEffect(() => {
-    requestProjectMembers(projectInfo.id).then((res) => {
-      setProjectMembers(res.data);
-    });
-  }, [projectInfo]);
+  const onSelectedMemberChange = useCallback(_onSelectedMemberChange, []);
 
   useEffect(() => {
     if (defaultProjectMember) {
-      updateProjectMembers([defaultProjectMember]);
+      onSelectedMemberChange([defaultProjectMember.value]);
     } else {
-      updateProjectMembers(null);
+      onSelectedMemberChange([]);
     }
-  }, [updateProjectMembers, defaultProjectMember]);
+  }, [onSelectedMemberChange, defaultProjectMember]);
 
   const handleSelectChange = useCallback(
-    (data) => {
-      if (data && data.length > 0) {
-        updateProjectMembers(data);
+    (selectedProjectMembers) => {
+      if (selectedProjectMembers) {
+        onSelectedMemberChange(
+          selectedProjectMembers.map(
+            (selectedProjectMember) => selectedProjectMember.value,
+          ),
+        );
       } else {
-        updateProjectMembers(null);
+        onSelectedMemberChange([]);
       }
     },
-    [updateProjectMembers],
+    [onSelectedMemberChange],
   );
 
   const selectStyles = useMemo(() => {

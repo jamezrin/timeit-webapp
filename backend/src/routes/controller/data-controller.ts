@@ -16,8 +16,6 @@ const dataController = {
       const { projectId } = req.params;
       const { memberIds, startDate, endDate } = req.query;
 
-      // TODO: Include from/to period
-
       // Current user as a member of the current project
       const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
         .where('projectMember.project = :projectId', { projectId })
@@ -28,79 +26,91 @@ const dataController = {
         return resourceNotFoundError(req, res);
       }
 
-      // TODO: Actually implement all these types of stats
       /*
-      const allStats = await conn.query(
-        `
-         SELECT 
-           (SELECT 1 AS x) AS "lastMonthStats_hoursSum",
-           (SELECT 1 AS x) AS "lastMonthStats_hoursAvg",
-           (SELECT 1 AS x) AS "lastMonthStats_hoursMin",
-           (SELECT 1 AS x) AS "lastMonthStats_hoursMax",
-           (SELECT 1 AS x) AS "lastWeekStats_hoursSum",
-           (SELECT 1 AS x) AS "lastWeekStats_hoursAvg",
-           (SELECT 1 AS x) AS "lastWeekStats_hoursMin",
-           (SELECT 1 AS x) AS "lastWeekStats_hoursMax",
-           (SELECT 1 AS x) AS "lastDayStats_hoursSum",
-           (SELECT 1 AS x) AS "lastDayStats_hoursAvg",
-           (SELECT 1 AS x) AS "lastDayStats_hoursMin",
-           (SELECT 1 AS x) AS "lastDayStats_hoursMax",
-           (SELECT 1 AS x) AS "periodStats_hoursSum",
-           (SELECT 1 AS x) AS "periodStats_periodDays",
-           (SELECT 1 AS x) AS "periodStats_daysWithTracking";
-      `,
-        //[projectId, memberIds],
-      );
+      if (isMemberPrivileged(currentProjectMember)) {
+        if (memberIds) {
+          sessionQueryBuilder.andWhere('projectMember.id IN (:...memberIds)', {
+            memberIds: [].concat(memberIds),
+          });
+        }
+      } else {
+        sessionQueryBuilder.andWhere('projectMember.id = :currentProjectMemberId', {
+          currentProjectMemberId: currentProjectMember.id,
+        });
+      }
       */
 
       /*
-      SUM(session.id) AS theSum,
-      AVG(session.id) AS theAvg,
-      MIN(session.id) AS theMin,
-      MAX(session.id) AS theMax
+      AND project_member.id IN ($2)
+      AND project.id = $1
       */
-
+      // TODO Also add members below
       const allStats = await conn.query(
         `
-        SELECT lastMonthStats.*, 
-          lastWeekStats.*, 
-          lastDayStats.*, 
-          periodStats.*
-        FROM (
-          SELECT 
-            SUM(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursSum",
-            AVG(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursAvg",
-            MIN(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursMin",
-            MAX(session."endedAt" - session."createdAt") AS "lastMonthStats_hoursMax"
-          FROM session
-          WHERE session."createdAt" BETWEEN $1 AND $2
-        ) AS lastMonthStats, (
-          SELECT 
-            SUM(session.id) AS "lastWeekStats_hoursSum",
-            AVG(session.id) AS "lastWeekStats_hoursAvg",
-            MIN(session.id) AS "lastWeekStats_hoursMin",
-            MAX(session.id) AS "lastWeekStats_hoursMax"
-          FROM session
-          WHERE session."createdAt" BETWEEN $1 AND $2
-        ) AS lastWeekStats, (
-          SELECT 
-            SUM(session.id) AS "lastDayStats_hoursSum",
-            AVG(session.id) AS "lastDayStats_hoursAvg",
-            MIN(session.id) AS "lastDayStats_hoursMin",
-            MAX(session.id) AS "lastDayStats_hoursMax"
-          FROM session
-          WHERE session."createdAt" BETWEEN $1 AND $2
-        ) AS lastDayStats, (
-          SELECT 
-            SUM(session.id) AS "periodStats_hoursSum",
-            AVG(session.id) AS "periodStats_hoursAvg",
-            MIN(session.id) AS "periodStats_hoursMin",
-            MAX(session.id) AS "periodStats_hoursMax"
-          FROM session
-          WHERE session."createdAt" BETWEEN $1 AND $2
-        ) AS periodStats;
+        WITH allSessionsCte AS (
+          SELECT session.*,
+            EXTRACT(EPOCH FROM (
+                COALESCE(
+                  session."endedAt",
+                  session."updatedAt"
+                ) - session."createdAt"
+            )) AS "durationSeconds"
+            FROM session 
+            LEFT JOIN project_member
+              ON project_member.id = session."projectMemberId"
+            LEFT JOIN project
+              ON project.id = project_member."projectId"
+            WHERE session."createdAt" BETWEEN $1 AND $2
+              AND project.id = $3
+              AND project_member.id IN ($4)
+        )
+        SELECT currentPeriodStats.*,
+          lastMonthStats.*
+          FROM (
+            WITH currentPeriodSessionsCte AS (
+              SELECT allSessionsCte.*,
+                FLOOR(allSessionsCte."durationSeconds" / 3600)
+                  AS "durationHours",
+                FLOOR(allSessionsCte."durationSeconds" / 60)
+                  AS "durationMinutes"
+              FROM allSessionsCte
+            ) 
+            SELECT 
+              COALESCE(
+                SUM(currentPeriodSessionsCte."durationHours"),
+                0
+              ) AS "currentPeriodStatsHourSum",
+              COALESCE(
+                AVG(currentPeriodSessionsCte."durationHours"), 
+                0
+              ) AS "currentPeriodStatsHourAvg",
+              COALESCE(
+                MIN(currentPeriodSessionsCte."durationHours"),
+                0
+              ) AS "currentPeriodStatsHourMin",
+              COALESCE(
+                MAX(currentPeriodSessionsCte."durationHours"),
+                0
+              ) AS "currentPeriodStatsHourMax",
+              COUNT(currentPeriodSessionsCte.id)::integer 
+                AS "currentPeriodStatsCount"
+            FROM currentPeriodSessionsCte
+          ) AS currentPeriodStats, (
+            WITH lastMonthSessionsCte AS (
+              SELECT allSessionsCte.*,
+                FLOOR(allSessionsCte."durationSeconds" / 3600)
+                  AS "durationHours"
+              FROM allSessionsCte
+            )
+            SELECT 
+              SUM(allSessionsCte.id) AS "lastMonthStatsHourSum",
+              AVG(allSessionsCte.id) AS "lastMonthStatsHourAvg",
+              MIN(allSessionsCte.id) AS "lastMonthStatsHourMin",
+              MAX(allSessionsCte.id) AS "lastMonthStatsHourMax"
+            FROM allSessionsCte
+          ) AS lastMonthStats
         `,
-        [startDate, endDate],
+        [startDate, endDate, projectId, [].concat(memberIds).join(',')],
       );
 
       res.status(HttpStatus.OK).json(allStats[0]);

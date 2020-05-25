@@ -44,6 +44,10 @@ async function startExpress(conn: Connection) {
 
 createConnection()
   .then(async (connection) => {
+    await connection.query(`
+      SET timezone 
+      TO 'Europe/Madrid'`);
+
     await startExpress(connection);
   })
   .catch((error) => console.log(error));

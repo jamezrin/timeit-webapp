@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ProjectMember, ProjectMemberRole } from './entity/ProjectMember';
 import { Project } from './entity/Project';
 import { UpdateResult } from 'typeorm';
+import { Session } from './entity/Session';
 
 // https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
 export const wrapAsync = (fn: Function) => (req: Request, res: Response, next: NextFunction) => {
@@ -22,3 +23,15 @@ export const isMemberPrivileged = (projectMember: ProjectMember): boolean =>
 // Meant to be used when some kind of activity happens inside a project
 export const updateProjectDate = (projectId: number): Promise<UpdateResult> =>
   Project.update(projectId, {});
+
+export const endAllOpenSessions = (projectMember) =>
+  Session.createQueryBuilder()
+    .update()
+    .set({
+      endedAt: new Date(Date.now()),
+    })
+    .where('projectMember = :currentProjectMemberId', {
+      currentProjectMemberId: projectMember.id,
+    })
+    .andWhere('endedAt IS NULL')
+    .execute();

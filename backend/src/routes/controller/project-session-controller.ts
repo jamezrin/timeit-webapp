@@ -4,7 +4,7 @@ import HttpStatus from 'http-status-codes';
 import { Session } from '../../entity/Session';
 import { resourceNotFoundError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
-import { isMemberPrivileged } from '../../utils';
+import { endAllOpenSessions, isMemberPrivileged } from '../../utils';
 import { BaseEntity, Connection } from 'typeorm';
 import { SessionAppEvent } from '../../entity/SessionAppEvent';
 
@@ -29,6 +29,7 @@ const projectSessionControler = {
       .leftJoin('session.projectMember', 'projectMember')
       .where('projectMember.project = :projectId', { projectId })
       .andWhere('session.createdAt BETWEEN :startDate AND :endDate', { startDate, endDate })
+      .loadRelationIdAndMap('session.projectMemberId', 'session.projectMember')
       .orderBy('session.updatedAt', 'DESC');
 
     if (isMemberPrivileged(currentProjectMember)) {
@@ -62,15 +63,7 @@ const projectSessionControler = {
     }
 
     // Ends previous sessions
-    await Session.createQueryBuilder()
-      .update()
-      .set({
-        endedAt: new Date(Date.now()),
-      })
-      .where('projectMember = :currentProjectMemberId', {
-        currentProjectMemberId: currentProjectMember.id,
-      })
-      .execute();
+    // await endAllOpenSessions(currentProjectMember);
 
     const session = new Session();
     session.projectMember = currentProjectMember;
@@ -98,7 +91,10 @@ const projectSessionControler = {
 
     // prettier-ignore
     const sessionQueryBuilder = Session.createQueryBuilder('session')
-      .where('session.id = :sessionId', { sessionId });
+      .where('session.id = :sessionId', { sessionId })
+      .loadRelationCountAndMap('session.appEventCount', 'session.sessionAppEvents')
+      .loadRelationCountAndMap('session.noteCount', 'session.sessionNotes')
+      .loadRelationIdAndMap('session.projectMemberId', 'session.projectMember');
 
     // Ensure the session being looked up is owned by the current member
     if (!isMemberPrivileged(currentProjectMember)) {
@@ -151,6 +147,8 @@ const projectSessionControler = {
     }
 
     // Set the date the session ends to right now
+    // TODO Check if the end date is too far off
+    // TODO if that is the case do not update
     session.endedAt = new Date(Date.now());
 
     await session.save();

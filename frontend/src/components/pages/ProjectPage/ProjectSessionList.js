@@ -2,11 +2,11 @@ import { List, ListItem, PseudoBox, useColorMode } from '@chakra-ui/core';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
-function ProjectSessionList({ sessions, projectInfo }) {
+function ProjectSessionList({ getMemberFullName, sessions, projectInfo }) {
   const { colorMode } = useColorMode();
 
   return (
-    <List mt={12}>
+    <List>
       {sessions &&
         sessions.map((session) => (
           <ListItem key={session.id}>
@@ -14,13 +14,14 @@ function ProjectSessionList({ sessions, projectInfo }) {
               <PseudoBox
                 bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
                 shadow="md"
-                p={6}
+                p={3}
                 mb={4}
                 _hover={{
                   transform: 'scale(1.03)',
                 }}
               >
-                Sesión {session.id}
+                Sesión {session.id} | {session.createdAt} |{' '}
+                {session.endedAt || 'En curso'}
               </PseudoBox>
             </Link>
           </ListItem>

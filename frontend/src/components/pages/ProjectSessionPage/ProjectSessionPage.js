@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import { Button, Flex } from '@chakra-ui/core';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
+import { InfiniteLoader, List } from 'react-virtualized';
+import 'react-virtualized/styles.css';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
@@ -13,16 +15,34 @@ const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/se
 const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
-  const [sessionEvents, setSessionEvents] = useState(null);
   const history = useHistory();
 
-  useEffect(() => {
-    requestSessionEvents(sessionInfo.id).then((res) => {
-      setSessionEvents(res.data);
-    });
-  }, [sessionInfo]);
+  const [sessionEvents, setSessionEvents] = useState([]);
 
-  // TODO: https://github.com/bvaughn/react-virtualized/blob/master/docs/InfiniteLoader.md
+  const loadMoreRows = useCallback(
+    ({ startIndex, stopIndex }) => {
+      console.log('load more', { startIndex, stopIndex });
+      requestSessionEvents(sessionInfo.id).then((res) => {
+        setSessionEvents([...sessionEvents, ...res.data]);
+      });
+    },
+    [sessionInfo, sessionEvents],
+  );
+
+  const isRowLoaded = ({ index }) => {
+    return !!sessionEvents[index];
+  };
+
+  const rowRenderer = ({ key, index, style }) => {
+    return (
+      <div key={key} style={{ ...style, overflow: 'hidden' }}>
+        {JSON.stringify(sessionEvents[index])}
+      </div>
+    );
+  };
+
+  const remoteRowCount = 20000;
+
   return (
     <Flex direction="column" py={10} mx={8}>
       <Flex mb={12}>
@@ -36,10 +56,20 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           {projectInfo.name || 'Proyecto sin nombre'}
         </Button>
       </Flex>
-
-      <pre>{JSON.stringify(projectInfo, '', 4)}</pre>
       <pre>{JSON.stringify(sessionInfo, '', 4)}</pre>
-      <pre>{JSON.stringify(sessionEvents, '', 4)}</pre>
+      <InfiniteLoader loadMoreRows={loadMoreRows} isRowLoaded={isRowLoaded} rowCount={remoteRowCount}>
+        {({ onRowsRendered, registerChild }) => (
+          <List
+            onRowsRendered={onRowsRendered}
+            ref={registerChild}
+            rowCount={remoteRowCount}
+            rowHeight={20}
+            rowRenderer={rowRenderer}
+            height={900}
+            width={900}
+          />
+        )}
+      </InfiniteLoader>
     </Flex>
   );
 }

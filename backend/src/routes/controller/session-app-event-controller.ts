@@ -80,6 +80,9 @@ const sessionAppEventController = {
     sessionAppEvent.session = session;
     await sessionAppEvent.save();
 
+    // Update the session updatedAt date
+    await Session.update(session.id, {});
+
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getAppEvent(req: Request, res: Response) {

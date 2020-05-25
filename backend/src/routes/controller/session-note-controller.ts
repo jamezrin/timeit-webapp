@@ -82,6 +82,9 @@ const sessionNoteController = {
     sessionNote.session = session;
     await sessionNote.save();
 
+    // Update the session updatedAt date
+    await Session.update(session.id, {});
+
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getNote(req: Request, res: Response) {

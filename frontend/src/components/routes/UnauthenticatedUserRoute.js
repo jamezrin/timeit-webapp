@@ -1,8 +1,11 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import AuthContext from '../../state/authenticationContext';
 
-export default function UnauthenticatedUserRoute({ component: Component, ...rest }) {
+export default function UnauthenticatedUserRoute({
+  component: ChildComponent,
+  ...rest
+}) {
   const { authStatus } = useContext(AuthContext);
 
   return (
@@ -10,7 +13,7 @@ export default function UnauthenticatedUserRoute({ component: Component, ...rest
       {...rest}
       render={(props) => {
         if (!authStatus.isAuthenticated) {
-          return <Component {...props} />;
+          return <ChildComponent {...props} />;
         }
 
         return (
