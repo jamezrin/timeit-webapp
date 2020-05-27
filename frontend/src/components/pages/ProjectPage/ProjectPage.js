@@ -147,7 +147,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
 
         <Box mt={8}>
           <Heading as="h2" size="lg" mb={3}>
-            En resumen
+            Estadisticas
           </Heading>
           <ProjectStatIndicators
             projectInfo={projectInfo}
@@ -164,7 +164,11 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
               : 'Desconocido'}
             )
           </Heading>
-          <ProjectSessionList projectInfo={projectInfo} sessions={sessions} />
+          <ProjectSessionList
+            projectInfo={projectInfo}
+            sessions={sessions}
+            projectMembers={projectMembers}
+          />
         </Box>
       </Box>
     </Box>

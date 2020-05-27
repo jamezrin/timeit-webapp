@@ -1,11 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
-import { Button, Flex } from '@chakra-ui/core';
+import { Button, Box, Flex, Heading } from '@chakra-ui/core';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { InfiniteLoader, List } from 'react-virtualized';
-import 'react-virtualized/styles.css';
+
+import BaseTable, { Column } from 'react-base-table';
+import 'react-base-table/styles.css';
+
+import useWindowDimensions from '../../../hooks/windowDimensionsHook';
+import { parseAndFormatDate } from '../../../utils';
+import styled from '@emotion/styled';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) =>
@@ -20,32 +25,40 @@ const requestSessionEvents = (sessionId) =>
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const history = useHistory();
-
+  const tableWrapperRef = useRef();
   const [sessionEvents, setSessionEvents] = useState([]);
+  const { height } = useWindowDimensions();
 
-  const loadMoreRows = useCallback(
-    ({ startIndex, stopIndex }) => {
-      console.log('load more', { startIndex, stopIndex });
-      requestSessionEvents(sessionInfo.id).then((res) => {
-        setSessionEvents([...sessionEvents, ...res.data]);
-      });
-    },
-    [sessionInfo, sessionEvents],
-  );
+  useEffect(() => {
+    requestSessionEvents(sessionInfo.id).then((res) => {
+      setSessionEvents(res.data);
+    });
+  }, [sessionInfo]);
 
-  const isRowLoaded = ({ index }) => {
-    return !!sessionEvents[index];
-  };
-
-  const rowRenderer = ({ key, index, style }) => {
-    return (
-      <div key={key} style={{ ...style, overflow: 'hidden' }}>
-        {JSON.stringify(sessionEvents[index])}
-      </div>
-    );
-  };
-
-  const remoteRowCount = 20000;
+  const data = useMemo(() => {
+    if (!sessionEvents) return [];
+    return sessionEvents.map((event) => {
+      if (event.type === 'app_event') {
+        return {
+          id: event.id,
+          keyType: 'App',
+          keyTimes: event.data.eventCount,
+          keyDate: parseAndFormatDate(event.createdAt),
+          keyContent: `${event.data.windowName} (${event.data.windowClass} ${event.data.windowPid})`,
+        };
+      } else if (event.type === 'note') {
+        return {
+          id: event.id,
+          keyType: 'Nota',
+          keyTimes: 1,
+          keyDate: parseAndFormatDate(event.createdAt),
+          keyContent: event.data.text,
+        };
+      } else {
+        return null;
+      }
+    });
+  }, [sessionEvents]);
 
   return (
     <Flex direction="column" py={10} mx={8}>
@@ -60,24 +73,51 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           {projectInfo.name || 'Proyecto sin nombre'}
         </Button>
       </Flex>
-      <pre>{JSON.stringify(sessionInfo, '', 4)}</pre>
-      <InfiniteLoader
-        loadMoreRows={loadMoreRows}
-        isRowLoaded={isRowLoaded}
-        rowCount={remoteRowCount}
-      >
-        {({ onRowsRendered, registerChild }) => (
-          <List
-            onRowsRendered={onRowsRendered}
-            ref={registerChild}
-            rowCount={remoteRowCount}
-            rowHeight={20}
-            rowRenderer={rowRenderer}
-            height={900}
-            width={900}
+      <Box ref={tableWrapperRef} width="100%" mx={8}>
+        <Heading as="h2" size="lg" mb={3}>
+          Lista de eventos
+        </Heading>
+        <BaseTable
+          data={data}
+          height={height - 300}
+          width={
+            tableWrapperRef.current ? tableWrapperRef.current.offsetWidth : 0
+          }
+        >
+          <Column
+            key="keyType"
+            dataKey="keyType"
+            title="Tipo de evento"
+            resizable={true}
+            width={80}
           />
-        )}
-      </InfiniteLoader>
+          <Column
+            key="keyDate"
+            dataKey="keyDate"
+            title="Fecha de creación"
+            resizable={true}
+            width={200}
+          />
+          <Column
+            key="keyTimes"
+            dataKey="keyTimes"
+            title="Ocurrencias"
+            resizable={true}
+            width={100}
+          />
+          <Column
+            key="keyContent"
+            dataKey="keyContent"
+            title="Contenido"
+            resizable={false}
+            width={
+              tableWrapperRef.current
+                ? tableWrapperRef.current.offsetWidth - (80 + 200 + 100)
+                : 0
+            }
+          />
+        </BaseTable>
+      </Box>
     </Flex>
   );
 }
