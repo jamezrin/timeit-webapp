@@ -12,4 +12,4 @@ export const isMemberPrivileged = (projectMember) =>
   projectMember.role === 'admin' || projectMember.role === 'employer';
 
 export const parseAndFormatDate = (dateString) =>
-  moment(dateString).format('HH:mm:ss DD-MM-YYYY');
+  moment(dateString).format('HH:mm:ss DD/MM/YYYY');
