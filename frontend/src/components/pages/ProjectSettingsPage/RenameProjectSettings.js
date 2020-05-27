@@ -1,10 +1,24 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Divider, Heading, Input, InputGroup, Text, useColorMode } from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Divider,
+  Heading,
+  Input,
+  InputGroup,
+  Text,
+  useColorMode,
+} from '@chakra-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectRename = (projectId, name) => axios.patch(`${projectsEndpoint}/${projectId}`, { name }, { withCredentials: true }); // prettier-ignore
+const requestProjectRename = (projectId, name) =>
+  axios.patch(
+    `${projectsEndpoint}/${projectId}`,
+    { name },
+    { withCredentials: true },
+  );
 
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {
   const [projectName, setProjectName] = useState('');
@@ -35,7 +49,12 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
   }, [projectInfo, setProjectInfo, projectName, addToast]);
 
   return (
-    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
+    <Box
+      p={4}
+      mt={12}
+      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+      rounded="md"
+    >
       <Heading as="h2" size="md">
         Cambiar nombre de proyecto
       </Heading>

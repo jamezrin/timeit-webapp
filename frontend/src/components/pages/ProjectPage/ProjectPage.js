@@ -123,7 +123,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
           direction={{ base: 'column', md: 'row' }}
           alignItems={{ base: 'start', md: 'center' }}
         >
-          <Box width="20rem">
+          <Box width="30rem">
             <SelectProjectMember
               projectInfo={projectInfo}
               projectMembers={projectMembers}

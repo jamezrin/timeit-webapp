@@ -8,11 +8,15 @@ import { InfiniteLoader, List } from 'react-virtualized';
 import 'react-virtualized/styles.css';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
+const requestProjectInfo = (projectId) =>
+  axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
 const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions';
-const requestSessionInfo = (sessionId) => axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true });
-const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/session_events';
-const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
+const requestSessionInfo = (sessionId) =>
+  axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true });
+const sessionEventEndpoint =
+  process.env.REACT_APP_BACKEND_URL + '/data_query/session_events';
+const requestSessionEvents = (sessionId) =>
+  axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true });
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const history = useHistory();
@@ -57,7 +61,11 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
         </Button>
       </Flex>
       <pre>{JSON.stringify(sessionInfo, '', 4)}</pre>
-      <InfiniteLoader loadMoreRows={loadMoreRows} isRowLoaded={isRowLoaded} rowCount={remoteRowCount}>
+      <InfiniteLoader
+        loadMoreRows={loadMoreRows}
+        isRowLoaded={isRowLoaded}
+        rowCount={remoteRowCount}
+      >
         {({ onRowsRendered, registerChild }) => (
           <List
             onRowsRendered={onRowsRendered}
@@ -94,7 +102,10 @@ function ProjectSessionPage() {
   return (
     <MainLayout>
       {projectInfo && sessionInfo ? (
-        <ProjectSessionContent projectInfo={projectInfo} sessionInfo={sessionInfo} />
+        <ProjectSessionContent
+          projectInfo={projectInfo}
+          sessionInfo={sessionInfo}
+        />
       ) : (
         <FullPageLoadSpinner message="Cargando la sesión seleccionada" />
       )}

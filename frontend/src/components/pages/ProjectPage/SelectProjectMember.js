@@ -17,8 +17,10 @@ function SelectProjectMember({
       .filter((projectMember) => {
         // If we are ourselves, we obviously have access to our own metrics
         // If we are admins or employers, we have access to the metrics of everyone
-        return projectMember.id === projectInfo.projectMember.id ||
-          isMemberPrivileged(projectInfo.projectMember); // prettier-ignore
+        return (
+          projectMember.id === projectInfo.projectMember.id ||
+          isMemberPrivileged(projectInfo.projectMember)
+        );
       })
       .map((projectMember) => {
         return {
@@ -60,6 +62,7 @@ function SelectProjectMember({
     [onSelectedMemberChange],
   );
 
+  // TODO Mejorar esto
   const selectStyles = useMemo(() => {
     return {
       control: (styles) => {
@@ -110,12 +113,10 @@ function SelectProjectMember({
         };
       },
       multiValueLabel: (styles, { data }) => {
-        if (colorMode !== 'dark') {
-          return styles;
-        }
-
         return {
           ...styles,
+          textOverflow: 'ellipsis',
+          maxWidth: '15ch',
         };
       },
       multiValueRemove: (styles, { data, theme }) => {

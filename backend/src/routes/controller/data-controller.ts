@@ -69,29 +69,19 @@ const dataController = {
           FROM (
             WITH currentPeriodSessionsCte AS (
               SELECT allSessionsCte.*,
-                FLOOR(allSessionsCte."durationSeconds" / 3600)
-                  AS "durationHours",
                 FLOOR(allSessionsCte."durationSeconds" / 60)
                   AS "durationMinutes"
               FROM allSessionsCte
             ) 
             SELECT 
-              COALESCE(
-                SUM(currentPeriodSessionsCte."durationHours"),
-                0
-              ) AS "currentPeriodStatsHourSum",
-              COALESCE(
-                AVG(currentPeriodSessionsCte."durationHours"), 
-                0
-              ) AS "currentPeriodStatsHourAvg",
-              COALESCE(
-                MIN(currentPeriodSessionsCte."durationHours"),
-                0
-              ) AS "currentPeriodStatsHourMin",
-              COALESCE(
-                MAX(currentPeriodSessionsCte."durationHours"),
-                0
-              ) AS "currentPeriodStatsHourMax",
+              COALESCE(SUM("durationMinutes"), 0) 
+                AS "currentPeriodStatsMinuteSum",
+              COALESCE(AVG("durationMinutes"), 0) 
+                AS "currentPeriodStatsMinuteAvg",
+              COALESCE(MIN("durationMinutes"), 0) 
+                AS "currentPeriodStatsMinuteMin",
+              COALESCE(MAX("durationMinutes"), 0) 
+                AS "currentPeriodStatsMinuteMax",
               COUNT(currentPeriodSessionsCte.id)::integer 
                 AS "currentPeriodStatsCount"
             FROM currentPeriodSessionsCte

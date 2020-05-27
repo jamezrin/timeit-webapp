@@ -10,7 +10,8 @@ import InviteProjectSettings from './InviteProjectSettings';
 import DeleteProjectSettings from './DeleteProjectSettings';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
+const requestProjectInfo = (projectId) =>
+  axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
 
 function ProjectPageContent({ projectInfo, setProjectInfo }) {
   const history = useHistory();
@@ -38,7 +39,10 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
         </Box>
         <Box width={{ base: '100%', lg: '50%' }}>
           <Box mx={8}>
-            <RenameProjectSettings projectInfo={projectInfo} setProjectInfo={setProjectInfo} />
+            <RenameProjectSettings
+              projectInfo={projectInfo}
+              setProjectInfo={setProjectInfo}
+            />
             <InviteProjectSettings projectInfo={projectInfo} />
             <DeleteProjectSettings projectInfo={projectInfo} />
           </Box>
@@ -61,7 +65,10 @@ function ProjectSettingsPage() {
   return (
     <MainLayout>
       {projectInfo ? (
-        <ProjectPageContent projectInfo={projectInfo} setProjectInfo={setProjectInfo} />
+        <ProjectPageContent
+          projectInfo={projectInfo}
+          setProjectInfo={setProjectInfo}
+        />
       ) : (
         <FullPageLoadSpinner message="Cargando el proyecto actual" />
       )}

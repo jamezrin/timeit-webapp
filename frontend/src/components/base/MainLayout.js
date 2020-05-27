@@ -7,7 +7,13 @@ function MainLayout({ children }) {
     <Flex height="100vh" direction="column">
       <Header />
 
-      <Flex direction="column" maxWidth={{ base: '100%', lg: '100rem' }} marginX="auto" width="100%" height="100%">
+      <Flex
+        direction="column"
+        maxWidth={{ base: '100%', lg: '100rem' }}
+        marginX="auto"
+        width="100%"
+        height="100%"
+      >
         {children}
       </Flex>
     </Flex>

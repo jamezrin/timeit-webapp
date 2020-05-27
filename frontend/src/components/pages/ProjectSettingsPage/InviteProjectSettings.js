@@ -1,14 +1,24 @@
 import React, { useCallback, useState } from 'react';
-import { Box, Button, Divider, Heading, Input, InputGroup, Text, useColorMode } from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Divider,
+  Heading,
+  Input,
+  InputGroup,
+  Text,
+  useColorMode,
+} from '@chakra-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInvite = (projectId, emailAddress) => axios.post(
-  `${projectsEndpoint}/${projectId}/invite`,
-  { emailAddress },
-  { withCredentials: true }
-); // prettier-ignore
+const requestProjectInvite = (projectId, emailAddress) =>
+  axios.post(
+    `${projectsEndpoint}/${projectId}/invite`,
+    { emailAddress },
+    { withCredentials: true },
+  );
 
 function InviteProjectSettings({ projectInfo }) {
   const [emailAddress, setEmailAddress] = useState('');
@@ -32,7 +42,9 @@ function InviteProjectSettings({ projectInfo }) {
               appearance: 'error',
               autoDismiss: true,
             });
-          } else if (err.response.data.error.type === 'ALREADY_PROJECT_MEMBER') {
+          } else if (
+            err.response.data.error.type === 'ALREADY_PROJECT_MEMBER'
+          ) {
             addToast('Este usuario ya es un miembro del proyecto', {
               appearance: 'error',
               autoDismiss: true,
@@ -48,7 +60,12 @@ function InviteProjectSettings({ projectInfo }) {
   }, [projectInfo, emailAddress, addToast]);
 
   return (
-    <Box p={4} mt={12} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
+    <Box
+      p={4}
+      mt={12}
+      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+      rounded="md"
+    >
       <Heading as="h2" size="md">
         Invitar a usuario
       </Heading>
@@ -56,8 +73,9 @@ function InviteProjectSettings({ projectInfo }) {
       <Divider />
 
       <Text mt={4}>
-        Invita a un usuario para monitorizar su trabajo. Podrás cambiar su rol en la lista de miembros. Aparecerá como
-        un miembro cuando acepte la invitación.
+        Invita a un usuario para monitorizar su trabajo. Podrás cambiar su rol
+        en la lista de miembros. Aparecerá como un miembro cuando acepte la
+        invitación.
       </Text>
 
       <InputGroup mt={4}>

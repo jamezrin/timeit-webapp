@@ -1,5 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Flex, Heading, Image, List, ListItem, PseudoBox, useColorMode } from '@chakra-ui/core';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  List,
+  ListItem,
+  PseudoBox,
+  useColorMode,
+} from '@chakra-ui/core';
 
 import workTimeSvg from '../../../assets/work_time.svg';
 import MainLayout from '../../base/MainLayout';
@@ -7,16 +17,27 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { noDragOrSelectCss } from '../../../utils';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { ProjectCreationModalContext, ProjectCreationModalProvider } from './ProjectCreationModal';
+import {
+  ProjectCreationModalContext,
+  ProjectCreationModalProvider,
+} from './ProjectCreationModal';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectList = () => axios.get(projectsEndpoint, { withCredentials: true });
+const requestProjectList = () =>
+  axios.get(projectsEndpoint, { withCredentials: true });
 
 function ProjectListPlaceholder() {
   const { openProjectCreationModal } = useContext(ProjectCreationModalContext);
 
   return (
-    <Flex height="100%" width="100%" alignItems="center" justifyContent="center" textAlign="center" direction="column">
+    <Flex
+      height="100%"
+      width="100%"
+      alignItems="center"
+      justifyContent="center"
+      textAlign="center"
+      direction="column"
+    >
       <Image
         src={workTimeSvg}
         css={{
@@ -48,7 +69,11 @@ function ProjectListContent({ projects }) {
     <Box py={10} mx={8}>
       <Flex>
         <Heading as="h1">Tus proyectos</Heading>
-        <Button onClick={openProjectCreationModal} variantColor="blue" ml="auto">
+        <Button
+          onClick={openProjectCreationModal}
+          variantColor="blue"
+          ml="auto"
+        >
           Crear un proyecto
         </Button>
       </Flex>

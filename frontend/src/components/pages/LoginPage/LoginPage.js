@@ -20,7 +20,11 @@ import {
   ListItem,
 } from '@chakra-ui/core';
 
-import AuthContext, { fetchAuthStatus, requestAuthentication } from '../../../state/authenticationContext';
+import AuthContext, {
+  fetchAuthStatus,
+  requestAuthentication,
+} from '../../../state/authenticationContext';
+import useDocumentTitle from '@rehooks/document-title';
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();
@@ -41,10 +45,15 @@ export default function LoginPage() {
           autoDismiss: true,
         });
 
-        history.replace((location.state && location.state.previousLocation) || '/');
+        history.replace(
+          (location.state && location.state.previousLocation) || '/',
+        );
       });
     } catch (err) {
-      if (err.response && err.response.data.error.type === 'INVALID_CREDENTIALS') {
+      if (
+        err.response &&
+        err.response.data.error.type === 'INVALID_CREDENTIALS'
+      ) {
         addToast('Las credenciales introducidas no son validas', {
           appearance: 'error',
           autoDismiss: true,
@@ -75,8 +84,16 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={4} isInvalid={errors.emailAddress}>
           <FormLabel htmlFor="emailAddress">Correo electrónico</FormLabel>
-          <Input name="emailAddress" id="emailAddress" type="email" placeholder="usuario@ejemplo.org" ref={register} />
-          <FormErrorMessage>{errors.emailAddress && errors.emailAddress.message}</FormErrorMessage>
+          <Input
+            name="emailAddress"
+            id="emailAddress"
+            type="email"
+            placeholder="usuario@ejemplo.org"
+            ref={register}
+          />
+          <FormErrorMessage>
+            {errors.emailAddress && errors.emailAddress.message}
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl mt={4} isInvalid={errors.password}>
@@ -90,15 +107,26 @@ export default function LoginPage() {
               ref={register}
             />
             <InputRightElement width="4.5rem" mr={12}>
-              <Button h="1.75rem" size="sm" onClick={() => setShowPassword(!showPassword)}>
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => setShowPassword(!showPassword)}
+              >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </Button>
             </InputRightElement>
           </InputGroup>
 
-          <FormErrorMessage>{errors.password && errors.password.message}</FormErrorMessage>
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
         </FormControl>
-        <Button mt={4} variantColor="blue" isLoading={formState.isSubmitting} type="submit">
+        <Button
+          mt={4}
+          variantColor="blue"
+          isLoading={formState.isSubmitting}
+          type="submit"
+        >
           Continuar <Icon ml={4} name="arrow-right" />
         </Button>
       </form>

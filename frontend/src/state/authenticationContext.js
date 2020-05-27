@@ -2,12 +2,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const currentUserEndpoint = process.env.REACT_APP_BACKEND_URL + '/current-user';
-const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate';
-const deauthenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/deauthenticate';
+const authenticateEndpoint =
+  process.env.REACT_APP_BACKEND_URL + '/authenticate';
+const deauthenticateEndpoint =
+  process.env.REACT_APP_BACKEND_URL + '/deauthenticate';
 
-export const requestCurrentUser = () => axios.get(currentUserEndpoint, { withCredentials: true });
-export const requestAuthentication = (values) => axios.post(authenticateEndpoint, values, { withCredentials: true });
-export const requestDeauthentication = () => axios.post(deauthenticateEndpoint, {}, { withCredentials: true });
+export const requestCurrentUser = () =>
+  axios.get(currentUserEndpoint, { withCredentials: true });
+export const requestAuthentication = (values) =>
+  axios.post(authenticateEndpoint, values, { withCredentials: true });
+export const requestDeauthentication = () =>
+  axios.post(deauthenticateEndpoint, {}, { withCredentials: true });
 
 export const fetchAuthStatus = () =>
   requestCurrentUser()

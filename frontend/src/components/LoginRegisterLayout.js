@@ -11,11 +11,18 @@ export default function LoginRegisterLayout({ children }) {
   return (
     <Flex height="100vh" direction={{ base: 'column', lg: 'row' }}>
       <Box
-        bg={colorMode === 'dark' ? 'gray.700' : { base: 'white', lg: 'gray.100' }}
+        bg={
+          colorMode === 'dark' ? 'gray.700' : { base: 'white', lg: 'gray.100' }
+        }
         width={{ base: '100%', lg: 6 / 10 }}
         pb={10}
       >
-        <Flex height="100%" direction="column" justifyContent="center" alignItems="center">
+        <Flex
+          height="100%"
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Image
             maxWidth="20rem"
             src={mainAppCoverLogo}
@@ -37,15 +44,18 @@ export default function LoginRegisterLayout({ children }) {
           />
 
           <Text maxWidth="36rem" textAlign="center" mt={8} px={10}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec tristique mi, ut faucibus sem. Integer eros
-            purus, ultrices vitae lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla ultrices nisl et
-            cursus
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec
+            tristique mi, ut faucibus sem. Integer eros purus, ultrices vitae
+            lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla
+            ultrices nisl et cursus
           </Text>
         </Flex>
       </Box>
 
       <Box
-        bg={colorMode === 'dark' ? 'gray.800' : { base: 'white', lg: 'gray.200' }}
+        bg={
+          colorMode === 'dark' ? 'gray.800' : { base: 'white', lg: 'gray.200' }
+        }
         width={{ base: '100%', lg: 4 / 10 }}
         px={4}
         py={10}

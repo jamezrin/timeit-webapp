@@ -1,8 +1,17 @@
 import React, { useContext, useState } from 'react';
 
-import { Box, Flex, Heading, IconButton, Text, useColorMode } from '@chakra-ui/core';
+import {
+  Box,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  useColorMode,
+} from '@chakra-ui/core';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
-import AuthContext, { requestDeauthentication } from '../../state/authenticationContext';
+import AuthContext, {
+  requestDeauthentication,
+} from '../../state/authenticationContext';
 import { useToasts } from 'react-toast-notifications';
 
 const MenuItems = ({ children }) => (
@@ -49,7 +58,10 @@ export default function Header(props) {
         </Heading>
       </Flex>
 
-      <Box display={{ base: 'block', md: 'none' }} onClick={() => setCollapse(!collapse)}>
+      <Box
+        display={{ base: 'block', md: 'none' }}
+        onClick={() => setCollapse(!collapse)}
+      >
         <svg
           fill={colorMode === 'dark' ? '#fff' : '#000'}
           width="12px"
@@ -74,7 +86,10 @@ export default function Header(props) {
         */}
       </Box>
 
-      <Box display={{ base: collapse ? 'block' : 'none', md: 'block' }} mt={{ base: 4, md: 0 }}>
+      <Box
+        display={{ base: collapse ? 'block' : 'none', md: 'block' }}
+        mt={{ base: 4, md: 0 }}
+      >
         <IconButton
           aria-label="Cambiar modo de color"
           variant="ghost"

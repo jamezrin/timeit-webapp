@@ -20,7 +20,8 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectCreation = (values) => axios.post(projectsEndpoint, values, { withCredentials: true });
+const requestProjectCreation = (values) =>
+  axios.post(projectsEndpoint, values, { withCredentials: true });
 
 export const ProjectCreationModalContext = React.createContext(null);
 
@@ -38,13 +39,25 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
           <ModalBody>
             <FormControl mt={4} isInvalid={errors.emailAddress}>
               <FormLabel htmlFor="emailAddress">Nombre del proyecto</FormLabel>
-              <Input name="projectName" id="projectName" type="text" placeholder="Mi super proyecto" ref={register} />
-              <FormErrorMessage>{errors.emailAddress && errors.emailAddress.message}</FormErrorMessage>
+              <Input
+                name="projectName"
+                id="projectName"
+                type="text"
+                placeholder="Mi super proyecto"
+                ref={register}
+              />
+              <FormErrorMessage>
+                {errors.emailAddress && errors.emailAddress.message}
+              </FormErrorMessage>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button variantColor="blue" isLoading={formState.isSubmitting} type="submit">
+            <Button
+              variantColor="blue"
+              isLoading={formState.isSubmitting}
+              type="submit"
+            >
               Crear proyecto <Icon ml={4} name="arrow-right" />
             </Button>
           </ModalFooter>
@@ -86,7 +99,11 @@ export function ProjectCreationModalProvider({ children }) {
         projectsCreatedCount,
       }}
     >
-      <ProjectCreationModal isOpen={isOpen} onClose={onClose} onSubmit={makeRequest} />
+      <ProjectCreationModal
+        isOpen={isOpen}
+        onClose={onClose}
+        onSubmit={makeRequest}
+      />
       {children}
     </ProjectCreationModalContext.Provider>
   );

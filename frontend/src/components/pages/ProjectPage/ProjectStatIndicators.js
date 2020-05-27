@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { Flex, Text, Box, useColorMode } from '@chakra-ui/core';
+import { sum } from 'react-table/src/aggregations';
 
 const TimeStatIndicatorContent = ({
-  title,
-  sumValue,
-  avgValue,
-  minValue,
-  maxValue,
+  title = 'Lorem ipsum dolor sit amet',
+  sumValue = '???',
+  avgValue = '??',
+  minValue = '??',
+  maxValue = '??',
 }) => {
   return (
     <>
@@ -17,17 +18,29 @@ const TimeStatIndicatorContent = ({
         </Text>
         <Box ml="auto" pl={3}>
           <Text lineHeight={1} textAlign="center" fontSize="2xl">
-            {sumValue}
+            {sumValue > 60 ? Math.floor(sumValue / 60) : sumValue}
           </Text>
-          <Text lineHeight={1} fontSize="md" mt={0}>
-            horas
+          <Text lineHeight={1} textAlign="center" fontSize="md" mt={0}>
+            {sumValue > 60 ? 'horas' : 'minutos'}
           </Text>
         </Box>
       </Flex>
       <Box mt="auto">
-        <Text fontSize="xs">Media por usuario: {avgValue} horas</Text>
         <Text fontSize="xs">
-          Mínimo {minValue} horas, maximo {maxValue} horas
+          Media por usuario:{' '}
+          {avgValue > 60
+            ? `${Math.floor(avgValue / 60)} horas`
+            : `${avgValue} minutos`}
+        </Text>
+        <Text fontSize="xs">
+          Mínimo{' '}
+          {minValue > 60
+            ? `${Math.floor(minValue / 60)} horas`
+            : `${minValue} minutos`}
+          , maximo{' '}
+          {maxValue > 60
+            ? `${Math.floor(maxValue / 60)} horas`
+            : `${maxValue} minutos`}
         </Text>
       </Box>
     </>
@@ -35,11 +48,11 @@ const TimeStatIndicatorContent = ({
 };
 
 const TimeStatIndicator = ({
-  title,
-  sumValue,
-  avgValue,
-  minValue,
-  maxValue,
+  title = 'Lorem ipsum dolor sit amet',
+  sumValue = '???',
+  avgValue = '??',
+  minValue = '??',
+  maxValue = '??',
 }) => {
   const { colorMode } = useColorMode();
 
@@ -67,14 +80,6 @@ const TimeStatIndicator = ({
   );
 };
 
-TimeStatIndicator.defaultProps = {
-  title: 'Lorem ipsum dolor sit amet',
-  sumValue: '???',
-  avgValue: '??',
-  minValue: '??',
-  maxValue: '??',
-};
-
 function ProjectStatIndicators({ projectInfo, projectStats }) {
   return (
     <>
@@ -86,31 +91,32 @@ function ProjectStatIndicators({ projectInfo, projectStats }) {
         >
           <TimeStatIndicator
             title="Tiempo invertido en el periodo actual"
-            sumValue={projectStats.currentPeriodStatsHourSum}
-            avgValue={projectStats.currentPeriodStatsHourAvg}
-            minValue={projectStats.currentPeriodStatsHourMin}
-            maxValue={projectStats.currentPeriodStatsHourMax}
-          />
-          <TimeStatIndicator
-            title="Tiempo invertido en el último mes del periodo"
-            sumValue={projectStats.currentPeriodStatsHourSum}
-            avgValue={projectStats.currentPeriodStatsHourAvg}
-            minValue={projectStats.currentPeriodStatsHourMin}
-            maxValue={projectStats.currentPeriodStatsHourMax}
-          />
-          <TimeStatIndicator
-            title="Tiempo invertido en la última semana del periodo"
-            sumValue={projectStats.currentPeriodStatsHourSum}
-            avgValue={projectStats.currentPeriodStatsHourAvg}
-            minValue={projectStats.currentPeriodStatsHourMin}
-            maxValue={projectStats.currentPeriodStatsHourMax}
+            sumValue={projectStats.currentPeriodStatsMinuteSum}
+            avgValue={projectStats.currentPeriodStatsMinuteAvg}
+            minValue={projectStats.currentPeriodStatsMinuteMin}
+            maxValue={projectStats.currentPeriodStatsMinuteMax}
           />
           <TimeStatIndicator
             title="Tiempo invertido en el último dia del periodo"
-            sumValue={projectStats.currentPeriodStatsHourSum}
-            avgValue={projectStats.currentPeriodStatsHourAvg}
-            minValue={projectStats.currentPeriodStatsHourMin}
-            maxValue={projectStats.currentPeriodStatsHourMax}
+            sumValue={projectStats.currentPeriodStatsMinuteSum}
+            avgValue={projectStats.currentPeriodStatsMinuteAvg}
+            minValue={projectStats.currentPeriodStatsMinuteMin}
+            maxValue={projectStats.currentPeriodStatsMinuteMax}
+          />
+
+          <TimeStatIndicator
+            title="Tiempo invertido en la última semana del periodo"
+            sumValue={projectStats.currentPeriodStatsMinuteSum}
+            avgValue={projectStats.currentPeriodStatsMinuteAvg}
+            minValue={projectStats.currentPeriodStatsMinuteMin}
+            maxValue={projectStats.currentPeriodStatsMinuteMax}
+          />
+          <TimeStatIndicator
+            title="Tiempo invertido en el último mes del periodo"
+            sumValue={projectStats.currentPeriodStatsMinuteSum}
+            avgValue={projectStats.currentPeriodStatsMinuteAvg}
+            minValue={projectStats.currentPeriodStatsMinuteMin}
+            maxValue={projectStats.currentPeriodStatsMinuteMax}
           />
         </Flex>
       )}
