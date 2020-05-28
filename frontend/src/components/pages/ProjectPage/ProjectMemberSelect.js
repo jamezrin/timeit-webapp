@@ -3,7 +3,7 @@ import { useColorMode, useTheme } from '@chakra-ui/core';
 import { isMemberPrivileged } from '../../../utils';
 import Select from 'react-select';
 
-function SelectProjectMember({
+function ProjectMemberSelect({
   projectInfo,
   projectMembers,
   onSelectedMemberChange: _onSelectedMemberChange,
@@ -145,4 +145,4 @@ function SelectProjectMember({
   );
 }
 
-export default SelectProjectMember;
+export default ProjectMemberSelect;

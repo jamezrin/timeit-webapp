@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import HttpStatus from 'http-status-codes';
 import mountRoutes from './routes/routes';
+
 // Very important for getting env populated
 import './env';
 
@@ -19,6 +20,7 @@ async function startExpress(conn: Connection) {
   app.use(helmet());
   app.use(
     cors({
+      maxAge: 86400,
       credentials: true,
       origin: process.env.TIMEIT_CORS_ORIGINS.split(','),
     }),
@@ -44,9 +46,9 @@ async function startExpress(conn: Connection) {
 
 createConnection()
   .then(async (connection) => {
-    await connection.query(`
-      SET timezone 
-      TO 'Europe/Madrid'`);
+    // prettier-ignore
+    connection.query(`SET timezone TO 'Europe/Madrid'`)
+      .then(() => console.log('Successfully set the timezone to Europe/Madrid'));
 
     await startExpress(connection);
   })

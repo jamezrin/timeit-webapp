@@ -2,9 +2,17 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ColorModeProvider, CSSReset, Flex, theme, ThemeProvider } from '@chakra-ui/core';
+import {
+  ColorModeProvider,
+  CSSReset,
+  Flex,
+  theme,
+  ThemeProvider,
+} from '@chakra-ui/core';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
-import AuthContext, { AuthContextProvider } from './state/authenticationContext';
+import AuthContext, {
+  AuthContextProvider,
+} from './state/authenticationContext';
 
 import LoginPage from './components/pages/LoginPage/LoginPage';
 import ProjectListPage from './components/pages/ProjectListPage/ProjectListPage';
@@ -14,8 +22,7 @@ import ProjectPage from './components/pages/ProjectPage/ProjectPage';
 import FullPageLoadSpinner from './components/base/FullPageLoadSpinner';
 import ProjectSettingsPage from './components/pages/ProjectSettingsPage/ProjectSettingsPage';
 import ProjectSessionPage from './components/pages/ProjectSessionPage/ProjectSessionPage';
-
-const RecoverPasswordPage = () => 'Not yet implemented';
+import RecoverPasswordPage from './components/pages/RecoverPasswordPage/RecoverPasswordPage';
 
 const ProviderWrappedComponent = ({ children }) => {
   return (
@@ -36,16 +43,35 @@ const RouterWrappedComponent = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path="/">
-          {authStatus.isAuthenticated ? <ProjectListPage /> : <Redirect to="/login" />}
+          {authStatus.isAuthenticated ? (
+            <ProjectListPage />
+          ) : (
+            <Redirect to="/login" />
+          )}
         </Route>
 
         <UnauthenticatedUserRoute path="/login" component={LoginPage} />
         <UnauthenticatedUserRoute path="/register" component={RegisterPage} />
-        <UnauthenticatedUserRoute path="/recover_password" component={RecoverPasswordPage} />
+        <UnauthenticatedUserRoute
+          path="/recover_password"
+          component={RecoverPasswordPage}
+        />
 
-        <AuthenticatedUserRoute path="/project/:projectId" component={ProjectPage} exact />
-        <AuthenticatedUserRoute path="/project/:projectId/settings" component={ProjectSettingsPage} exact />
-        <AuthenticatedUserRoute path="/project/:projectId/session/:sessionId" component={ProjectSessionPage} exact />
+        <AuthenticatedUserRoute
+          path="/project/:projectId"
+          component={ProjectPage}
+          exact
+        />
+        <AuthenticatedUserRoute
+          path="/project/:projectId/settings"
+          component={ProjectSettingsPage}
+          exact
+        />
+        <AuthenticatedUserRoute
+          path="/project/:projectId/session/:sessionId"
+          component={ProjectSessionPage}
+          exact
+        />
 
         {/* Fallback route that redirects to the root */}
         <Route>
@@ -54,7 +80,12 @@ const RouterWrappedComponent = () => {
       </Switch>
     </BrowserRouter>
   ) : (
-    <Flex height="100vh" width="100vw" justifyContent="center" alignItems="center">
+    <Flex
+      height="100vh"
+      width="100vw"
+      justifyContent="center"
+      alignItems="center"
+    >
       <FullPageLoadSpinner />
     </Flex>
   );

@@ -7,9 +7,10 @@ import moment from 'moment';
 import styled from '@emotion/styled';
 import { css } from '@emotion/core';
 import { parseAndFormatDate } from '../../../utils';
+import useElementDimensions from '../../../hooks/elementDimensionsHook';
 
 const TableWrapper = styled.div`
-  width: 100%;
+  flex-grow: 1;
 
   .BaseTable__row {
     cursor: pointer;
@@ -19,7 +20,6 @@ const TableWrapper = styled.div`
 function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
   const { colorMode } = useColorMode();
   const history = useHistory();
-  const tableWrapperRef = useRef();
 
   const data = useMemo(() => {
     if (!sessions) return [];
@@ -47,15 +47,16 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
     },
   };
 
+  const tableWrapperRef = useRef();
+  const tableWrapperDims = useElementDimensions(tableWrapperRef);
+
   return (
     <TableWrapper ref={tableWrapperRef}>
       <BaseTable
         data={data}
         height={400}
         rowEventHandlers={rowEventHandlers}
-        width={
-          tableWrapperRef.current ? tableWrapperRef.current.offsetWidth : 0
-        }
+        width={tableWrapperDims.width}
       >
         <Column
           key="keyId"

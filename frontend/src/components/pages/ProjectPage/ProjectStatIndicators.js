@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Flex, Text, Box, useColorMode } from '@chakra-ui/core';
-import { sum } from 'react-table/src/aggregations';
 
 const TimeStatIndicatorContent = ({
   title = 'Lorem ipsum dolor sit amet',
@@ -80,6 +79,7 @@ const TimeStatIndicator = ({
   );
 };
 
+// TODO Make the last 3 stat types actually functional
 function ProjectStatIndicators({ projectInfo, projectStats }) {
   return (
     <>

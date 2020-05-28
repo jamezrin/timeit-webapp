@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
@@ -11,21 +17,17 @@ import 'react-base-table/styles.css';
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
 import { parseAndFormatDate } from '../../../utils';
 import styled from '@emotion/styled';
+import useElementDimensions from '../../../hooks/elementDimensionsHook';
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
-const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions';
-const requestSessionInfo = (sessionId) =>
-  axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true });
-const sessionEventEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/data_query/session_events';
-const requestSessionEvents = (sessionId) =>
-  axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true });
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
+const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true }); // prettier-ignore
+const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions'; // prettier-ignore
+const requestSessionInfo = (sessionId) => axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
+const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/session_events'; // prettier-ignore
+const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const history = useHistory();
-  const tableWrapperRef = useRef();
   const [sessionEvents, setSessionEvents] = useState([]);
   const { height } = useWindowDimensions();
 
@@ -34,6 +36,13 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
       setSessionEvents(res.data);
     });
   }, [sessionInfo]);
+
+  const tableWrapperRef = useRef();
+  const tableWrapperDims = useElementDimensions(tableWrapperRef);
+
+  useEffect(() => {
+    console.log(tableWrapperDims);
+  }, [tableWrapperDims]);
 
   const data = useMemo(() => {
     if (!sessionEvents) return [];
@@ -73,16 +82,14 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           {projectInfo.name || 'Proyecto sin nombre'}
         </Button>
       </Flex>
-      <Box ref={tableWrapperRef} width="100%" mx={8}>
+      <Box ref={tableWrapperRef} flexGrow="1" mx={{ base: 0, lg: 8 }}>
         <Heading as="h2" size="lg" mb={3}>
           Lista de eventos
         </Heading>
         <BaseTable
           data={data}
           height={height - 300}
-          width={
-            tableWrapperRef.current ? tableWrapperRef.current.offsetWidth : 0
-          }
+          width={tableWrapperDims.width}
         >
           <Column
             key="keyType"
@@ -110,11 +117,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
             dataKey="keyContent"
             title="Contenido"
             resizable={false}
-            width={
-              tableWrapperRef.current
-                ? tableWrapperRef.current.offsetWidth - (80 + 200 + 100)
-                : 0
-            }
+            width={tableWrapperDims.width - (80 + 200 + 100)}
           />
         </BaseTable>
       </Box>

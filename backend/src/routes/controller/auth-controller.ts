@@ -14,6 +14,8 @@ import {
   invalidCredentialsError,
   unknownServerError,
 } from '../errors';
+import { nanoid } from 'nanoid';
+import Mailer from '../../mailer';
 
 const authController = {
   async authenticate(req: Request, res: Response) {
@@ -86,6 +88,8 @@ const authController = {
     user.status = UserStatus.ACTIVE;
     user.passwordHash = await hashPassword(password);
 
+    // Mailer.getInstance().sendAccountConfirmation();
+
     try {
       await user.save();
 
@@ -115,6 +119,7 @@ const authController = {
     }
 
     const mailToken = new MailToken();
+    mailToken.id = nanoid();
     mailToken.type = MailRequestType.PASSWORD_RESET;
     mailToken.expiresIn = 12 * 60; // 12 hours
     mailToken.user = user;

@@ -23,14 +23,21 @@ export default function LoginRegisterLayout({ children }) {
           justifyContent="center"
           alignItems="center"
         >
-          <Image
-            maxWidth="20rem"
-            src={mainAppCoverLogo}
-            alt=""
-            css={{
-              ...noDragOrSelectCss,
-            }}
-          />
+          <Box
+            py={{ base: 4, lg: 0 }}
+            bg={{ base: 'gray.100', lg: 'none' }}
+            width="100%"
+          >
+            <Image
+              m="auto"
+              maxWidth="15rem"
+              src={mainAppCoverLogo}
+              alt=""
+              css={{
+                ...noDragOrSelectCss,
+              }}
+            />
+          </Box>
 
           <Image
             maxWidth="24rem"
@@ -43,7 +50,7 @@ export default function LoginRegisterLayout({ children }) {
             }}
           />
 
-          <Text maxWidth="36rem" textAlign="center" mt={8} px={10}>
+          <Text mt={8} px={4} maxWidth={{ base: 'auto', lg: '36rem' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec
             tristique mi, ut faucibus sem. Integer eros purus, ultrices vitae
             lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla

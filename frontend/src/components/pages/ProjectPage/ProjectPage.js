@@ -4,12 +4,14 @@ import MainLayout from '../../base/MainLayout';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 import { Box, Button, Heading, Flex } from '@chakra-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
-import SelectProjectMember from './SelectProjectMember';
+import ProjectMemberSelect from './ProjectMemberSelect';
 import ProjectSessionList from './ProjectSessionList';
 import PeriodDateRangePicker from './PeriodDateRangePicker';
 import moment from 'moment';
 import ProjectStatIndicators from './ProjectStatIndicators';
 import ProjectLineChart from './ProjectLineChart';
+import ProjectPageInfo from './ProjectPageInfo';
+import ProjectPageNoInfo from './ProjectPageNoInfo';
 
 moment.locale('es');
 
@@ -123,8 +125,8 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
           direction={{ base: 'column', md: 'row' }}
           alignItems={{ base: 'start', md: 'center' }}
         >
-          <Box width="30rem">
-            <SelectProjectMember
+          <Box minWidth="20rem" maxWidth="30rem">
+            <ProjectMemberSelect
               projectInfo={projectInfo}
               projectMembers={projectMembers}
               onSelectedMemberChange={(selectedProjectMembers) => {
@@ -145,31 +147,16 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
           </Box>
         </Flex>
 
-        <Box mt={8}>
-          <Heading as="h2" size="lg" mb={3}>
-            Estadisticas
-          </Heading>
-          <ProjectStatIndicators
+        {selectedProjectMembers && selectedProjectMembers.length > 0 ? (
+          <ProjectPageInfo
             projectInfo={projectInfo}
-            projectStats={projectStats}
-          />
-          <ProjectLineChart />
-        </Box>
-
-        <Box mt={8}>
-          <Heading as="h2" size="lg" mb={3}>
-            Sesiones (
-            {projectStats
-              ? projectStats.currentPeriodStatsCount
-              : 'Desconocido'}
-            )
-          </Heading>
-          <ProjectSessionList
-            projectInfo={projectInfo}
-            sessions={sessions}
             projectMembers={projectMembers}
+            projectStats={projectStats}
+            sessions={sessions}
           />
-        </Box>
+        ) : (
+          <ProjectPageNoInfo />
+        )}
       </Box>
     </Box>
   );

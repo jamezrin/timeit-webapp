@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -17,7 +18,7 @@ export enum MailRequestType {
 
 @Entity()
 export class MailToken extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
