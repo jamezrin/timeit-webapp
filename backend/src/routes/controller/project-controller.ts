@@ -14,7 +14,6 @@ const projectController = {
     const currentUserId = tokenPayload.userId;
 
     const projects = await Project.createQueryBuilder('project')
-      .where('member.user = :currentUserId', { currentUserId })
       .loadRelationCountAndMap('project.memberCount', 'project.members')
       .leftJoinAndMapOne(
         'project.projectMember',
@@ -23,6 +22,10 @@ const projectController = {
         'member.user = :currentUserId',
         { currentUserId },
       )
+      .where('member.user = :currentUserId', { currentUserId })
+      .andWhere('member.status = :status', {
+        status: ProjectMemberStatus.ACTIVE,
+      })
       .getMany();
 
     res.status(HttpStatus.OK).json(projects);
