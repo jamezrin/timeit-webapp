@@ -9,6 +9,7 @@ import {
 import LoginRegisterLayout from '../../LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
+import axios from 'axios';
 
 import {
   Button,
@@ -26,8 +27,6 @@ import {
   Text,
 } from '@chakra-ui/core';
 
-import axios from 'axios';
-
 const requestPasswordEndpoint =
   process.env.REACT_APP_BACKEND_URL + '/request-password-reset';
 const requestPasswordReset = (values) =>
@@ -37,7 +36,6 @@ export default function RequestPasswordResetPage() {
   const { handleSubmit, errors, register, formState } = useForm();
   const { addToast } = useToasts();
   const location = useLocation();
-  const { token } = useParams();
   const history = useHistory();
 
   async function onSubmit(values) {
@@ -64,6 +62,16 @@ export default function RequestPasswordResetPage() {
             appearance: 'error',
             autoDismiss: true,
           });
+        } else if (
+          err.response.data.error.type === 'ALREADY_REQUESTED_MAIL_TOKEN'
+        ) {
+          addToast(
+            'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',
+            {
+              appearance: 'error',
+              autoDismiss: true,
+            },
+          );
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {

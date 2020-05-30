@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken';
 import {
   accountAlreadyExistsError,
   accountNotFoundError,
+  alreadyRequestedMailToken,
   expiredMailTokenError,
   inactiveAccountError,
   incorrectMailTokenError,
@@ -212,6 +213,25 @@ const authController = {
         return inactiveAccountError(req, res);
       }
 
+      const previousMailTokens = await MailToken.find({
+        where: {
+          emailAddress,
+          type: MailRequestType.PASSWORD_RESET,
+        },
+      });
+
+      // Delete stale tokens async
+      for (const previousMailToken of previousMailTokens) {
+        if (!hasMailTokenExpired(previousMailToken)) {
+          return alreadyRequestedMailToken(req, res);
+        }
+
+        // Token has expired, just remove it async
+        previousMailToken.remove().then(() => {
+          console.debug(`Successfully removed expired mail token`);
+        });
+      }
+
       const mailToken = new MailToken();
       mailToken.type = MailRequestType.PASSWORD_RESET;
       mailToken.emailAddress = emailAddress;
@@ -221,7 +241,7 @@ const authController = {
       // Sends the actual password reset email with the token
       await sendPasswordResetEmail(mailer, mailToken);
 
-      res.status(HttpStatus.ACCEPTED);
+      res.sendStatus(HttpStatus.ACCEPTED);
     };
   },
   async performPasswordReset(req: Request, res: Response) {
