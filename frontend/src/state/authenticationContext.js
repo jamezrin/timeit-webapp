@@ -1,47 +1,44 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-const currentUserEndpoint = process.env.REACT_APP_BACKEND_URL + '/current-user';
-const authenticateEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/authenticate';
-const deauthenticateEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/deauthenticate';
+const currentUserEndpoint = process.env.REACT_APP_BACKEND_URL + '/current-user'; // prettier-ignore
+const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate'; // prettier-ignore
+const deauthenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/deauthenticate'; // prettier-ignore
 
-export const requestCurrentUser = () =>
-  axios.get(currentUserEndpoint, { withCredentials: true });
-export const requestAuthentication = (values) =>
-  axios.post(authenticateEndpoint, values, { withCredentials: true });
-export const requestDeauthentication = () =>
-  axios.post(deauthenticateEndpoint, {}, { withCredentials: true });
+export const requestCurrentUser = () => axios.get(currentUserEndpoint, { withCredentials: true }); // prettier-ignore
+export const requestAuthentication = (values) => axios.post(authenticateEndpoint, values, { withCredentials: true }); // prettier-ignore
+export const requestDeauthentication = () => axios.post(deauthenticateEndpoint, {}, { withCredentials: true }); // prettier-ignore
 
 export const fetchAuthStatus = () =>
   requestCurrentUser()
     .then((response) => ({
       currentUser: response.data,
       isAuthenticated: true,
+      authenticationError: null,
     }))
-    .catch(
-      (err) =>
-        err.response && {
-          currentUser: null,
-          isAuthenticated: false,
-        },
-    );
+    .catch((err) => ({
+      currentUser: null,
+      isAuthenticated: false,
+      authenticationError: err,
+    }));
 
 const AuthContext = React.createContext(null);
 
 export const AuthContextProvider = ({ children }) => {
   const [authStatus, setAuthStatus] = useState(null);
 
-  const refreshStatus = () => {
-    fetchAuthStatus().then((status) => {
+  const refreshStatus = useCallback(() => {
+    return fetchAuthStatus().then((status) => {
       setAuthStatus(status);
+      return status;
     });
-  };
+  }, []);
 
   useEffect(() => {
-    refreshStatus();
-  }, []);
+    refreshStatus().then((status) => {
+      console.log('User authentication status:', status);
+    });
+  }, [refreshStatus]);
 
   return (
     <AuthContext.Provider
