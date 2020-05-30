@@ -114,7 +114,7 @@ export default function RegisterPage() {
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
             />
-            <InputRightElement width="4.5rem" mr={12}>
+            <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
                 h="1.75rem"
                 size="sm"

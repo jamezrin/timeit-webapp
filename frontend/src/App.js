@@ -75,6 +75,11 @@ const RouterWrappedComponent = () => {
           component={ProjectSessionPage}
           exact
         />
+        <AuthenticatedUserRoute
+          path="/project/:projectId/accept-invite/:token"
+          component={AcceptProjectInvitePage}
+          exact
+        />
         <Route
           path="/confirm-account/:token"
           component={ConfirmAccountPage}
@@ -83,11 +88,6 @@ const RouterWrappedComponent = () => {
         <Route
           path="/recover-password/:token"
           component={RecoverPasswordPage}
-          exact
-        />
-        <Route
-          path="/project/:projectId/accept-invite/:token"
-          component={AcceptProjectInvitePage}
           exact
         />
 

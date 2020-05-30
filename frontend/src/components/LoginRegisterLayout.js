@@ -12,7 +12,9 @@ export default function LoginRegisterLayout({ children }) {
     <Flex height="100vh" direction={{ base: 'column', lg: 'row' }}>
       <Box
         bg={
-          colorMode === 'dark' ? 'gray.900' : { base: 'white', lg: 'gray.100' }
+          colorMode === 'dark'
+            ? 'gray.900'
+            : { base: 'gray.100', lg: 'gray.100' }
         }
         width={{ base: '100%', lg: 6 / 10 }}
         pb={10}
@@ -25,7 +27,11 @@ export default function LoginRegisterLayout({ children }) {
         >
           <Box
             py={{ base: 4, lg: 0 }}
-            bg={{ base: 'gray.100', lg: 'transparent' }}
+            bg={
+              colorMode === 'dark'
+                ? 'gray.900'
+                : { base: 'gray.100', lg: 'transparent' }
+            }
             width="100%"
           >
             <Image
