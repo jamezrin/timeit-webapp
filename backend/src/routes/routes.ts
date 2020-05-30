@@ -22,7 +22,7 @@ export default function mountRoutes(app: express.Application, connection: Connec
   apiRouter.post('/confirm-account/:token', wrapAsync(authController.confirmAccount));
 
   apiRouter.post('/request-password-reset', wrapAsync(authController.requestPasswordReset(mailer)));
-  apiRouter.post('/perform-password-reset/:token', wrapAsync(authController.performPasswordReset));
+  apiRouter.post('/perform-password-reset/:token', wrapAsync(authController.performPasswordReset(mailer)));
 
   // Special route for deauthentication
   apiRouter.post(
