@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../../entity/ProjectMember';
 import { Project } from '../../entity/Project';
-import { UserToken } from '../../entity/UserToken';
+import { AuthToken } from '../../entity/AuthToken';
 import HttpStatus from 'http-status-codes';
 import { insufficientPrivilegesError, resourceNotFoundError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
@@ -28,7 +28,7 @@ const projectController = {
     res.status(HttpStatus.OK).json(projects);
   },
   async createProject(req: Request, res: Response) {
-    const tokenInfo = res.locals.tokenInfo as UserToken;
+    const tokenInfo = res.locals.tokenInfo as AuthToken;
     const projectName = req.body['name'];
 
     const project = new Project();

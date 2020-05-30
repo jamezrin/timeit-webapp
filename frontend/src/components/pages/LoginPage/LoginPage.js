@@ -50,11 +50,20 @@ export default function LoginPage() {
         );
       });
     } catch (err) {
-      if (
-        err.response &&
-        err.response.data.error.type === 'INVALID_CREDENTIALS'
-      ) {
-        addToast('Las credenciales introducidas no son validas', {
+      if (err.response && err.response.data.error) {
+        if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+          addToast('Las credenciales introducidas no son validas', {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        } else if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+          addToast(
+            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+            { appearance: 'error', autoDismiss: true },
+          );
+        }
+      } else {
+        addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',
           autoDismiss: true,
         });

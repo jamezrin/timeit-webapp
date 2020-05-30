@@ -9,7 +9,7 @@ import {
 
 import { User } from './User';
 
-export enum UserTokenStatus {
+export enum AuthTokenStatus {
   ACTIVE = 'active',
   INACTIVE_OTHER = 'inactive_other',
   INACTIVE_EXPIRED = 'inactive_expired',
@@ -17,7 +17,7 @@ export enum UserTokenStatus {
 }
 
 @Entity()
-export class UserToken extends BaseEntity {
+export class AuthToken extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,7 +25,7 @@ export class UserToken extends BaseEntity {
   createdAt: Date;
 
   @Column()
-  status: UserTokenStatus;
+  status: AuthTokenStatus;
 
   @ManyToOne((type) => User, (user) => user.authTokens, {
     onDelete: 'CASCADE',

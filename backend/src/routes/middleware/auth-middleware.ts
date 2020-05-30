@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-import { UserToken, UserTokenStatus } from '../../entity/UserToken';
+import { AuthToken, AuthTokenStatus } from '../../entity/AuthToken';
 import { inactiveTokenError, invalidTokenError, noAccessTokenError } from '../errors';
 
 export const accessTokenCookieName = 'timeit_accessToken';
@@ -23,9 +23,9 @@ export function authMiddleware(ignoreExpiration: boolean) {
         ignoreExpiration: ignoreExpiration,
       })) as TokenPayload;
 
-      const tokenInfo = await UserToken.findOneOrFail(decodedPayload.tokenId);
+      const tokenInfo = await AuthToken.findOneOrFail(decodedPayload.tokenId);
 
-      if (tokenInfo.status !== UserTokenStatus.ACTIVE) {
+      if (tokenInfo.status !== AuthTokenStatus.ACTIVE) {
         await tokenInfo.remove();
         return inactiveTokenError(req, res);
       }

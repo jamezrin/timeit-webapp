@@ -64,3 +64,21 @@ export const alreadyProjectMemberError = (req: Request, res: Response) => {
     .status(HttpStatus.NOT_ACCEPTABLE)
     .json(error('ALREADY_PROJECT_MEMBER', 'This user is already a member in the project'));
 };
+
+export const mailTokenNotFoundError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_FOUND)
+    .json(error('MAIL_TOKEN_NOT_FOUND', 'Could not find this mail token'));
+};
+
+export const incorrectMailTokenError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_ACCEPTABLE)
+    .json(error('INCORRECT_MAIL_TOKEN', 'The mail token provided is not acceptable'));
+};
+
+export const expiredMailTokenError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.NOT_ACCEPTABLE)
+    .json(error('EXPIRED_MAIL_TOKEN', 'The mail token provided has expired'));
+};

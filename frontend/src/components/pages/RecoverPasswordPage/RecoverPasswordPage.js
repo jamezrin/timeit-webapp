@@ -44,19 +44,33 @@ export default function LoginPage() {
     try {
       await requestPasswordReset(values);
 
-      addToast('Comprueba tu correo electrónico para recuperar tu contraseña', {
-        appearance: 'success',
-        autoDismiss: true,
-      });
+      addToast(
+        'Te acabamos de enviar un correo electrónico para que puedas recuperar tu contraseña',
+        { appearance: 'success', autoDismiss: true },
+      );
 
       history.replace(
         (location.state && location.state.previousLocation) || '/',
       );
     } catch (err) {
-      addToast('Ha ocurrido un error al procesar su petición', {
-        appearance: 'error',
-        autoDismiss: true,
-      });
+      if (err.response && err.response.data.error) {
+        if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+          addToast(
+            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+            { appearance: 'error', autoDismiss: true },
+          );
+        } else if (err.response.data.error.type === 'ACCOUNT_NOT_FOUND') {
+          addToast('No existe ningún usuario con ese correo electrónico', {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        }
+      } else {
+        addToast(`Ha ocurrido un error desconocido: ${err}`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     }
   }
 
@@ -64,9 +78,18 @@ export default function LoginPage() {
     <LoginRegisterLayout>
       <Heading as="h1">Recupera tu contraseña</Heading>
 
+      <List mt={4}>
+        <ListItem>
+          Si no tienes una cuenta,&nbsp;
+          <Link as={RouteLink} to="/register" color="blue.500">
+            crea una nueva cuenta
+          </Link>
+        </ListItem>
+      </List>
+
       <Text mt={4}>
-        Si tienes una cuenta, te envíaremos un correo electrónico con un enlace
-        para restablecer tu contraseña
+        Al realizar esta operación te enviaremos un correo electrónico con un
+        enlace para restablecer tu contraseña
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>

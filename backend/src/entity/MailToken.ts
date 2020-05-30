@@ -22,6 +22,8 @@ export interface ProjectInvitationPayload {
   projectId: number;
 }
 
+export interface AccountConfirmationPayload {}
+
 @Entity()
 export class MailToken extends BaseEntity {
   @PrimaryColumn()
@@ -34,11 +36,11 @@ export class MailToken extends BaseEntity {
   createdAt: Date;
 
   @Column()
-  expiresIn: number; // minutes
+  expiresIn: number; // seconds
 
   @Column()
   type: MailRequestType;
 
   @Column({ type: 'jsonb', nullable: true })
-  payload: ProjectInvitationPayload | object;
+  payload: ProjectInvitationPayload | AccountConfirmationPayload | object;
 }

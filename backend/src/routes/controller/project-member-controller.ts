@@ -1,18 +1,22 @@
 import { isMemberPrivileged } from '../../utils';
 import { Request, Response } from 'express';
-import { ProjectMember } from '../../entity/ProjectMember';
+import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../../entity/ProjectMember';
 import HttpStatus from 'http-status-codes';
 import {
   accountNotFoundError,
   alreadyProjectMemberError,
+  inactiveAccountError,
+  incorrectMailTokenError,
   insufficientPrivilegesError,
+  mailTokenNotFoundError,
   resourceNotFoundError,
 } from '../errors';
 import { MailRequestType, MailToken, ProjectInvitationPayload } from '../../entity/MailToken';
-import { User } from '../../entity/User';
+import { User, UserStatus } from '../../entity/User';
 import { TokenPayload } from '../middleware/auth-middleware';
 import Mail from 'nodemailer/lib/mailer';
 import { nanoid } from 'nanoid';
+import { Project } from '../../entity/Project';
 
 async function sendProjectInvitationMail(
   mailer: Mail,
@@ -30,9 +34,19 @@ async function sendProjectInvitationMail(
     Te han invitado al proyecto ${inviter.project.name}, accede a ${invitationCallbackUrl} para aceptar la invitación.
     Si no quieres aceptar esta invitación, simplemente ignora este correo electrónico.`,
     html: `
-    <p>Te han invitado al proyecto ${inviter.project.name}, puedes <a href="${invitationCallbackUrl}">aceptar la invitación</a></p>
+    <p>Te han invitado al proyecto ${inviter.project.name}, puedes <a href="${invitationCallbackUrl}">aceptar la invitación</a>.</p>
     <p>Si no quieres aceptar esta invitación, simplemente ignora este correo electrónico</p>`,
   });
+}
+
+async function checkProjectMember(project: Project, emailAddress: string): Promise<boolean> {
+  const projectMember = await ProjectMember.createQueryBuilder('projectMember')
+    .leftJoin('projectMember.user', 'user')
+    .where('projectMember.project = :projectId', { projectId: project.id })
+    .andWhere('user.emailAddress = :emailAddress', { emailAddress })
+    .getOne();
+
+  return !!projectMember;
 }
 
 const projectMemberController = {
@@ -103,15 +117,19 @@ const projectMemberController = {
         return accountNotFoundError(req, res);
       }
 
-      const inviteeProjectMember = await ProjectMember.createQueryBuilder('projectMember')
-        .leftJoin('projectMember.user', 'user')
-        .where('projectMember.project = :projectId', { projectId })
-        .andWhere('user.emailAddress = :emailAddress', { emailAddress })
-        .getOne();
+      if (invitedUser.status !== UserStatus.ACTIVE) {
+        return inactiveAccountError(req, res);
+      }
 
-      if (inviteeProjectMember) {
+      if (await checkProjectMember(inviterProjectMember.project, emailAddress)) {
         return alreadyProjectMemberError(req, res);
       }
+
+      const inviteeProjectMember = new ProjectMember();
+      inviteeProjectMember.status = ProjectMemberStatus.INVITED;
+      inviteeProjectMember.project = inviterProjectMember.project;
+      inviteeProjectMember.role = ProjectMemberRole.EMPLOYEE;
+      inviteeProjectMember.user = invitedUser;
 
       const mailToken = new MailToken();
       mailToken.id = nanoid();
@@ -119,21 +137,59 @@ const projectMemberController = {
       mailToken.emailAddress = emailAddress;
       mailToken.expiresIn = -1;
       mailToken.payload = {
-        projectId: parseInt(projectId),
-        inviterId: parseInt(currentUserId),
-        inviteeId: invitedUser.id,
+        projectId: inviterProjectMember.project.id,
+        inviterId: inviterProjectMember.id,
+        inviteeId: inviteeProjectMember.id,
       };
 
+      await inviteeProjectMember.save();
       await mailToken.save();
 
-      // Sends the actual project invite mail with the token
+      // Sends the actual project invite email with the token
       await sendProjectInvitationMail(mailer, mailToken, inviterProjectMember);
 
       res.sendStatus(HttpStatus.ACCEPTED);
     };
   },
   async acceptInvite(req: Request, res: Response) {
-    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+    const { token } = req.body;
+
+    const mailToken = await MailToken.findOne(token);
+
+    if (!mailToken) {
+      return mailTokenNotFoundError(req, res);
+    }
+
+    if (mailToken.type !== MailRequestType.PROJECT_INVITE) {
+      return incorrectMailTokenError(req, res);
+    }
+
+    const mailTokenPayload = mailToken.payload as ProjectInvitationPayload;
+    const projectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .leftJoin('projectMember.user', 'user')
+      .where('user.emailAddress = :emailAddress', {
+        emailAddress: mailToken.emailAddress,
+      })
+      .andWhere('user.id = :userId', {
+        userId: mailTokenPayload.inviteeId,
+      })
+      .andWhere('projectMember.project = :projectId', {
+        projectId: mailTokenPayload.projectId,
+      })
+      .getOne();
+
+    if (!projectMember) {
+      return accountNotFoundError(req, res);
+    }
+
+    if (projectMember.status !== ProjectMemberStatus.INVITED) {
+      return alreadyProjectMemberError(req, res);
+    }
+
+    await projectMember.save();
+    await mailToken.remove();
+
+    res.sendStatus(HttpStatus.ACCEPTED);
   },
   async getMember(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;

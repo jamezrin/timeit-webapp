@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 import { ProjectMember } from './ProjectMember';
-import { UserToken } from './UserToken';
+import { AuthToken } from './AuthToken';
 import { MailToken } from './MailToken';
 
 export enum UserStatus {
@@ -55,6 +55,6 @@ export class User extends BaseEntity {
   })
   projects: ProjectMember[];
 
-  @OneToMany((type) => UserToken, (token) => token.user)
-  authTokens: UserToken[];
+  @OneToMany((type) => AuthToken, (token) => token.user)
+  authTokens: AuthToken[];
 }
