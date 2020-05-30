@@ -57,7 +57,4 @@ export class User extends BaseEntity {
 
   @OneToMany((type) => UserToken, (token) => token.user)
   authTokens: UserToken[];
-
-  @OneToMany((type) => MailToken, (mailToken) => mailToken.user)
-  mailTokens: MailToken[];
 }

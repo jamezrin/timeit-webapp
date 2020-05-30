@@ -4,7 +4,7 @@ import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../../ent
 import { Project } from '../../entity/Project';
 import { UserToken } from '../../entity/UserToken';
 import HttpStatus from 'http-status-codes';
-import { forbiddenError, resourceNotFoundError } from '../errors';
+import { insufficientPrivilegesError, resourceNotFoundError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { isMemberPrivileged } from '../../utils';
 
@@ -96,7 +96,7 @@ const projectController = {
     }
 
     if (!isMemberPrivileged(currentProjectMember)) {
-      return forbiddenError(req, res);
+      return insufficientPrivilegesError(req, res);
     }
 
     const project = currentProjectMember.project;
@@ -126,7 +126,7 @@ const projectController = {
     }
 
     if (!isMemberPrivileged(currentProjectMember)) {
-      return forbiddenError(req, res);
+      return insufficientPrivilegesError(req, res);
     }
 
     const project = currentProjectMember.project;

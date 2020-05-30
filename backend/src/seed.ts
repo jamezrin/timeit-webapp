@@ -83,7 +83,6 @@ async function createMailToken(user: User) {
   const mailToken = new MailToken();
   mailToken.type = MailRequestType.PASSWORD_RESET;
   mailToken.expiresIn = -1;
-  mailToken.user = user;
   mailToken.payload = {
     sampleString: 'value',
     sampleNumber: 10,

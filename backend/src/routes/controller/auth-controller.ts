@@ -15,7 +15,7 @@ import {
   unknownServerError,
 } from '../errors';
 import { nanoid } from 'nanoid';
-import Mailer from '../../mailer';
+import Mail from 'nodemailer/lib/mailer';
 
 const authController = {
   async authenticate(req: Request, res: Response) {
@@ -76,59 +76,61 @@ const authController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   // TODO: Sends email to the user, that will have to be confirmed
-  async createAccount(req: Request, res: Response) {
-    const { emailAddress, password, firstName, lastName } = req.body;
+  createAccount(mailer: Mail) {
+    return async function (req: Request, res: Response) {
+      const { emailAddress, password, firstName, lastName } = req.body;
 
-    const user = new User();
-    user.emailAddress = emailAddress;
-    user.firstName = firstName;
-    user.lastName = lastName;
+      const user = new User();
+      user.emailAddress = emailAddress;
+      user.firstName = firstName;
+      user.lastName = lastName;
 
-    // TODO: user.status = UserStatus.NOT_CONFIRMED;
-    user.status = UserStatus.ACTIVE;
-    user.passwordHash = await hashPassword(password);
+      user.status = UserStatus.NOT_CONFIRMED;
+      user.passwordHash = await hashPassword(password);
 
-    // Mailer.getInstance().sendAccountConfirmation();
+      const mailToken = new MailToken();
 
-    try {
-      await user.save();
+      try {
+        await user.save();
 
-      res.sendStatus(HttpStatus.ACCEPTED);
-    } catch (err) {
-      // duplicated key constraint error
-      if (err.code === '23505') {
-        return accountAlreadyExistsError(req, res);
+        res.sendStatus(HttpStatus.ACCEPTED);
+      } catch (err) {
+        // duplicated key constraint error
+        if (err.code === '23505') {
+          return accountAlreadyExistsError(req, res);
+        }
+
+        return unknownServerError(req, res);
       }
-
-      return unknownServerError(req, res);
-    }
+    };
   },
   async confirmAccount(req: Request, res: Response) {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
   },
   // TODO: Sends email to the user, that will have to be confirmed
-  async requestPasswordReset(req: Request, res: Response) {
-    const { emailAddress } = req.body;
+  requestPasswordReset(mailer: Mail) {
+    return async function (req: Request, res: Response) {
+      const { emailAddress } = req.body;
 
-    const user = await User.findOne({
-      where: { emailAddress },
-    });
+      const user = await User.findOne({
+        where: { emailAddress },
+      });
 
-    if (!user) {
-      return accountNotFoundError(req, res);
-    }
+      if (!user) {
+        return accountNotFoundError(req, res);
+      }
 
-    const mailToken = new MailToken();
-    mailToken.id = nanoid();
-    mailToken.type = MailRequestType.PASSWORD_RESET;
-    mailToken.expiresIn = 12 * 60; // 12 hours
-    mailToken.user = user;
-    await mailToken.save();
+      const mailToken = new MailToken();
+      mailToken.id = nanoid();
+      mailToken.type = MailRequestType.PASSWORD_RESET;
+      mailToken.expiresIn = 12 * 60; // 12 hours
+      await mailToken.save();
 
-    res.status(HttpStatus.OK).json({
-      expiresIn: mailToken.expiresIn,
-      uuid: mailToken.id,
-    });
+      res.status(HttpStatus.OK).json({
+        expiresIn: mailToken.expiresIn,
+        uuid: mailToken.id,
+      });
+    };
   },
   async performPasswordReset(req: Request, res: Response) {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);

@@ -10,17 +10,18 @@ import sessionNoteController from './controller/session-note-controller';
 import sessionAppEventController from './controller/session-app-event-controller';
 import projectMemberController from './controller/project-member-controller';
 import dataController from './controller/data-controller';
+import Mail from 'nodemailer/lib/mailer';
 import { Connection } from 'typeorm';
 
 // prettier-ignore
-export default function mountRoutes(app: express.Application, conn: Connection) {
+export default function mountRoutes(app: express.Application, connection: Connection, mailer: Mail) {
   const apiRouter = express.Router();
   apiRouter.post('/authenticate', wrapAsync(authController.authenticate));
 
-  apiRouter.post('/create-account', wrapAsync(authController.createAccount));
+  apiRouter.post('/create-account', wrapAsync(authController.createAccount(mailer)));
   apiRouter.post('/confirm-account', wrapAsync(authController.confirmAccount));
 
-  apiRouter.post('/request-password-reset', wrapAsync(authController.requestPasswordReset));
+  apiRouter.post('/request-password-reset', wrapAsync(authController.requestPasswordReset(mailer)));
   apiRouter.post('/perform-password-reset', wrapAsync(authController.performPasswordReset));
 
   // Special route for deauthentication
@@ -44,7 +45,8 @@ export default function mountRoutes(app: express.Application, conn: Connection) 
   protectedRouter.delete('/projects/:projectId', wrapAsync(projectController.deleteProject));
 
   protectedRouter.get('/projects/:projectId/members', wrapAsync(projectMemberController.listMembers));
-  protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectMemberController.inviteMember));
+  protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectMemberController.inviteMember(mailer)));
+  protectedRouter.post('/projects/accept-invite', wrapAsync(projectMemberController.acceptInvite))
   protectedRouter.get('/project_members/:memberId', wrapAsync(projectMemberController.getMember));
   protectedRouter.patch('/project_members/:memberId', wrapAsync(projectMemberController.updateMember));
   protectedRouter.delete('/project_members/:memberId', wrapAsync(projectMemberController.deleteMember));
@@ -62,16 +64,15 @@ export default function mountRoutes(app: express.Application, conn: Connection) 
   protectedRouter.patch('/session_notes/:noteId', wrapAsync(sessionNoteController.updateNote));
   protectedRouter.delete('/session_notes/:noteId', wrapAsync(sessionNoteController.deleteNote));
 
-
   protectedRouter.get('/sessions/:sessionId/app_events', wrapAsync(sessionAppEventController.listAppEvents));
   protectedRouter.post('/sessions/:sessionId/app_events', wrapAsync(sessionAppEventController.createAppEvent));
   protectedRouter.get('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.getAppEvent));
   protectedRouter.patch('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.updateAppEvent));
   protectedRouter.delete('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.deleteAppEvent));
 
-  protectedRouter.get('/data_query/statistics/:projectId', wrapAsync(dataController.projectStats(conn)));
-  protectedRouter.get('/data_query/session_events/:sessionId', wrapAsync(dataController.sessionEvents(conn)));
-  protectedRouter.get('/data_query/session_events_raw/:sessionId', wrapAsync(dataController.rawSessionEvents(conn)));
+  protectedRouter.get('/data_query/statistics/:projectId', wrapAsync(dataController.projectStats(connection)));
+  protectedRouter.get('/data_query/session_events/:sessionId', wrapAsync(dataController.sessionEvents(connection)));
+  protectedRouter.get('/data_query/session_events_raw/:sessionId', wrapAsync(dataController.rawSessionEvents(connection)));
 
   apiRouter.use(protectedRouter);
   app.use('/api', apiRouter);

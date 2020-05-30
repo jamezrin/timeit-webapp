@@ -47,7 +47,7 @@ export const accountNotFoundError = (req: Request, res: Response) => {
     .json(error('ACCOUNT_NOT_FOUND', 'Could not find an account with the provided email address'));
 };
 
-export const forbiddenError = (req: Request, res: Response) => {
+export const insufficientPrivilegesError = (req: Request, res: Response) => {
   res
     .status(HttpStatus.FORBIDDEN)
     .json(error('INSUFFICIENT_PRIVILEGES', 'Insufficient permissions to perform this operation'));

@@ -16,10 +16,19 @@ export enum MailRequestType {
   PROJECT_INVITE = 'project_invite',
 }
 
+export interface ProjectInvitationPayload {
+  inviterId: number; // the one that sends the invitation
+  inviteeId: number; // the one that receives the invitation
+  projectId: number;
+}
+
 @Entity()
 export class MailToken extends BaseEntity {
   @PrimaryColumn()
   id: string;
+
+  @Column()
+  emailAddress: string;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
@@ -30,13 +39,6 @@ export class MailToken extends BaseEntity {
   @Column()
   type: MailRequestType;
 
-  @ManyToOne((type) => User, (user) => user.mailTokens, {
-    onDelete: 'CASCADE',
-    nullable: false,
-    eager: true,
-  })
-  user: User;
-
   @Column({ type: 'jsonb', nullable: true })
-  payload: object;
+  payload: ProjectInvitationPayload | object;
 }
