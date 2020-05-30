@@ -36,10 +36,7 @@ export default function RegisterPage() {
 
       addToast(
         'Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión',
-        {
-          appearance: 'success',
-          autoDismiss: true,
-        },
+        { appearance: 'success', autoDismiss: true, autoDismissTimeout: 10000 },
       );
 
       history.push('/login');
