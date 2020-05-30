@@ -24,7 +24,6 @@ import AuthContext, {
   fetchAuthStatus,
   requestAuthentication,
 } from '../../../state/authenticationContext';
-import useDocumentTitle from '@rehooks/document-title';
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();

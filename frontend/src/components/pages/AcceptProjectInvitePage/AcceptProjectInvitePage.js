@@ -19,14 +19,45 @@ export default function AcceptProjectInvitePage() {
   const { addToast } = useToasts();
 
   useEffect(() => {
-    requestAcceptProjectInvite(projectId, token).then((res) => {
-      history.push(`${projectsEndpoint}/${projectId}`);
+    requestAcceptProjectInvite(projectId, token)
+      .then((res) => {
+        history.push(`${projectsEndpoint}/${projectId}`);
 
-      addToast('Has aceptado la invitación de proyecto', {
-        appearance: 'success',
-        autoDismiss: true,
+        addToast('Has aceptado la invitación de proyecto', {
+          appearance: 'success',
+          autoDismiss: true,
+        });
+      })
+      .catch((err) => {
+        if (err.response && err.response.data.error) {
+          if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+            addToast('Las credenciales introducidas no son validas', {
+              appearance: 'error',
+              autoDismiss: true,
+            });
+          } else if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+            addToast(
+              'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+              { appearance: 'error', autoDismiss: true },
+            );
+          } else if (err.response.data.error.type === 'EXPIRED_MAIL_TOKEN') {
+            addToast(
+              'El enlace que has usado ha caducado, solicita uno nuevo',
+              {
+                appearance: 'error',
+                autoDismiss: true,
+              },
+            );
+
+            history.push('/');
+          }
+        } else {
+          addToast(`Ha ocurrido un error desconocido: ${err}`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        }
       });
-    });
   }, [history, addToast, projectId, token]);
 
   return (
