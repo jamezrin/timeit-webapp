@@ -15,7 +15,6 @@ import { MailRequestType, MailToken, ProjectInvitationPayload } from '../../enti
 import { User, UserStatus } from '../../entity/User';
 import { TokenPayload } from '../middleware/auth-middleware';
 import Mail from 'nodemailer/lib/mailer';
-import { nanoid } from 'nanoid';
 import { Project } from '../../entity/Project';
 
 async function sendProjectInvitationMail(
@@ -25,7 +24,7 @@ async function sendProjectInvitationMail(
 ) {
   const invitationCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL +
-    `/project/${inviter.project.id}/accept-invite?token=${mailToken.id}`;
+    `/project/${inviter.project.id}/accept-invite/${mailToken.id}`;
   return await mailer.sendMail({
     from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
@@ -130,6 +129,7 @@ const projectMemberController = {
       inviteeProjectMember.project = inviterProjectMember.project;
       inviteeProjectMember.role = ProjectMemberRole.EMPLOYEE;
       inviteeProjectMember.user = invitedUser;
+      await inviteeProjectMember.save();
 
       const mailToken = new MailToken();
       mailToken.type = MailRequestType.PROJECT_INVITE;
@@ -141,7 +141,6 @@ const projectMemberController = {
         inviteeId: inviteeProjectMember.id,
       };
 
-      await inviteeProjectMember.save();
       await mailToken.save();
 
       // Sends the actual project invite email with the token
@@ -169,8 +168,8 @@ const projectMemberController = {
       .where('user.emailAddress = :emailAddress', {
         emailAddress: mailToken.emailAddress,
       })
-      .andWhere('user.id = :userId', {
-        userId: mailTokenPayload.inviteeId,
+      .andWhere('projectMember.id = :memberId', {
+        memberId: mailTokenPayload.inviteeId,
       })
       .andWhere('projectMember.project = :projectId', {
         projectId: mailTokenPayload.projectId,
@@ -184,6 +183,8 @@ const projectMemberController = {
     if (projectMember.status !== ProjectMemberStatus.INVITED) {
       return alreadyProjectMemberError(req, res);
     }
+
+    projectMember.status = ProjectMemberStatus.ACTIVE;
 
     await projectMember.save();
     await mailToken.remove();

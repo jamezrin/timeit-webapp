@@ -22,6 +22,9 @@ import ProjectPage from './components/pages/ProjectPage/ProjectPage';
 import FullPageLoadSpinner from './components/base/FullPageLoadSpinner';
 import ProjectSettingsPage from './components/pages/ProjectSettingsPage/ProjectSettingsPage';
 import ProjectSessionPage from './components/pages/ProjectSessionPage/ProjectSessionPage';
+import RequestPasswordResetPage from './components/pages/RequestPasswordResetPage/RequestPasswordResetPage';
+import ConfirmAccountPage from './components/pages/ConfirmAccountPage/ConfirmAccountPage';
+import AcceptProjectInvitePage from './components/pages/AcceptProjectInvitePage/AcceptProjectInvitePage';
 import RecoverPasswordPage from './components/pages/RecoverPasswordPage/RecoverPasswordPage';
 
 const ProviderWrappedComponent = ({ children }) => {
@@ -54,7 +57,7 @@ const RouterWrappedComponent = () => {
         <UnauthenticatedUserRoute path="/register" component={RegisterPage} />
         <UnauthenticatedUserRoute
           path="/recover_password"
-          component={RecoverPasswordPage}
+          component={RequestPasswordResetPage}
         />
 
         <AuthenticatedUserRoute
@@ -70,6 +73,21 @@ const RouterWrappedComponent = () => {
         <AuthenticatedUserRoute
           path="/project/:projectId/session/:sessionId"
           component={ProjectSessionPage}
+          exact
+        />
+        <Route
+          path="/confirm-account/:token"
+          component={ConfirmAccountPage}
+          exact
+        />
+        <Route
+          path="/recover-password/:token"
+          component={RecoverPasswordPage}
+          exact
+        />
+        <Route
+          path="/project/:projectId/accept-invite/:token"
+          component={AcceptProjectInvitePage}
           exact
         />
 

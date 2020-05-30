@@ -34,6 +34,8 @@ function ProjectMemberList({ projectInfo }) {
       });
   }, [addToast, projectInfo]);
 
+  // TODO Hacer que esto sea una tabla
+
   return (
     <Box
       p={4}

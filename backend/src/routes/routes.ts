@@ -19,10 +19,10 @@ export default function mountRoutes(app: express.Application, connection: Connec
   apiRouter.post('/authenticate', wrapAsync(authController.authenticate));
 
   apiRouter.post('/create-account', wrapAsync(authController.createAccount(mailer)));
-  apiRouter.post('/confirm-account', wrapAsync(authController.confirmAccount));
+  apiRouter.post('/confirm-account/:token', wrapAsync(authController.confirmAccount));
 
   apiRouter.post('/request-password-reset', wrapAsync(authController.requestPasswordReset(mailer)));
-  apiRouter.post('/perform-password-reset', wrapAsync(authController.performPasswordReset));
+  apiRouter.post('/perform-password-reset/:token', wrapAsync(authController.performPasswordReset));
 
   // Special route for deauthentication
   apiRouter.post(
@@ -46,7 +46,7 @@ export default function mountRoutes(app: express.Application, connection: Connec
 
   protectedRouter.get('/projects/:projectId/members', wrapAsync(projectMemberController.listMembers));
   protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectMemberController.inviteMember(mailer)));
-  protectedRouter.post('/projects/accept-invite', wrapAsync(projectMemberController.acceptInvite))
+  protectedRouter.post('/projects/:projectId/accept-invite/:token', wrapAsync(projectMemberController.acceptInvite))
   protectedRouter.get('/project_members/:memberId', wrapAsync(projectMemberController.getMember));
   protectedRouter.patch('/project_members/:memberId', wrapAsync(projectMemberController.updateMember));
   protectedRouter.delete('/project_members/:memberId', wrapAsync(projectMemberController.deleteMember));

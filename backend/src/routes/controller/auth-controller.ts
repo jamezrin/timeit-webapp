@@ -17,41 +17,38 @@ import {
   mailTokenNotFoundError,
   unknownServerError,
 } from '../errors';
-import { nanoid } from 'nanoid';
 import Mail from 'nodemailer/lib/mailer';
-import { ProjectMember, ProjectMemberStatus } from '../../entity/ProjectMember';
 
 async function sendPasswordResetEmail(mailer: Mail, mailToken: MailToken) {
-  // TODO In the frontend call the form page request-password
-  const passwordResetCallback =
-    process.env.TIMEIT_FRONTEND_URL + `/recover-password?token=${mailToken.id}`;
+  const passwordResetCallbackUrl =
+    process.env.TIMEIT_FRONTEND_URL + `/recover-password/${mailToken.id}`;
   return await mailer.sendMail({
     from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Restablecimiento de tu contraseña`,
     text: `
     Has hecho una petición de restablecimiento de la contraseña de tu cuenta.
-    Accede a ${passwordResetCallback} para elegir una nueva contraseña.
+    Accede a ${passwordResetCallbackUrl} para elegir una nueva contraseña.
     Si no has hecho esta petición, simplemente ignora este correo electrónico.`,
     html: `
     <p>Has hecho una petición de restablecimiento de la contraseña de tu cuenta.</p> 
-    <p>Si has hecho esta petición, puedes <a href="${passwordResetCallback}">restablecer tu contraseña</a>.</p>
+    <p>Si has hecho esta petición, puedes <a href="${passwordResetCallbackUrl}">restablecer tu contraseña</a>.</p>
     <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`,
   });
 }
 
 async function sendAccountConfirmationEmail(mailer: Mail, mailToken: MailToken) {
-  const accountConfirmationCallback =
-    process.env.TIMEIT_FRONTEND_URL + `/confirm-account?token=${mailToken.id}`;
+  const accountConfirmationCallbackUrl =
+    process.env.TIMEIT_FRONTEND_URL + `/confirm-account/${mailToken.id}`;
   return await mailer.sendMail({
     from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Confirmación de registro`,
     text: `
-    Te has registrado en TimeIt, accede a ${accountConfirmationCallback} para confirmar tu cuenta.
+    Te has registrado en TimeIt, accede a ${accountConfirmationCallbackUrl} para confirmar tu cuenta.
     Si no has hecho esta petición, simplemente ignora este correo electrónico.`,
     html: `
-    <p>Te has registrado en TimeIt, procede a <a href="${accountConfirmationCallback}">confirmar tu cuenta</a>.</p>
+    <p>Te has registrado en TimeIt, procede a <a href="${accountConfirmationCallbackUrl}">confirmar tu cuenta</a>.</p>
     <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`,
   });
 }
@@ -149,7 +146,6 @@ const authController = {
         mailToken.emailAddress = emailAddress;
         mailToken.type = MailRequestType.ACCOUNT_CONFIRMATION;
         mailToken.expiresIn = 7 * 24 * 60 * 60; // 7 days
-        mailToken.payload = {};
         await mailToken.save();
 
         // Sends the actual account confirmation email with the token
@@ -183,17 +179,19 @@ const authController = {
       return expiredMailTokenError(req, res);
     }
 
-    const invitedProjectMember = await ProjectMember.findOne({
-      where: { emailAddress: mailToken.emailAddress },
+    const user = await User.findOne({
+      where: {
+        emailAddress: mailToken.emailAddress,
+      },
     });
 
-    if (!invitedProjectMember) {
+    if (!user) {
       return accountNotFoundError(req, res);
     }
 
-    invitedProjectMember.status = ProjectMemberStatus.ACTIVE;
+    user.status = UserStatus.ACTIVE;
 
-    await invitedProjectMember.save();
+    await user.save();
     await mailToken.remove();
 
     res.sendStatus(HttpStatus.ACCEPTED);
