@@ -38,6 +38,20 @@ async function sendPasswordResetEmail(mailer: Mail, mailToken: MailToken) {
   });
 }
 
+async function sendPasswordResetPerformedEmail(mailer: Mail, mailToken: MailToken) {
+  return await mailer.sendMail({
+    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
+    to: mailToken.emailAddress,
+    subject: `Restablecimiento de contraseña realizado`,
+    text: `
+    Tu petición de restablecimiento de contraseña se ha realizado correctamente.
+    Si no has sido tu quien ha hecho esta petición, pide una nueva contraseña.`,
+    html: `
+    <p>Tu petición de restablecimiento de contraseña se ha realizado correctamente.</p>
+    <p>Si no has sido tu quien ha hecho esta petición, pide una nueva contraseña.</p>`,
+  });
+}
+
 async function sendAccountConfirmationEmail(mailer: Mail, mailToken: MailToken) {
   const accountConfirmationCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL + `/confirm-account/${mailToken.id}`;
@@ -244,40 +258,45 @@ const authController = {
       res.sendStatus(HttpStatus.ACCEPTED);
     };
   },
-  async performPasswordReset(req: Request, res: Response) {
-    const { token, newPassword } = req.body;
+  performPasswordReset(mailer: Mail) {
+    return async function (req: Request, res: Response) {
+      const { token, newPassword } = req.body;
 
-    const mailToken = await MailToken.findOne(token);
+      const mailToken = await MailToken.findOne(token);
 
-    if (!mailToken) {
-      return mailTokenNotFoundError(req, res);
-    }
+      if (!mailToken) {
+        return mailTokenNotFoundError(req, res);
+      }
 
-    if (mailToken.type !== MailRequestType.PASSWORD_RESET) {
-      return incorrectMailTokenError(req, res);
-    }
+      if (mailToken.type !== MailRequestType.PASSWORD_RESET) {
+        return incorrectMailTokenError(req, res);
+      }
 
-    if (hasMailTokenExpired(mailToken)) {
-      // Password reset token has expired
+      if (hasMailTokenExpired(mailToken)) {
+        // Password reset token has expired
+        await mailToken.remove();
+
+        return expiredMailTokenError(req, res);
+      }
+
+      const user = await User.findOne({
+        where: { emailAddress: mailToken.emailAddress },
+      });
+
+      if (!user) {
+        return accountNotFoundError(req, res);
+      }
+
+      user.passwordHash = await hashPassword(newPassword);
+
+      await user.save();
       await mailToken.remove();
 
-      return expiredMailTokenError(req, res);
-    }
+      // Sends the actual password reset email with the token
+      await sendPasswordResetPerformedEmail(mailer, mailToken);
 
-    const user = await User.findOne({
-      where: { emailAddress: mailToken.emailAddress },
-    });
-
-    if (!user) {
-      return accountNotFoundError(req, res);
-    }
-
-    user.passwordHash = await hashPassword(newPassword);
-
-    await user.save();
-    await mailToken.remove();
-
-    res.sendStatus(HttpStatus.ACCEPTED);
+      res.sendStatus(HttpStatus.ACCEPTED);
+    };
   },
 };
 
