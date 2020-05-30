@@ -1,14 +1,8 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
-import { Button, Box, Flex, Heading } from '@chakra-ui/core';
+import { Box, Button, Flex, Heading } from '@chakra-ui/core';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 
 import BaseTable, { Column } from 'react-base-table';
@@ -16,7 +10,6 @@ import 'react-base-table/styles.css';
 
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
 import { parseAndFormatDate } from '../../../utils';
-import styled from '@emotion/styled';
 import useElementDimensions from '../../../hooks/elementDimensionsHook';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore

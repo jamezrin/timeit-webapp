@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Text, Box, useColorMode } from '@chakra-ui/core';
+import { Box, Flex, Text, useColorMode } from '@chakra-ui/core';
 
 const TimeStatIndicatorContent = ({
   title = 'Lorem ipsum dolor sit amet',

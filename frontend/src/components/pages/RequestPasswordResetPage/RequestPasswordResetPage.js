@@ -1,11 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 
-import {
-  Link as RouteLink,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
 import LoginRegisterLayout from '../../LoginRegisterLayout';
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
@@ -19,8 +14,6 @@ import {
   Heading,
   Icon,
   Input,
-  InputGroup,
-  InputRightElement,
   Link,
   List,
   ListItem,

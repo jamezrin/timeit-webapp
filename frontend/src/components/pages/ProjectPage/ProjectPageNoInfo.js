@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Heading } from '@chakra-ui/core';
+import { Heading, Image } from '@chakra-ui/core';
 import analyticsSvg from '../../../assets/setup_analytics.svg';
 import Flex from '@chakra-ui/core/dist/Flex';
 import { noDragOrSelectCss } from '../../../utils';

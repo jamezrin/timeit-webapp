@@ -1,11 +1,8 @@
 import React, { useMemo, useRef } from 'react';
-import { List, ListItem, Box, PseudoBox, useColorMode } from '@chakra-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import BaseTable, { Column } from 'react-base-table';
 import 'react-base-table/styles.css';
-import moment from 'moment';
 import styled from '@emotion/styled';
-import { css } from '@emotion/core';
 import { parseAndFormatDate } from '../../../utils';
 import useElementDimensions from '../../../hooks/elementDimensionsHook';
 

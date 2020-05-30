@@ -1,14 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Link as RouteLink,
-  useHistory,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
-import {
-  fetchAuthStatus,
-  requestAuthentication,
-} from '../../../state/authenticationContext';
+import { useHistory, useParams } from 'react-router-dom';
 import LoginRegisterLayout from '../../LoginRegisterLayout';
 import {
   Button,
@@ -20,9 +11,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Link,
-  List,
-  ListItem,
   Text,
 } from '@chakra-ui/core';
 import { useForm } from 'react-hook-form';

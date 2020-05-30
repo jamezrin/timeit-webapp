@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectRename = (projectId, name) =>
@@ -21,32 +22,33 @@ const requestProjectRename = (projectId, name) =>
   );
 
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {
-  const [projectName, setProjectName] = useState('');
+  const { handleSubmit, errors, reset, register, formState } = useForm();
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
-  const inviteUser = useCallback(() => {
-    requestProjectRename(projectInfo.id, projectName)
-      .then((res) => {
-        addToast(`Has cambiado el nombre del proyecto a "${projectName}"`, {
-          appearance: 'success',
-          autoDismiss: true,
-        });
+  async function onSubmit({ projectName }) {
+    try {
+      await requestProjectRename(projectInfo.id, projectName);
 
-        setProjectInfo({
-          ...projectInfo,
-          name: projectName,
-        });
-
-        setProjectName('');
-      })
-      .catch((err) => {
-        addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
+      addToast(`Has cambiado el nombre del proyecto a "${projectName}"`, {
+        appearance: 'success',
+        autoDismiss: true,
       });
-  }, [projectInfo, setProjectInfo, projectName, addToast]);
+
+      setProjectInfo({
+        ...projectInfo,
+        name: projectName,
+      });
+
+      // Clean the form up
+      reset();
+    } catch (err) {
+      addToast(`Ha ocurrido un error desconocido: ${err}`, {
+        appearance: 'error',
+        autoDismiss: true,
+      });
+    }
+  }
 
   return (
     <Box
@@ -63,22 +65,28 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
 
       <Text mt={4}>Aquí puedes cambiar el nombre del proyecto.</Text>
 
-      <InputGroup mt={4}>
-        <Input
-          width="auto"
-          flexGrow="1"
-          name="projectName"
-          id="projectName"
-          type="text"
-          placeholder="Nombre de proyecto"
-          value={projectName}
-          onChange={(e) => setProjectName(e.target.value)}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputGroup mt={4}>
+          <Input
+            width="auto"
+            flexGrow="1"
+            name="projectName"
+            id="projectName"
+            type="text"
+            placeholder="Nombre de proyecto"
+            ref={register}
+          />
 
-        <Button ml={6} variantColor="blue" onClick={inviteUser}>
-          Cambiar nombre
-        </Button>
-      </InputGroup>
+          <Button
+            ml={6}
+            variantColor="blue"
+            isLoading={formState.isSubmitting}
+            type="submit"
+          >
+            Cambiar nombre
+          </Button>
+        </InputGroup>
+      </form>
     </Box>
   );
 }

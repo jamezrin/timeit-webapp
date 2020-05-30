@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../../base/MainLayout';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { Box, Button, Heading, Flex } from '@chakra-ui/core';
+import { Box, Button, Flex } from '@chakra-ui/core';
 import { useHistory, useParams } from 'react-router-dom';
 import ProjectMemberSelect from './ProjectMemberSelect';
-import ProjectSessionList from './ProjectSessionList';
 import PeriodDateRangePicker from './PeriodDateRangePicker';
 import moment from 'moment';
-import ProjectStatIndicators from './ProjectStatIndicators';
-import ProjectLineChart from './ProjectLineChart';
 import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
 import { isMemberPrivileged } from '../../../utils';
