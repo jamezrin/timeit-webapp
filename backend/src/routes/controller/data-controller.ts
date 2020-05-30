@@ -44,6 +44,7 @@ const dataController = {
       AND project_member.id IN ($2)
       AND project.id = $1
       */
+
       // TODO Also add members below
       const allStats = await conn.query(
         `
@@ -62,7 +63,7 @@ const dataController = {
               ON project.id = project_member."projectId"
             WHERE session."createdAt" BETWEEN $1 AND $2
               AND project.id = $3
-              AND project_member.id IN ($4)
+              AND project_member.id = ANY($4::int[])
         )
         SELECT currentPeriodStats.*,
           lastMonthStats.*
@@ -100,7 +101,7 @@ const dataController = {
             FROM allSessionsCte
           ) AS lastMonthStats
         `,
-        [startDate, endDate, projectId, [].concat(memberIds).join(',')],
+        [startDate, endDate, projectId, [].concat(memberIds)],
       );
 
       res.status(HttpStatus.OK).json(allStats[0]);

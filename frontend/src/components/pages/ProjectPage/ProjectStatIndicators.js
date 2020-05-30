@@ -25,13 +25,7 @@ const TimeStatIndicatorContent = ({
         </Box>
       </Flex>
       <Box mt="auto">
-        <Text fontSize="xs">
-          Media por usuario:{' '}
-          {avgValue > 60
-            ? `${Math.floor(avgValue / 60)} horas`
-            : `${avgValue} minutos`}
-        </Text>
-        <Text fontSize="xs">
+        <Text fontSize="xs" pt={2}>
           Mínimo{' '}
           {minValue > 60
             ? `${Math.floor(minValue / 60)} horas`
@@ -40,6 +34,10 @@ const TimeStatIndicatorContent = ({
           {maxValue > 60
             ? `${Math.floor(maxValue / 60)} horas`
             : `${maxValue} minutos`}
+          , media{' '}
+          {avgValue > 60
+            ? `${Math.floor(avgValue / 60)} horas`
+            : `${avgValue} minutos`}
         </Text>
       </Box>
     </>
