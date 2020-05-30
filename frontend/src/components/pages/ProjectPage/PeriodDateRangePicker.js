@@ -10,7 +10,7 @@ export default function PeriodDateRangePicker({
   endDate,
   onDatesChange,
 }) {
-  const [focusedInput, setFocusedInput] = useState(false);
+  const [focusedInput, setFocusedInput] = useState(null);
   const { colorMode } = useColorMode();
 
   return (

@@ -12,6 +12,7 @@ import ProjectStatIndicators from './ProjectStatIndicators';
 import ProjectLineChart from './ProjectLineChart';
 import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
+import { isMemberPrivileged } from '../../../utils';
 
 moment.locale('es');
 
@@ -109,15 +110,17 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         >
           {projectInfo.name}
         </Button>
-        <Button
-          rightIcon="settings"
-          variantColor="gray"
-          variant="ghost"
-          ml="auto"
-          onClick={() => history.push(`/project/${projectInfo.id}/settings`)}
-        >
-          Ajustes
-        </Button>
+        {isMemberPrivileged(projectInfo.projectMember) && (
+          <Button
+            rightIcon="settings"
+            variantColor="gray"
+            variant="ghost"
+            ml="auto"
+            onClick={() => history.push(`/project/${projectInfo.id}/settings`)}
+          >
+            Ajustes
+          </Button>
+        )}
       </Flex>
 
       <Box mx={8}>

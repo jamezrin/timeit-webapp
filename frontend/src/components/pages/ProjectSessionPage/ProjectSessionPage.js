@@ -40,10 +40,6 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const tableWrapperRef = useRef();
   const tableWrapperDims = useElementDimensions(tableWrapperRef);
 
-  useEffect(() => {
-    console.log(tableWrapperDims);
-  }, [tableWrapperDims]);
-
   const data = useMemo(() => {
     if (!sessionEvents) return [];
     return sessionEvents.map((event) => {

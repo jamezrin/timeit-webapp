@@ -18,7 +18,6 @@ const TableWrapper = styled.div`
 `;
 
 function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
-  const { colorMode } = useColorMode();
   const history = useHistory();
 
   const data = useMemo(() => {
@@ -29,7 +28,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
       );
 
       return {
-        keyId: event.id,
+        id: event.id,
         keyCreationDate: parseAndFormatDate(event.createdAt),
         keyUpdateDate: parseAndFormatDate(event.updatedAt),
         keyEndDate: event.endedAt
@@ -43,7 +42,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
 
   const rowEventHandlers = {
     onClick: (event) => {
-      history.push(`/project/${projectInfo.id}/session/${event.rowData.keyId}`);
+      history.push(`/project/${projectInfo.id}/session/${event.rowData.id}`);
     },
   };
 
@@ -60,7 +59,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
       >
         <Column
           key="keyId"
-          dataKey="keyId"
+          dataKey="id"
           title="Id"
           resizable={true}
           width={100}
