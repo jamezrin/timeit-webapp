@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -9,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { User } from './User';
+import { nanoid } from 'nanoid';
 
 export enum MailRequestType {
   PASSWORD_RESET = 'password_reset',
@@ -43,4 +45,9 @@ export class MailToken extends BaseEntity {
 
   @Column({ type: 'jsonb', nullable: true })
   payload: ProjectInvitationPayload | AccountConfirmationPayload | object;
+
+  @BeforeInsert()
+  genNanoId() {
+    this.id = nanoid();
+  }
 }

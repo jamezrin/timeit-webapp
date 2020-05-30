@@ -132,7 +132,6 @@ const projectMemberController = {
       inviteeProjectMember.user = invitedUser;
 
       const mailToken = new MailToken();
-      mailToken.id = nanoid();
       mailToken.type = MailRequestType.PROJECT_INVITE;
       mailToken.emailAddress = emailAddress;
       mailToken.expiresIn = -1;

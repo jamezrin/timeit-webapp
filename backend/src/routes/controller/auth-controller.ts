@@ -146,7 +146,6 @@ const authController = {
         await user.save();
 
         const mailToken = new MailToken();
-        mailToken.id = nanoid();
         mailToken.emailAddress = emailAddress;
         mailToken.type = MailRequestType.ACCOUNT_CONFIRMATION;
         mailToken.expiresIn = 7 * 24 * 60 * 60; // 7 days
@@ -216,7 +215,6 @@ const authController = {
       }
 
       const mailToken = new MailToken();
-      mailToken.id = nanoid();
       mailToken.type = MailRequestType.PASSWORD_RESET;
       mailToken.emailAddress = emailAddress;
       mailToken.expiresIn = 12 * 60 * 60; // 12 hours
