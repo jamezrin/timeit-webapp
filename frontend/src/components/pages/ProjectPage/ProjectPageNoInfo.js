@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Image, Heading, Text } from '@chakra-ui/core';
-import analyticsSvg from '../../../assets/analytics.svg';
+import { Image, Heading } from '@chakra-ui/core';
+import analyticsSvg from '../../../assets/setup_analytics.svg';
 import Flex from '@chakra-ui/core/dist/Flex';
 import { noDragOrSelectCss } from '../../../utils';
 
@@ -17,7 +17,7 @@ export default function ProjectPageNoInfo() {
         src={analyticsSvg}
         maxWidth="36rem"
         alt=""
-        mt="12rem"
+        mt="8rem"
         css={{
           ...noDragOrSelectCss,
         }}
