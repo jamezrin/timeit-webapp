@@ -3,7 +3,11 @@ import { useHistory } from 'react-router-dom';
 import BaseTable, { Column } from 'react-base-table';
 import 'react-base-table/styles.css';
 import styled from '@emotion/styled';
-import { parseAndFormatDate } from '../../../utils';
+import {
+  findProjectMember,
+  formatUserFullName,
+  parseAndFormatTimestamp,
+} from '../../../utils';
 import useElementDimensions from '../../../hooks/elementDimensionsHook';
 
 const TableWrapper = styled.div`
@@ -19,20 +23,20 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
 
   const data = useMemo(() => {
     if (!sessions) return [];
-    return sessions.map((event) => {
-      const projectMember = projectMembers.find(
-        (member) => member.id === event.projectMemberId,
+    return sessions.map((session) => {
+      const projectMember = findProjectMember(
+        projectMembers,
+        session.projectMemberId,
       );
 
       return {
-        id: event.id,
-        keyCreationDate: parseAndFormatDate(event.createdAt),
-        keyUpdateDate: parseAndFormatDate(event.updatedAt),
-        keyEndDate: event.endedAt
-          ? parseAndFormatDate(event.endedAt)
+        id: session.id,
+        keyCreationDate: parseAndFormatTimestamp(session.createdAt),
+        keyUpdateDate: parseAndFormatTimestamp(session.updatedAt),
+        keyUser: formatUserFullName(projectMember.user),
+        keyEndDate: session.endedAt
+          ? parseAndFormatTimestamp(session.endedAt)
           : 'En curso',
-        keyUser:
-          projectMember.user.firstName + ' ' + projectMember.user.lastName,
       };
     });
   }, [sessions, projectMembers]);

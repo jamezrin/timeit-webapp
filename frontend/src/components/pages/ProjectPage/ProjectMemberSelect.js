@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useColorMode, useTheme } from '@chakra-ui/core';
-import { isMemberPrivileged } from '../../../utils';
+import { formatUserFullName, isMemberPrivileged } from '../../../utils';
 import Select from 'react-select';
 
 function ProjectMemberSelect({
@@ -24,7 +24,7 @@ function ProjectMemberSelect({
       })
       .map((projectMember) => {
         return {
-          label: `${projectMember.user.firstName} ${projectMember.user.lastName}`,
+          label: formatUserFullName(projectMember.user),
           value: projectMember.id,
         };
       });

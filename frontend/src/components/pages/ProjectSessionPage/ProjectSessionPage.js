@@ -9,7 +9,7 @@ import BaseTable, { Column } from 'react-base-table';
 import 'react-base-table/styles.css';
 
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
-import { parseAndFormatDate } from '../../../utils';
+import { parseAndFormatTimestamp } from '../../../utils';
 import useElementDimensions from '../../../hooks/elementDimensionsHook';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
@@ -41,7 +41,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           id: event.id,
           keyType: 'App',
           keyTimes: event.data.eventCount,
-          keyDate: parseAndFormatDate(event.createdAt),
+          keyDate: parseAndFormatTimestamp(event.createdAt),
           keyContent: `${event.data.windowName} (${event.data.windowClass} ${event.data.windowPid})`,
         };
       } else if (event.type === 'note') {
@@ -49,7 +49,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           id: event.id,
           keyType: 'Nota',
           keyTimes: 1,
-          keyDate: parseAndFormatDate(event.createdAt),
+          keyDate: parseAndFormatTimestamp(event.createdAt),
           keyContent: event.data.text,
         };
       } else {

@@ -8,7 +8,10 @@ export default function ProjectPageInfo({
   projectInfo,
   projectMembers,
   projectStats,
+  projectHistoryStats,
   sessions,
+  startDate,
+  endDate,
 }) {
   return (
     <Box>
@@ -23,6 +26,9 @@ export default function ProjectPageInfo({
         <ProjectLineChart
           projectInfo={projectInfo}
           projectMembers={projectMembers}
+          projectHistoryStats={projectHistoryStats}
+          startDate={startDate}
+          enDate={endDate}
         />
       </Box>
 

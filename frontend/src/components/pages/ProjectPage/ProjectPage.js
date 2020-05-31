@@ -73,6 +73,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
 
   const [projectStats, setProjectStats] = useState(null);
   const [sessions, setSessions] = useState(null);
+  const [projectHistoryStats, setProjectHistoryStats] = useState(null);
 
   const [selectedProjectMembers, setSelectedProjectMembers] = useState(null);
 
@@ -114,8 +115,8 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
             data: res.data,
           })),
         ),
-      ).then((projectHistories) => {
-        console.log('YES SIR', projectHistories);
+      ).then((projectHistoryStats) => {
+        setProjectHistoryStats(projectHistoryStats);
       });
     } else {
       setProjectStats(null);
@@ -180,7 +181,10 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
             projectInfo={projectInfo}
             projectMembers={projectMembers}
             projectStats={projectStats}
+            projectHistoryStats={projectHistoryStats}
             sessions={sessions}
+            startDate={startDate}
+            endDate={endDate}
           />
         ) : (
           <ProjectPageNoInfo />
