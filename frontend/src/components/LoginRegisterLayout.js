@@ -2,7 +2,15 @@ import React from 'react';
 
 import timeManagementSvg from '../assets/time_management.svg';
 import mainAppCoverLogo from '../assets/brand-logo.svg';
-import { Box, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
+import {
+  Box,
+  Link,
+  Flex,
+  Image,
+  Text,
+  useColorMode,
+  Button,
+} from '@chakra-ui/core';
 import { noDragOrSelectCss } from '../utils';
 
 export default function LoginRegisterLayout({ children }) {
@@ -56,12 +64,25 @@ export default function LoginRegisterLayout({ children }) {
             }}
           />
 
-          <Text mt={8} px={4} maxWidth={{ base: 'auto', lg: '36rem' }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec
-            tristique mi, ut faucibus sem. Integer eros purus, ultrices vitae
-            lacus vitae, fermentum scelerisque nulla. Suspendisse fringilla
-            ultrices nisl et cursus
-          </Text>
+          <Box mt={8} px={4} maxWidth={{ base: 'auto', lg: '36rem' }}>
+            <Text textAlign="justify">
+              Bienvenido/a a TimeIt, una plataforma de código abierto y libre
+              para controlar tu tiempo. Podrás crear proyectos con multiples
+              usuarios y utilizar tu cliente de escritorio para ver que
+              aplicaciones estás usando y durante cuanto tiempo. Con un diseño
+              minimalista y usando las tecnologías mas modernas para dar una
+              buena experiencia de usuario.
+            </Text>
+          </Box>
+
+          <Box
+            as="a"
+            mt={5}
+            href="https://github.com/jamezrin/timeit-client"
+            target="_blank"
+          >
+            <Button variantColor="blue">Cliente de escritorio</Button>
+          </Box>
         </Flex>
       </Box>
 
