@@ -70,7 +70,8 @@ export default function mountRoutes(app: express.Application, connection: Connec
   protectedRouter.patch('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.updateAppEvent));
   protectedRouter.delete('/session_app_events/:appEventId', wrapAsync(sessionAppEventController.deleteAppEvent));
 
-  protectedRouter.get('/data_query/statistics/:projectId', wrapAsync(dataController.projectStats(connection)));
+  protectedRouter.get('/data_query/summary_statistics/:projectId', wrapAsync(dataController.summaryStatistics(connection)));
+  protectedRouter.get('/data_query/history_statistics/:projectId', wrapAsync(dataController.historyStatistics(connection)));
   protectedRouter.get('/data_query/session_events/:sessionId', wrapAsync(dataController.sessionEvents(connection)));
   protectedRouter.get('/data_query/session_events_raw/:sessionId', wrapAsync(dataController.rawSessionEvents(connection)));
 

@@ -37,7 +37,7 @@ const requestProjectMembers = (projectId) =>
   });
 
 const projectStatisticsEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/data_query/statistics';
+  process.env.REACT_APP_BACKEND_URL + '/data_query/summary_statistics';
 const requestProjectStatistics = (
   projectId,
   startDate,

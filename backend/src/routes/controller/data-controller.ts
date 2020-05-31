@@ -8,7 +8,7 @@ import { Session } from '../../entity/Session';
 import { isMemberPrivileged } from '../../utils';
 
 const dataController = {
-  projectStats(conn: Connection) {
+  summaryStatistics(conn: Connection) {
     return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
@@ -119,6 +119,11 @@ const dataController = {
       );
 
       res.status(HttpStatus.OK).json(allStats[0]);
+    };
+  },
+  historyStatistics(connection: Connection) {
+    return async function (req: Request, res: Response) {
+      res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
     };
   },
   sessionEvents(conn: Connection) {
