@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { ProjectMember } from '../../entity/ProjectMember';
-import { resourceNotFoundError } from '../errors';
+import { resourceNotFoundError, unknownServerError } from '../errors';
 import HttpStatus from 'http-status-codes';
 import { Connection } from 'typeorm';
 import { Session } from '../../entity/Session';
@@ -118,12 +118,71 @@ const dataController = {
         [startDate, endDate, projectId, filteredMemberIds],
       );
 
+      // More than one row, wth?
+      if (allStats.length > 1) {
+        return unknownServerError(req, res);
+      }
+
       res.status(HttpStatus.OK).json(allStats[0]);
     };
   },
-  historyStatistics(connection: Connection) {
+  historyStatistics(conn: Connection) {
     return async function (req: Request, res: Response) {
-      res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+      const tokenPayload = res.locals.tokenPayload as TokenPayload;
+      const currentUserId = tokenPayload.userId;
+      const { projectId } = req.params;
+      const { memberId, startDate, endDate } = req.query;
+
+      // Current user as a member of the current project
+      const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+        .where('projectMember.project = :projectId', { projectId })
+        .andWhere('projectMember.user = :currentUserId', { currentUserId })
+        .getOne();
+
+      if (!currentProjectMember) {
+        return resourceNotFoundError(req, res);
+      }
+
+      if (
+        !isMemberPrivileged(currentProjectMember) &&
+        currentProjectMember.id !== parseInt(memberId as string)
+      ) {
+        return resourceNotFoundError(req, res);
+      }
+
+      const allHistory = await conn.query(
+        `
+        SELECT period_date AS day, (
+          SELECT COALESCE(SUM(
+            EXTRACT(EPOCH FROM (
+              COALESCE(
+                session."endedAt",
+                session."updatedAt"
+              ) - session."createdAt"
+            )) / 60
+          ), 0)
+          FROM session
+          LEFT JOIN project_member
+            ON project_member.id = session."projectMemberId"
+          LEFT JOIN project
+            ON project.id = project_member."projectId"
+          WHERE DATE(session."createdAt") = period_date
+            AND project.id = $3
+            AND project_member.id = $4
+        ) AS "minuteSum"
+        FROM (
+          SELECT DATE(GENERATE_SERIES(
+            $1,
+            $2,
+            interval '1 day'
+          )) AS period_date
+        ) AS period_date_series
+        ORDER BY period_date DESC;
+      `,
+        [startDate, endDate, projectId, memberId],
+      );
+
+      res.status(HttpStatus.OK).json(allHistory);
     };
   },
   sessionEvents(conn: Connection) {

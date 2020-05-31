@@ -77,7 +77,6 @@ const TimeStatIndicator = ({
   );
 };
 
-// TODO Make the last 3 stat types actually functional
 function ProjectStatIndicators({ projectInfo, projectStats }) {
   return (
     <>

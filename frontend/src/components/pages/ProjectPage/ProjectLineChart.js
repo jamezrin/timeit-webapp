@@ -353,7 +353,7 @@ const data = [
   },
 ];
 
-const ProjectLineChart = () => (
+const ProjectLineChart = ({ projectInfo, projectMembers }) => (
   <Box height="300px" width="100%">
     <MyResponsiveLine data={data} />
   </Box>

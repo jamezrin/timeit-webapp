@@ -20,7 +20,10 @@ export default function ProjectPageInfo({
           projectInfo={projectInfo}
           projectStats={projectStats}
         />
-        <ProjectLineChart />
+        <ProjectLineChart
+          projectInfo={projectInfo}
+          projectMembers={projectMembers}
+        />
       </Box>
 
       <Box mt={8}>

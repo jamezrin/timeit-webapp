@@ -53,6 +53,18 @@ const requestProjectStatistics = (
     },
   });
 
+const projectStatisticsHistoryEndpoint =
+  process.env.REACT_APP_BACKEND_URL + '/data_query/history_statistics';
+const requestProjectHistory = (projectId, startDate, endDate, memberId) =>
+  axios.get(`${projectStatisticsHistoryEndpoint}/${projectId}`, {
+    withCredentials: true,
+    params: {
+      memberId,
+      startDate,
+      endDate,
+    },
+  });
+
 function ProjectPageContent({ projectInfo, projectMembers }) {
   const history = useHistory();
 
@@ -88,6 +100,22 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         selectedProjectMembers,
       ).then((res) => {
         setSessions(res.data);
+      });
+
+      Promise.all(
+        selectedProjectMembers.map((memberId) =>
+          requestProjectHistory(
+            projectInfo.id,
+            startDate,
+            endDate,
+            memberId,
+          ).then((res) => ({
+            memberId,
+            data: res.data,
+          })),
+        ),
+      ).then((projectHistories) => {
+        console.log('YES SIR', projectHistories);
       });
     } else {
       setProjectStats(null);
