@@ -26,7 +26,10 @@ export default function ProjectPageInfo({
       <Box mt={8}>
         <Heading as="h2" size="lg" mb={3}>
           Sesiones (
-          {projectStats ? projectStats.currentPeriodStatsCount : 'Desconocido'})
+          {projectStats
+            ? projectStats.currentPeriodSessionCount
+            : 'Desconocido'}
+          )
         </Heading>
         <ProjectSessionList
           projectInfo={projectInfo}

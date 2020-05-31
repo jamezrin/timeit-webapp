@@ -6,7 +6,6 @@ import HttpStatus from 'http-status-codes';
 import { Connection } from 'typeorm';
 import { Session } from '../../entity/Session';
 import { isMemberPrivileged } from '../../utils';
-import { start } from 'repl';
 
 const dataController = {
   projectStats(conn: Connection) {
@@ -26,36 +25,26 @@ const dataController = {
         return resourceNotFoundError(req, res);
       }
 
-      /*
-      if (isMemberPrivileged(currentProjectMember)) {
-        if (memberIds) {
-          sessionQueryBuilder.andWhere('projectMember.id IN (:...memberIds)', {
-            memberIds: [].concat(memberIds),
-          });
+      const filteredMemberIds = [].concat(memberIds).filter((memberId) => {
+        // Query all member ids specified if the member that makes the request is privileged
+        if (isMemberPrivileged(currentProjectMember)) {
+          return true;
         }
-      } else {
-        sessionQueryBuilder.andWhere('projectMember.id = :currentProjectMemberId', {
-          currentProjectMemberId: currentProjectMember.id,
-        });
-      }
-      */
 
-      /*
-      AND project_member.id IN ($2)
-      AND project.id = $1
-      */
+        // Otherwise, only let the id of the member that makes the request through
+        return memberId === currentProjectMember.id;
+      });
 
-      // TODO Also add members below
       const allStats = await conn.query(
         `
         WITH allSessionsCte AS (
           SELECT session.*,
-            EXTRACT(EPOCH FROM (
+            FLOOR(EXTRACT(EPOCH FROM (
                 COALESCE(
                   session."endedAt",
                   session."updatedAt"
                 ) - session."createdAt"
-            )) AS "durationSeconds"
+            )) / 60) AS "durationMinutes"
             FROM session 
             LEFT JOIN project_member
               ON project_member.id = session."projectMemberId"
@@ -66,42 +55,67 @@ const dataController = {
               AND project_member.id = ANY($4::int[])
         )
         SELECT currentPeriodStats.*,
+          lastDayStats.*,
+          lastWeekStats.*,
           lastMonthStats.*
           FROM (
-            WITH currentPeriodSessionsCte AS (
-              SELECT allSessionsCte.*,
-                FLOOR(allSessionsCte."durationSeconds" / 60)
-                  AS "durationMinutes"
-              FROM allSessionsCte
-            ) 
             SELECT 
               COALESCE(SUM("durationMinutes"), 0) 
                 AS "currentPeriodStatsMinuteSum",
-              COALESCE(AVG("durationMinutes"), 0) 
+              COALESCE(ROUND(AVG("durationMinutes")), 0)
                 AS "currentPeriodStatsMinuteAvg",
               COALESCE(MIN("durationMinutes"), 0) 
                 AS "currentPeriodStatsMinuteMin",
               COALESCE(MAX("durationMinutes"), 0) 
                 AS "currentPeriodStatsMinuteMax",
-              COUNT(currentPeriodSessionsCte.id)::integer 
-                AS "currentPeriodStatsCount"
-            FROM currentPeriodSessionsCte
-          ) AS currentPeriodStats, (
-            WITH lastMonthSessionsCte AS (
-              SELECT allSessionsCte.*,
-                FLOOR(allSessionsCte."durationSeconds" / 3600)
-                  AS "durationHours"
-              FROM allSessionsCte
-            )
-            SELECT 
-              SUM(allSessionsCte.id) AS "lastMonthStatsHourSum",
-              AVG(allSessionsCte.id) AS "lastMonthStatsHourAvg",
-              MIN(allSessionsCte.id) AS "lastMonthStatsHourMin",
-              MAX(allSessionsCte.id) AS "lastMonthStatsHourMax"
+              COUNT(allSessionsCte.id)::integer 
+                AS "currentPeriodSessionCount"
             FROM allSessionsCte
+          ) AS currentPeriodStats, (
+            SELECT 
+              COALESCE(SUM("durationMinutes"), 0) 
+                AS "lastDayStatsMinuteSum",
+              COALESCE(ROUND(AVG("durationMinutes")), 0)
+                AS "lastDayStatsMinuteAvg",
+              COALESCE(MIN("durationMinutes"), 0) 
+                AS "lastDayStatsMinuteMin",
+              COALESCE(MAX("durationMinutes"), 0) 
+                AS "lastDayStatsMinuteMax"
+            FROM allSessionsCte
+            WHERE DATE("createdAt") = DATE($2)
+          ) AS lastDayStats, (
+            SELECT 
+              COALESCE(SUM("durationMinutes"), 0) 
+                AS "lastWeekStatsMinuteSum",
+              COALESCE(ROUND(AVG("durationMinutes")), 0)
+                AS "lastWeekStatsMinuteAvg",
+              COALESCE(MIN("durationMinutes"), 0) 
+                AS "lastWeekStatsMinuteMin",
+              COALESCE(MAX("durationMinutes"), 0) 
+                AS "lastWeekStatsMinuteMax"
+            FROM allSessionsCte
+            WHERE EXTRACT(WEEK FROM "createdAt") = 
+              EXTRACT(WEEK FROM $2)
+            AND EXTRACT(YEAR FROM "createdAt") =
+              EXTRACT(YEAR FROM $2)
+          ) AS lastWeekStats, (
+            SELECT 
+              COALESCE(SUM("durationMinutes"), 0) 
+                AS "lastMonthStatsMinuteSum",
+              COALESCE(ROUND(AVG("durationMinutes")), 0)
+                AS "lastMonthStatsMinuteAvg",
+              COALESCE(MIN("durationMinutes"), 0) 
+                AS "lastMonthStatsMinuteMin",
+              COALESCE(MAX("durationMinutes"), 0) 
+                AS "lastMonthStatsMinuteMax"
+            FROM allSessionsCte
+            WHERE EXTRACT(MONTH FROM "createdAt") = 
+              EXTRACT(MONTH FROM $2)
+            AND EXTRACT(YEAR FROM "createdAt") =
+              EXTRACT(YEAR FROM $2)
           ) AS lastMonthStats
         `,
-        [startDate, endDate, projectId, [].concat(memberIds)],
+        [startDate, endDate, projectId, filteredMemberIds],
       );
 
       res.status(HttpStatus.OK).json(allStats[0]);

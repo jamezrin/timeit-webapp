@@ -25,7 +25,7 @@ const TimeStatIndicatorContent = ({
         </Box>
       </Flex>
       <Box mt="auto">
-        <Text fontSize="xs" pt={2}>
+        <Text fontSize="xs">
           Mínimo{' '}
           {minValue > 60
             ? `${Math.floor(minValue / 60)} horas`
@@ -96,25 +96,25 @@ function ProjectStatIndicators({ projectInfo, projectStats }) {
           />
           <TimeStatIndicator
             title="Tiempo invertido en el último dia del periodo"
-            sumValue={projectStats.currentPeriodStatsMinuteSum}
-            avgValue={projectStats.currentPeriodStatsMinuteAvg}
-            minValue={projectStats.currentPeriodStatsMinuteMin}
-            maxValue={projectStats.currentPeriodStatsMinuteMax}
+            sumValue={projectStats.lastDayStatsMinuteSum}
+            avgValue={projectStats.lastDayStatsMinuteAvg}
+            minValue={projectStats.lastDayStatsMinuteMin}
+            maxValue={projectStats.lastDayStatsMinuteMax}
           />
 
           <TimeStatIndicator
             title="Tiempo invertido en la última semana del periodo"
-            sumValue={projectStats.currentPeriodStatsMinuteSum}
-            avgValue={projectStats.currentPeriodStatsMinuteAvg}
-            minValue={projectStats.currentPeriodStatsMinuteMin}
-            maxValue={projectStats.currentPeriodStatsMinuteMax}
+            sumValue={projectStats.lastWeekStatsMinuteSum}
+            avgValue={projectStats.lastWeekStatsMinuteAvg}
+            minValue={projectStats.lastWeekStatsMinuteMin}
+            maxValue={projectStats.lastWeekStatsMinuteMax}
           />
           <TimeStatIndicator
             title="Tiempo invertido en el último mes del periodo"
-            sumValue={projectStats.currentPeriodStatsMinuteSum}
-            avgValue={projectStats.currentPeriodStatsMinuteAvg}
-            minValue={projectStats.currentPeriodStatsMinuteMin}
-            maxValue={projectStats.currentPeriodStatsMinuteMax}
+            sumValue={projectStats.lastMonthStatsMinuteSum}
+            avgValue={projectStats.lastMonthStatsMinuteAvg}
+            minValue={projectStats.lastMonthStatsMinuteMin}
+            maxValue={projectStats.lastMonthStatsMinuteMax}
           />
         </Flex>
       )}
