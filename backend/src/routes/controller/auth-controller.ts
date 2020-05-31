@@ -139,6 +139,9 @@ const authController = {
       return unknownServerError(req, res);
     }
 
+    // Remove the cookie from the client
+    res.clearCookie(accessTokenCookieName);
+
     // Delete the token this user authenticated with
     await tokenInfo.remove();
 
