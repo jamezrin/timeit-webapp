@@ -21,14 +21,21 @@ import {
 } from '@chakra-ui/core';
 import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
+import * as yup from 'yup';
 
 const requestPasswordEndpoint =
   process.env.REACT_APP_BACKEND_URL + '/request-password-reset';
 const requestPasswordReset = (values) =>
   axios.post(requestPasswordEndpoint, values, { withCredentials: true });
 
+const schema = yup.object().shape({
+  emailAddress: yup.string().email().required(),
+});
+
 export default function RequestPasswordResetPage() {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
@@ -97,7 +104,7 @@ export default function RequestPasswordResetPage() {
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4} isInvalid={errors.emailAddress}>
+        <FormControl mt={4} isInvalid={!!errors.emailAddress}>
           <FormLabel htmlFor="emailAddress">Correo electrónico</FormLabel>
           <Input
             name="emailAddress"
@@ -105,6 +112,7 @@ export default function RequestPasswordResetPage() {
             type="email"
             placeholder="usuario@ejemplo.org"
             ref={register}
+            errorBorderColor="red.500"
           />
           <FormErrorMessage>
             {errors.emailAddress && errors.emailAddress.message}

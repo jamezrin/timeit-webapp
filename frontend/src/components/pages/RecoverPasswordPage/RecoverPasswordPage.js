@@ -18,6 +18,7 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
+import * as yup from 'yup';
 
 const recoverPasswordEndpoint =
   process.env.REACT_APP_BACKEND_URL + `/perform-password-reset`;
@@ -26,8 +27,14 @@ const requestPasswordReset = (values, token) =>
     withCredentials: true,
   });
 
+const schema = yup.object().shape({
+  newPassword: yup.string().required(),
+});
+
 export default function RecoverPasswordPage() {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();
   const history = useHistory();
@@ -84,7 +91,7 @@ export default function RecoverPasswordPage() {
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4} isInvalid={errors.password}>
+        <FormControl mt={4} isInvalid={!!errors.newPassword}>
           <FormLabel htmlFor="newPassword">Nueva contraseña</FormLabel>
           <InputGroup size="md">
             <Input
@@ -93,6 +100,7 @@ export default function RecoverPasswordPage() {
               type={showPassword ? 'text' : 'password'}
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
+              errorBorderColor="red.500"
             />
             <InputRightElement width="4.5rem" mr={12}>
               <Button
@@ -106,7 +114,7 @@ export default function RecoverPasswordPage() {
           </InputGroup>
 
           <FormErrorMessage>
-            {errors.password && errors.password.message}
+            {errors.newPassword && errors.newPassword.message}
           </FormErrorMessage>
         </FormControl>
         <Button

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
   Divider,
+  FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   InputGroup,
@@ -11,6 +13,7 @@ import {
 } from '@chakra-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
@@ -21,8 +24,14 @@ const requestProjectRename = (projectId, name) =>
     { withCredentials: true },
   );
 
+const schema = yup.object().shape({
+  projectName: yup.string().required(),
+});
+
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {
-  const { handleSubmit, errors, reset, register, formState } = useForm();
+  const { handleSubmit, errors, reset, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
@@ -66,25 +75,32 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
       <Text mt={4}>Aquí puedes cambiar el nombre del proyecto.</Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup mt={4}>
-          <Input
-            width="auto"
-            flexGrow="1"
-            name="projectName"
-            type="text"
-            placeholder="Nombre de proyecto"
-            ref={register}
-          />
+        <FormControl mt={4} isInvalid={!!errors.projectName}>
+          <InputGroup mt={4}>
+            <Input
+              width="auto"
+              flexGrow="1"
+              name="projectName"
+              type="text"
+              placeholder="Nombre de proyecto"
+              ref={register}
+              errorBorderColor="red.500"
+            />
 
-          <Button
-            ml={6}
-            variantColor="blue"
-            isLoading={formState.isSubmitting}
-            type="submit"
-          >
-            Cambiar nombre
-          </Button>
-        </InputGroup>
+            <Button
+              ml={6}
+              variantColor="blue"
+              isLoading={formState.isSubmitting}
+              type="submit"
+            >
+              Cambiar nombre
+            </Button>
+          </InputGroup>
+
+          <FormErrorMessage>
+            {errors.projectName && errors.projectName.message}
+          </FormErrorMessage>
+        </FormControl>
       </form>
     </Box>
   );

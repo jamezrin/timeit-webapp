@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import {
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInvite = (projectId, emailAddress) =>
@@ -23,8 +24,14 @@ const requestProjectInvite = (projectId, emailAddress) =>
     { withCredentials: true },
   );
 
+const schema = yup.object().shape({
+  emailAddress: yup.string().email().required(),
+});
+
 function InviteProjectSettings({ projectInfo }) {
-  const { handleSubmit, reset, errors, register, formState } = useForm();
+  const { handleSubmit, reset, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
@@ -81,7 +88,7 @@ function InviteProjectSettings({ projectInfo }) {
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4} isInvalid={errors.password}>
+        <FormControl mt={4} isInvalid={!!errors.emailAddress}>
           <InputGroup mt={4}>
             <Input
               width="auto"
@@ -90,6 +97,7 @@ function InviteProjectSettings({ projectInfo }) {
               type="text"
               placeholder="Correo electrónico"
               ref={register}
+              errorBorderColor="red.500"
             />
 
             <Button
@@ -103,7 +111,7 @@ function InviteProjectSettings({ projectInfo }) {
           </InputGroup>
 
           <FormErrorMessage>
-            {errors.password && errors.password.message}
+            {errors.emailAddress && errors.emailAddress.message}
           </FormErrorMessage>
         </FormControl>
       </form>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
 import LoginRegisterLayout from '../../LoginRegisterLayout';
@@ -26,9 +26,17 @@ import AuthContext, {
 } from '../../../state/authenticationContext';
 import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  emailAddress: yup.string().email().required(),
+  password: yup.string().required(),
+});
 
 export default function LoginPage() {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();
   const location = useLocation();
@@ -93,21 +101,22 @@ export default function LoginPage() {
       </List>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4} isInvalid={errors.emailAddress}>
+        <FormControl mt={4} isInvalid={!!errors.emailAddress}>
           <FormLabel htmlFor="emailAddress">Correo electrónico</FormLabel>
           <Input
             name="emailAddress"
             id="emailAddress"
-            type="email"
+            type="text"
             placeholder="usuario@ejemplo.org"
             ref={register}
+            errorBorderColor="red.500"
           />
           <FormErrorMessage>
             {errors.emailAddress && errors.emailAddress.message}
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl mt={4} isInvalid={errors.password}>
+        <FormControl mt={4} isInvalid={!!errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
           <InputGroup size="md">
             <Input
@@ -116,6 +125,7 @@ export default function LoginPage() {
               type={showPassword ? 'text' : 'password'}
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
+              errorBorderColor="red.500"
             />
             <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
               <Button

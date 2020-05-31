@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+import * as yup from 'yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectCreation = (values) =>
@@ -25,8 +26,14 @@ const requestProjectCreation = (values) =>
 
 export const ProjectCreationModalContext = React.createContext(null);
 
+const schema = yup.object().shape({
+  projectName: yup.string().required(),
+});
+
 export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
 
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
@@ -37,17 +44,18 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <FormControl mt={4} isInvalid={errors.emailAddress}>
-              <FormLabel htmlFor="emailAddress">Nombre del proyecto</FormLabel>
+            <FormControl mt={4} isInvalid={!!errors.projectName}>
+              <FormLabel htmlFor="projectName">Nombre del proyecto</FormLabel>
               <Input
                 name="projectName"
                 id="projectName"
                 type="text"
                 placeholder="Mi super proyecto"
                 ref={register}
+                errorBorderColor="red.500"
               />
               <FormErrorMessage>
-                {errors.emailAddress && errors.emailAddress.message}
+                {errors.projectName && errors.projectName.message}
               </FormErrorMessage>
             </FormControl>
           </ModalBody>

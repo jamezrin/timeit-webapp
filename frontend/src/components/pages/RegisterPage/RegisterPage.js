@@ -22,13 +22,23 @@ import {
 import axios from 'axios';
 import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
+import * as yup from 'yup';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 const requestRegister = (values) =>
   axios.post(registerEndpoint, values, { withCredentials: true });
 
+const schema = yup.object().shape({
+  emailAddress: yup.string().email().required(),
+  password: yup.string().required(),
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
+});
+
 export default function RegisterPage() {
-  const { handleSubmit, errors, register, formState } = useForm();
+  const { handleSubmit, errors, register, formState } = useForm({
+    validationSchema: schema,
+  });
   const history = useHistory();
   const { addToast } = useToasts();
   useDocumentTitle(formatTitle('Creación de cuenta'));
@@ -67,7 +77,7 @@ export default function RegisterPage() {
       </Text>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl mt={4} isInvalid={errors.emailAddress}>
+        <FormControl mt={4} isInvalid={!!errors.emailAddress}>
           <FormLabel htmlFor="emailAddress">Correo electrónico</FormLabel>
           <Input
             name="emailAddress"
@@ -75,13 +85,14 @@ export default function RegisterPage() {
             type="email"
             placeholder="usuario@ejemplo.org"
             ref={register}
+            errorBorderColor="red.500"
           />
           <FormErrorMessage>
             {errors.emailAddress && errors.emailAddress.message}
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl mt={4} isInvalid={errors.firstName}>
+        <FormControl mt={4} isInvalid={!!errors.firstName}>
           <FormLabel htmlFor="firstName">Nombre</FormLabel>
           <Input
             name="firstName"
@@ -94,20 +105,21 @@ export default function RegisterPage() {
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl mt={4} isInvalid={errors.lastName}>
+        <FormControl mt={4} isInvalid={!!errors.lastName}>
           <FormLabel htmlFor="lastName">Apellidos</FormLabel>
           <Input
             name="lastName"
             id="lastName"
             placeholder="Smith"
             ref={register}
+            errorBorderColor="red.500"
           />
           <FormErrorMessage>
             {errors.lastName && errors.lastName.message}
           </FormErrorMessage>
         </FormControl>
 
-        <FormControl mt={4} isInvalid={errors.password}>
+        <FormControl mt={4} isInvalid={!!errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
           <InputGroup size="md">
             <Input
@@ -116,6 +128,7 @@ export default function RegisterPage() {
               type={showPassword ? 'text' : 'password'}
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
+              errorBorderColor="red.500"
             />
             <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
@@ -127,7 +140,6 @@ export default function RegisterPage() {
               </Button>
             </InputRightElement>
           </InputGroup>
-
           <FormErrorMessage>
             {errors.password && errors.password.message}
           </FormErrorMessage>
