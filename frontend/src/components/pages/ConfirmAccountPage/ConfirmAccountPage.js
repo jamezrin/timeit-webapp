@@ -4,6 +4,8 @@ import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 import { Flex } from '@chakra-ui/core';
 import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const confirmAccountEndpoint =
   process.env.REACT_APP_BACKEND_URL + `/confirm-account`;
@@ -18,6 +20,7 @@ export default function ConfirmAccountPage() {
   const { token } = useParams();
   const history = useHistory();
   const { addToast } = useToasts();
+  useDocumentTitle(formatTitle('Confirmación de cuenta'));
 
   useEffect(() => {
     requestConfirmAccount(token)

@@ -24,6 +24,8 @@ import AuthContext, {
   fetchAuthStatus,
   requestAuthentication,
 } from '../../../state/authenticationContext';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm();
@@ -32,6 +34,7 @@ export default function LoginPage() {
   const location = useLocation();
   const history = useHistory();
   const { setAuthStatus } = useContext(AuthContext);
+  useDocumentTitle(formatTitle('Inicio de sesión'));
 
   async function onSubmit(values) {
     try {

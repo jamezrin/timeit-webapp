@@ -28,3 +28,5 @@ export const formatMinutes = (minutes) => {
   return Math.floor(minutes / 60) + 'h'
     + Math.floor(minutes % 60) + 'm'; // prettier-ignore
 };
+
+export const formatTitle = (title) => `${title} - TimeIt`;

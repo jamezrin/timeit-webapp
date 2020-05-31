@@ -19,6 +19,8 @@ import {
   ListItem,
   Text,
 } from '@chakra-ui/core';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const requestPasswordEndpoint =
   process.env.REACT_APP_BACKEND_URL + '/request-password-reset';
@@ -30,6 +32,7 @@ export default function RequestPasswordResetPage() {
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
+  useDocumentTitle(formatTitle('Restablecimiento de contraseña'));
 
   async function onSubmit(values) {
     try {

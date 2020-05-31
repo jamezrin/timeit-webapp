@@ -8,6 +8,8 @@ import RenameProjectSettings from './RenameProjectSettings';
 import ProjectMemberList from './ProjectMemberList';
 import InviteProjectSettings from './InviteProjectSettings';
 import DeleteProjectSettings from './DeleteProjectSettings';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) =>
@@ -55,6 +57,7 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
 function ProjectSettingsPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const { projectId } = useParams();
+  useDocumentTitle(formatTitle('Ajustes de proyecto'));
 
   useEffect(() => {
     requestProjectInfo(projectId).then((res) => {

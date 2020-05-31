@@ -15,12 +15,13 @@ import workTimeSvg from '../../../assets/work_time.svg';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { noDragOrSelectCss } from '../../../utils';
+import { formatTitle, noDragOrSelectCss } from '../../../utils';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 import {
   ProjectCreationModalContext,
   ProjectCreationModalProvider,
 } from './ProjectCreationModal';
+import useDocumentTitle from '@rehooks/document-title';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectList = () =>
@@ -103,6 +104,7 @@ function ProjectListContent({ projects }) {
 function ProjectListPage() {
   const [projects, setProjects] = useState(null);
   const { projectsCreatedCount } = useContext(ProjectCreationModalContext);
+  useDocumentTitle(formatTitle('Lista de proyectos'));
 
   useEffect(() => {
     requestProjectList().then((response) => {

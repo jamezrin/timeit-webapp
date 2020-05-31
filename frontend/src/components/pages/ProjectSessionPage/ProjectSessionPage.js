@@ -9,8 +9,9 @@ import BaseTable, { Column } from 'react-base-table';
 import 'react-base-table/styles.css';
 
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
-import { parseAndFormatTimestamp } from '../../../utils';
+import { formatTitle, parseAndFormatTimestamp } from '../../../utils';
 import useResizeObserver from 'use-resize-observer';
+import useDocumentTitle from '@rehooks/document-title';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
 const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true }); // prettier-ignore
@@ -114,6 +115,7 @@ function ProjectSessionPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const [sessionInfo, setSessionInfo] = useState(null);
   const { projectId, sessionId } = useParams();
+  useDocumentTitle(formatTitle('Lista de eventos'));
 
   useEffect(() => {
     requestProjectInfo(projectId).then((response) => {

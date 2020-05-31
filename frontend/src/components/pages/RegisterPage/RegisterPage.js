@@ -20,6 +20,8 @@ import {
 } from '@chakra-ui/core';
 
 import axios from 'axios';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 const requestRegister = (values) =>
@@ -29,6 +31,7 @@ export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm();
   const history = useHistory();
   const { addToast } = useToasts();
+  useDocumentTitle(formatTitle('Creación de cuenta'));
 
   async function onSubmit(values) {
     try {

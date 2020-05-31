@@ -9,7 +9,8 @@ import PeriodDateRangePicker from './PeriodDateRangePicker';
 import moment from 'moment';
 import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
-import { isMemberPrivileged } from '../../../utils';
+import { formatTitle, isMemberPrivileged } from '../../../utils';
+import useDocumentTitle from '@rehooks/document-title';
 
 moment.locale('es');
 
@@ -199,6 +200,10 @@ function ProjectPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const [projectMembers, setProjectMembers] = useState(null);
   const { projectId } = useParams();
+
+  useDocumentTitle(
+    formatTitle('Proyecto ' + (projectInfo ? projectInfo.name : '')),
+  );
 
   useEffect(() => {
     requestProjectInfo(projectId).then((res) => {

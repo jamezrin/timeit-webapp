@@ -4,6 +4,8 @@ import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 import { Flex } from '@chakra-ui/core';
 import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + `/projects`;
 const requestAcceptProjectInvite = (projectId, token) =>
@@ -17,6 +19,7 @@ export default function AcceptProjectInvitePage() {
   const { projectId, token } = useParams();
   const history = useHistory();
   const { addToast } = useToasts();
+  useDocumentTitle(formatTitle('Invitación a proyecto'));
 
   useEffect(() => {
     requestAcceptProjectInvite(projectId, token)

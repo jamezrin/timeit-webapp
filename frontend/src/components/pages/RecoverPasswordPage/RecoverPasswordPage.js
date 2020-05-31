@@ -16,6 +16,8 @@ import {
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
 
 const recoverPasswordEndpoint =
   process.env.REACT_APP_BACKEND_URL + `/perform-password-reset`;
@@ -30,6 +32,7 @@ export default function RecoverPasswordPage() {
   const { addToast } = useToasts();
   const history = useHistory();
   const { token } = useParams();
+  useDocumentTitle(formatTitle('Restablecimiento de contraseña'));
 
   async function onSubmit(values) {
     try {
