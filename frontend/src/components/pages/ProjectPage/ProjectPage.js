@@ -132,6 +132,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
           variantColor="gray"
           variant="ghost"
           size="lg"
+          whiteSpace="pre"
           onClick={() => history.push('/')}
         >
           {projectInfo.name}

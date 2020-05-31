@@ -66,6 +66,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           variantColor="gray"
           variant="ghost"
           size="lg"
+          whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
           {projectInfo.name || 'Proyecto sin nombre'}
