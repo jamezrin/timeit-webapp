@@ -10,7 +10,7 @@ import 'react-base-table/styles.css';
 
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
 import { parseAndFormatTimestamp } from '../../../utils';
-import useElementDimensions from '../../../hooks/elementDimensionsHook';
+import useResizeObserver from 'use-resize-observer';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
 const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true }); // prettier-ignore
@@ -30,8 +30,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
     });
   }, [sessionInfo]);
 
-  const tableWrapperRef = useRef();
-  const tableWrapperDims = useElementDimensions(tableWrapperRef);
+  const { ref, width = 0 } = useResizeObserver();
 
   const data = useMemo(() => {
     if (!sessionEvents) return [];
@@ -72,15 +71,11 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           {projectInfo.name || 'Proyecto sin nombre'}
         </Button>
       </Flex>
-      <Box ref={tableWrapperRef} flexGrow="1" mx={{ base: 0, lg: 8 }}>
+      <Box ref={ref} flexGrow="1" mx={{ base: 0, lg: 8 }}>
         <Heading as="h2" size="lg" mb={3}>
           Lista de eventos
         </Heading>
-        <BaseTable
-          data={data}
-          height={height - 300}
-          width={tableWrapperDims.width}
-        >
+        <BaseTable data={data} height={height - 300} width={width}>
           <Column
             key="keyType"
             dataKey="keyType"
@@ -107,7 +102,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
             dataKey="keyContent"
             title="Contenido"
             resizable={false}
-            width={tableWrapperDims.width - (80 + 200 + 100)}
+            width={width - (80 + 200 + 100)}
           />
         </BaseTable>
       </Box>

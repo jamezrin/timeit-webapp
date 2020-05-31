@@ -8,7 +8,7 @@ import {
   formatUserFullName,
   parseAndFormatTimestamp,
 } from '../../../utils';
-import useElementDimensions from '../../../hooks/elementDimensionsHook';
+import useResizeObserver from 'use-resize-observer';
 
 const TableWrapper = styled.div`
   flex-grow: 1;
@@ -47,16 +47,15 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
     },
   };
 
-  const tableWrapperRef = useRef();
-  const tableWrapperDims = useElementDimensions(tableWrapperRef);
+  const { ref, width = 0 } = useResizeObserver();
 
   return (
-    <TableWrapper ref={tableWrapperRef}>
+    <TableWrapper ref={ref}>
       <BaseTable
         data={data}
         height={400}
         rowEventHandlers={rowEventHandlers}
-        width={tableWrapperDims.width}
+        width={width}
       >
         <Column
           key="keyId"
