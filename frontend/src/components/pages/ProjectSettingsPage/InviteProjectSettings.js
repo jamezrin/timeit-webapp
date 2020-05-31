@@ -87,7 +87,6 @@ function InviteProjectSettings({ projectInfo }) {
               width="auto"
               flexGrow="1"
               name="emailAddress"
-              id="emailAddress"
               type="text"
               placeholder="Correo electrónico"
               ref={register}

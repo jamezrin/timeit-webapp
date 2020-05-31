@@ -71,7 +71,6 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
             width="auto"
             flexGrow="1"
             name="projectName"
-            id="projectName"
             type="text"
             placeholder="Nombre de proyecto"
             ref={register}

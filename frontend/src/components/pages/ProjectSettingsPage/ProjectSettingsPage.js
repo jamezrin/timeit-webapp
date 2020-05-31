@@ -30,7 +30,6 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
         </Button>
       </Flex>
 
-      {/* TODO: Prevent users that are not admins accessing this */}
       <Flex direction={{ base: 'column', lg: 'row' }}>
         <Box width={{ base: '100%', lg: '50%' }}>
           <Box mx={8}>
