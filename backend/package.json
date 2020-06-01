@@ -2,13 +2,14 @@
    "name": "backend",
    "version": "1.0.0",
    "description": "",
-   "main": "dist/index.js",
-   "types": "dist/index.d.ts",
+   "main": "build/index.js",
+   "types": "build/index.d.ts",
    "scripts": {
       "build": "tsc",
-      "start": "cross-env NODE_ENV=production ts-node src/index.ts",
-      "start:dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
-      "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
+      "start": "cross-env NODE_ENV=production node build/src/index.js",
+      "dev:compile": "tsc --watch",
+      "dev:watch": "cross-env NODE_ENV=development nodemon build/src/index.js",
+      "dev": "concurrently \"npm:dev:*\""
    },
    "keywords": [],
    "author": "Jaime Martínez Rincón",
@@ -42,14 +43,13 @@
       "@types/nodemailer": "6.4.0",
       "@typescript-eslint/eslint-plugin": "2.34.0",
       "@typescript-eslint/parser": "2.34.0",
+      "concurrently": "^5.2.0",
       "cross-env": "7.0.2",
       "eslint": "7.1.0",
       "eslint-config-prettier": "6.11.0",
       "eslint-plugin-prettier": "3.1.3",
-      "nodemon": "2.0.4",
+      "nodemon": "^2.0.4",
       "prettier": "2.0.5",
-      "ts-node": "3.3.0",
-      "ts-node-dev": "1.0.0-pre.44",
       "tsconfig-paths": "3.9.0",
       "typescript": "3.9.3"
    }
