@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ProjectMember } from '../../entity/ProjectMember';
 import HttpStatus from 'http-status-codes';
 import { Session } from '../../entity/Session';
-import { resourceNotFoundError } from '../errors';
+import { resourceNotFoundError, sessionEndedError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { endAllOpenSessions, isMemberPrivileged } from '../../utils';
 import { BaseEntity, Connection } from 'typeorm';
@@ -146,9 +146,11 @@ const projectSessionControler = {
       return resourceNotFoundError(req, res);
     }
 
+    if (session.endedAt) {
+      return sessionEndedError(req, res);
+    }
+
     // Set the date the session ends to right now
-    // TODO Check if the end date is too far off
-    // TODO if that is the case do not update
     session.endedAt = new Date(Date.now());
 
     await session.save();
