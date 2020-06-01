@@ -5,8 +5,6 @@ import { Session } from '../../entity/Session';
 import { resourceNotFoundError, sessionEndedError } from '../errors';
 import { TokenPayload } from '../middleware/auth-middleware';
 import { endAllOpenSessions, isMemberPrivileged } from '../../utils';
-import { BaseEntity, Connection } from 'typeorm';
-import { SessionAppEvent } from '../../entity/SessionAppEvent';
 
 const projectSessionControler = {
   async listSessions(req: Request, res: Response) {
@@ -28,7 +26,10 @@ const projectSessionControler = {
     const sessionQueryBuilder = Session.createQueryBuilder('session')
       .leftJoin('session.projectMember', 'projectMember')
       .where('projectMember.project = :projectId', { projectId })
-      .andWhere('session.createdAt BETWEEN :startDate AND :endDate', { startDate, endDate })
+      .andWhere("session.createdAt BETWEEN :startDate AND DATE(:endDate) + interval '1 day'", {
+        startDate,
+        endDate,
+      })
       .loadRelationIdAndMap('session.projectMemberId', 'session.projectMember')
       .orderBy('session.updatedAt', 'DESC');
 

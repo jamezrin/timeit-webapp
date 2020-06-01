@@ -50,7 +50,7 @@ const dataController = {
               ON project_member.id = session."projectMemberId"
             LEFT JOIN project
               ON project.id = project_member."projectId"
-            WHERE session."createdAt" BETWEEN $1 AND $2
+            WHERE session."createdAt" BETWEEN $1 AND DATE($2) + interval '1 day'
               AND project.id = $3
               AND project_member.id = ANY($4::int[])
         )
