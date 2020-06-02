@@ -21,8 +21,11 @@ import axios from 'axios';
 import * as yup from 'yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectCreation = (values) =>
-  axios.post(projectsEndpoint, values, { withCredentials: true });
+const requestProjectCreation = (values) => axios.post(
+  projectsEndpoint,
+  values,
+  { withCredentials: true }
+); // prettier-ignore
 
 export const ProjectCreationModalContext = React.createContext(null);
 

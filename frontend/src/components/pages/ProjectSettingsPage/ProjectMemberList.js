@@ -11,10 +11,10 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectMembers = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}/members`, {
-    withCredentials: true,
-  });
+const requestProjectMembers = (projectId) => axios.get(
+  `${projectsEndpoint}/${projectId}/members`,
+  { withCredentials: true }
+); // prettier-ignore
 
 function ProjectMemberList({ projectInfo }) {
   const [members, setMembers] = useState(null);

@@ -14,8 +14,10 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectDelete = (projectId) =>
-  axios.delete(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
+const requestProjectDelete = (projectId) => axios.delete(
+  `${projectsEndpoint}/${projectId}`,
+  { withCredentials: true }
+); // prettier-ignore
 
 function DeleteProjectSettings({ projectInfo }) {
   const [typedProjectName, setTypedProjectName] = useState('');

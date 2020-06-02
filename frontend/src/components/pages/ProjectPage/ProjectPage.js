@@ -14,57 +14,55 @@ import useDocumentTitle from '@rehooks/document-title';
 
 moment.locale('es');
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
-const requestProjectSessions = (
-  projectId,
-  startDate,
-  endDate,
-  memberIds = [],
-) =>
-  axios.get(`${projectsEndpoint}/${projectId}/sessions`, {
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
+const projectStatisticsEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/summary_statistics'; // prettier-ignore
+const projectStatisticsHistoryEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/history_statistics'; // prettier-ignore
+
+const requestProjectInfo = (projectId) => axios.get(
+  `${projectsEndpoint}/${projectId}`,
+  { withCredentials: true }
+); // prettier-ignore
+
+const requestProjectSessions = (projectId, startDate, endDate, memberIds = []) => axios.get(
+  `${projectsEndpoint}/${projectId}/sessions`,
+  {
     withCredentials: true,
     params: {
       memberIds,
       startDate,
       endDate,
     },
-  });
+  }
+); // prettier-ignore
 
-const requestProjectMembers = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}/members`, {
-    withCredentials: true,
-  });
+const requestProjectMembers = (projectId) => axios.get(
+  `${projectsEndpoint}/${projectId}/members`,
+  { withCredentials: true }
+); // prettier-ignore
 
-const projectStatisticsEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/data_query/summary_statistics';
-const requestProjectStatistics = (
-  projectId,
-  startDate,
-  endDate,
-  memberIds = [],
-) =>
-  axios.get(`${projectStatisticsEndpoint}/${projectId}`, {
+const requestProjectStatistics = (projectId, startDate, endDate, memberIds = []) => axios.get(
+  `${projectStatisticsEndpoint}/${projectId}`,
+  {
     withCredentials: true,
     params: {
       memberIds,
       startDate,
       endDate,
     },
-  });
+  }
+); // prettier-ignore
 
-const projectStatisticsHistoryEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/data_query/history_statistics';
-const requestProjectHistory = (projectId, startDate, endDate, memberId) =>
-  axios.get(`${projectStatisticsHistoryEndpoint}/${projectId}`, {
+const requestProjectHistory = (projectId, startDate, endDate, memberId) => axios.get(
+  `${projectStatisticsHistoryEndpoint}/${projectId}`,
+  {
     withCredentials: true,
     params: {
       memberId,
       startDate,
       endDate,
     },
-  });
+  }
+); // prettier-ignore
 
 function ProjectPageContent({ projectInfo, projectMembers }) {
   const history = useHistory();

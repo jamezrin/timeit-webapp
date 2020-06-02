@@ -14,11 +14,23 @@ import useResizeObserver from 'use-resize-observer';
 import useDocumentTitle from '@rehooks/document-title';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
-const requestProjectInfo = (projectId) => axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true }); // prettier-ignore
 const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions'; // prettier-ignore
-const requestSessionInfo = (sessionId) => axios.get(`${sessionsEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
 const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/session_events'; // prettier-ignore
-const requestSessionEvents = (sessionId) => axios.get(`${sessionEventEndpoint}/${sessionId}`, { withCredentials: true }); // prettier-ignore
+
+const requestProjectInfo = (projectId) => axios.get(
+  `${projectsEndpoint}/${projectId}`,
+  { withCredentials: true }
+); // prettier-ignore
+
+const requestSessionInfo = (sessionId) => axios.get(
+  `${sessionsEndpoint}/${sessionId}`,
+  { withCredentials: true }
+); // prettier-ignore
+
+const requestSessionEvents = (sessionId) => axios.get(
+  `${sessionEventEndpoint}/${sessionId}`,
+  { withCredentials: true }
+); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const history = useHistory();

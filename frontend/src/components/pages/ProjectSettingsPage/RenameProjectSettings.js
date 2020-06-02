@@ -17,12 +17,11 @@ import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectRename = (projectId, name) =>
-  axios.patch(
-    `${projectsEndpoint}/${projectId}`,
-    { name },
-    { withCredentials: true },
-  );
+const requestProjectRename = (projectId, name) => axios.patch(
+  `${projectsEndpoint}/${projectId}`,
+  { name },
+  { withCredentials: true },
+); // prettier-ignore
 
 const schema = yup.object().shape({
   projectName: yup.string().required(),

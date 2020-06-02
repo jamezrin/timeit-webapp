@@ -23,10 +23,12 @@ import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
 
-const requestPasswordEndpoint =
-  process.env.REACT_APP_BACKEND_URL + '/request-password-reset';
-const requestPasswordReset = (values) =>
-  axios.post(requestPasswordEndpoint, values, { withCredentials: true });
+const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + '/request-password-reset'; // prettier-ignore
+const requestPasswordReset = (values) => axios.post(
+  requestPasswordEndpoint,
+  values,
+  { withCredentials: true }
+); // prettier-ignore
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),

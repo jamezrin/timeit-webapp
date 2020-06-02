@@ -17,12 +17,11 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInvite = (projectId, emailAddress) =>
-  axios.post(
-    `${projectsEndpoint}/${projectId}/invite`,
-    { emailAddress },
-    { withCredentials: true },
-  );
+const requestProjectInvite = (projectId, emailAddress) => axios.post(
+  `${projectsEndpoint}/${projectId}/invite`,
+  { emailAddress },
+  { withCredentials: true },
+); // prettier-ignore
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),

@@ -25,8 +25,11 @@ import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
-const requestRegister = (values) =>
-  axios.post(registerEndpoint, values, { withCredentials: true });
+const requestRegister = (values) => axios.post(
+  registerEndpoint,
+  values,
+  { withCredentials: true }
+); // prettier-ignore
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),

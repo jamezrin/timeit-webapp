@@ -12,8 +12,10 @@ import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) =>
-  axios.get(`${projectsEndpoint}/${projectId}`, { withCredentials: true });
+const requestProjectInfo = (projectId) => axios.get(
+  `${projectsEndpoint}/${projectId}`,
+  { withCredentials: true }
+); // prettier-ignore
 
 function ProjectPageContent({ projectInfo, setProjectInfo }) {
   const history = useHistory();

@@ -1,12 +1,7 @@
 import React from 'react';
 import { ResponsiveLine, ResponsiveLineCanvas } from '@nivo/line';
 import { Box } from '@chakra-ui/core';
-import {
-  findProjectMember,
-  formatMinutes,
-  formatUserFullName,
-  parseAndFormatDate,
-} from '../../../utils';
+import { findProjectMember, formatUserFullName } from '../../../utils';
 import moment from 'moment';
 
 const ProjectChartResponsiveLine = ({ data, startDate, endDate }) => (

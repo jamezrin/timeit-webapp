@@ -5,9 +5,22 @@ const currentUserEndpoint = process.env.REACT_APP_BACKEND_URL + '/current-user';
 const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/authenticate'; // prettier-ignore
 const deauthenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/deauthenticate'; // prettier-ignore
 
-export const requestCurrentUser = () => axios.get(currentUserEndpoint, { withCredentials: true }); // prettier-ignore
-export const requestAuthentication = (values) => axios.post(authenticateEndpoint, values, { withCredentials: true }); // prettier-ignore
-export const requestDeauthentication = () => axios.post(deauthenticateEndpoint, {}, { withCredentials: true }); // prettier-ignore
+export const requestCurrentUser = () => axios.get(
+  currentUserEndpoint,
+  { withCredentials: true }
+); // prettier-ignore
+
+export const requestAuthentication = (values) => axios.post(
+  authenticateEndpoint,
+  values,
+  { withCredentials: true }
+); // prettier-ignore
+
+export const requestDeauthentication = () => axios.post(
+  deauthenticateEndpoint,
+  {},
+  { withCredentials: true }
+); // prettier-ignore
 
 export const fetchAuthStatus = () =>
   requestCurrentUser()

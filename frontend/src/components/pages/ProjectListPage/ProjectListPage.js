@@ -24,8 +24,10 @@ import {
 import useDocumentTitle from '@rehooks/document-title';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectList = () =>
-  axios.get(projectsEndpoint, { withCredentials: true });
+const requestProjectList = () => axios.get(
+  projectsEndpoint,
+  { withCredentials: true }
+); // prettier-ignore
 
 function ProjectListPlaceholder() {
   const { openProjectCreationModal } = useContext(ProjectCreationModalContext);

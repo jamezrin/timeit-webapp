@@ -7,14 +7,12 @@ import { useToasts } from 'react-toast-notifications';
 import useDocumentTitle from '@rehooks/document-title';
 import { formatTitle } from '../../../utils';
 
-const confirmAccountEndpoint =
-  process.env.REACT_APP_BACKEND_URL + `/confirm-account`;
-const requestConfirmAccount = (token) =>
-  axios.post(
-    `${confirmAccountEndpoint}/${token}`,
-    {},
-    { withCredentials: true },
-  );
+const confirmAccountEndpoint = process.env.REACT_APP_BACKEND_URL + `/confirm-account`; // prettier-ignore
+const requestConfirmAccount = (token) => axios.post(
+  `${confirmAccountEndpoint}/${token}`,
+  {},
+  { withCredentials: true },
+); // prettier-ignore
 
 export default function ConfirmAccountPage() {
   const { token } = useParams();
