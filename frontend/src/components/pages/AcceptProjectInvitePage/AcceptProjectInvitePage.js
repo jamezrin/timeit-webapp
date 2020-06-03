@@ -11,7 +11,7 @@ const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + `/projects`;
 const requestAcceptProjectInvite = (projectId, token) => axios.post(
   `${projectsEndpoint}/${projectId}/accept-invite/${token}`,
   {},
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 export default function AcceptProjectInvitePage() {

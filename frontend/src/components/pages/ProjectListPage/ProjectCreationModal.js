@@ -24,7 +24,7 @@ const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectCreation = (values) => axios.post(
   projectsEndpoint,
   values,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 export const ProjectCreationModalContext = React.createContext(null);

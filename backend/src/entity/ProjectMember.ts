@@ -14,9 +14,15 @@ import { Session } from './Session';
 
 export enum ProjectMemberRole {
   ADMIN = 'admin',
-  EMPLOYER = 'employer',
+  MANAGER = 'manager',
   EMPLOYEE = 'employee',
 }
+
+export const ProjectMemberRoleLevel = new Map<ProjectMemberRole, number>([
+  [ProjectMemberRole.ADMIN, 100],
+  [ProjectMemberRole.MANAGER, 10],
+  [ProjectMemberRole.EMPLOYEE, 1],
+]);
 
 export enum ProjectMemberStatus {
   INVITED = 'invited',

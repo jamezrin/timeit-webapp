@@ -19,17 +19,17 @@ const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/se
 
 const requestProjectInfo = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const requestSessionInfo = (sessionId) => axios.get(
   `${sessionsEndpoint}/${sessionId}`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const requestSessionEvents = (sessionId) => axios.get(
   `${sessionEventEndpoint}/${sessionId}`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {

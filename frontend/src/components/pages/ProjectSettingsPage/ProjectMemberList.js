@@ -1,45 +1,150 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+} from 'react';
 import {
   Box,
   Divider,
   Heading,
   List,
   ListItem,
+  IconButton,
+  Flex,
+  Button,
   useColorMode,
+  useDisclosure,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialog,
 } from '@chakra-ui/core';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
+import BaseTable, { AutoResizer, Column } from 'react-base-table';
+import { formatUserFullName, parseAndFormatDate } from '../../../utils';
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectMembers = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}/members`,
-  { withCredentials: true }
+const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + '/project_members'; // prettier-ignore
+
+const requestMemberKick = (memberId) => axios.post(
+  `${projectMembersEndpoint}/${memberId}/kick`,
+  {},
+  { withCredentials: true },
 ); // prettier-ignore
 
-function ProjectMemberList({ projectInfo }) {
-  const [members, setMembers] = useState(null);
+const requestMemberPromote = (memberId) => axios.post(
+  `${projectMembersEndpoint}/${memberId}/promote`,
+  {},
+  { withCredentials: true },
+); // prettier-ignore
+
+const requestMemberDemote = (memberId) => axios.post(
+  `${projectMembersEndpoint}/${memberId}/demote`,
+  {},
+  { withCredentials: true },
+); // prettier-ignore
+
+function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
-  useEffect(() => {
-    requestProjectMembers(projectInfo.id)
-      .then((res) => {
-        setMembers(res.data);
-      })
-      .catch((err) => {
-        addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
-        });
+  const promoteMember = (memberInfo) => {
+    requestMemberPromote(memberInfo.id).then(() => {
+      updateMembers();
+
+      addToast(
+        `Has ascendido al miembro ${formatUserFullName(memberInfo.user)}`,
+        { appearance: 'success', autoDismiss: true },
+      );
+    });
+  };
+
+  const demoteMember = (memberInfo) => {
+    requestMemberDemote(memberInfo.id).then(() => {
+      updateMembers();
+
+      addToast(
+        `Has degradado al miembro ${formatUserFullName(memberInfo.user)}`,
+        { appearance: 'success', autoDismiss: true },
+      );
+    });
+  };
+
+  const kickMember = (memberInfo) => {
+    const confirmResponse = window.confirm(
+      '¿Está seguro de que quiere expulsar a este miembro? ' +
+        'Se borrarán todos los eventos e información almacenada.',
+    );
+
+    if (confirmResponse) {
+      requestMemberKick(memberInfo.id).then(() => {
+        updateMembers();
+
+        addToast(
+          `Has expulsado al miembro ${formatUserFullName(memberInfo.user)}`,
+          { appearance: 'success', autoDismiss: true },
+        );
       });
-  }, [addToast, projectInfo]);
+    }
+  };
+
+  useEffect(() => {
+    updateMembers();
+  }, [addToast, projectInfo, updateMembers]);
+
+  const data = useMemo(() => {
+    if (!projectMembers) return [];
+
+    return projectMembers.map((member) => ({
+      id: member.id,
+      firstName: member.user.firstName,
+      lastName: member.user.lastName,
+      role: member.role,
+      status: member.status,
+      joinDate: parseAndFormatDate(member.createdAt),
+      emailAddress: member.user.emailAddress,
+      actions: (
+        <>
+          <IconButton
+            ml={1}
+            size="xs"
+            variant="outline"
+            variantColor="blue"
+            aria-label="Search database"
+            disabled={member.role === 'admin'}
+            icon={member.role === 'employee' ? 'triangle-up' : 'triangle-down'}
+            onClick={() =>
+              member.role === 'employee'
+                ? promoteMember(member)
+                : demoteMember(member)
+            }
+          />
+          <IconButton
+            ml={1}
+            size="xs"
+            variant="outline"
+            variantColor="blue"
+            aria-label="Search database"
+            disabled={member.role === 'admin'}
+            icon="not-allowed"
+            onClick={() => kickMember(member)}
+          />
+        </>
+      ),
+    }));
+  }, [demoteMember, kickMember, projectMembers, promoteMember]);
 
   return (
-    <Box
+    <Flex
       p={4}
-      mt={12}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+      flex={1}
       rounded="md"
+      direction="column"
+      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
     >
       <Heading as="h2" size="md">
         Miembros del proyecto
@@ -47,25 +152,77 @@ function ProjectMemberList({ projectInfo }) {
 
       <Divider />
 
-      <List mt={4}>
-        {members &&
-          members.map((member) => (
-            <ListItem
-              key={member.id}
-              bg={colorMode === 'dark' ? 'gray.600' : 'white'}
-              py={2}
-              px={4}
-              mb="1px"
-              _hover={{
-                transform: 'scale(1.01)',
-              }}
+      <Box flex={1}>
+        <AutoResizer>
+          {({ width, height }) => (
+            <BaseTable
+              fixed={width < 700}
+              width={width}
+              height={height}
+              data={data}
+              headerHeight={30}
             >
-              {member.user.firstName} {member.user.lastName} (
-              {member.user.emailAddress})
-            </ListItem>
-          ))}
-      </List>
-    </Box>
+              <Column
+                key="keyId"
+                dataKey="id"
+                title="Id"
+                resizable={true}
+                width={50}
+              />
+              <Column
+                key="keyFirstName"
+                dataKey="firstName"
+                title="Nombre"
+                resizable={true}
+                width={80}
+              />
+              <Column
+                key="keyLastName"
+                dataKey="lastName"
+                title="Apellidos"
+                resizable={true}
+                width={120}
+              />
+              <Column
+                key="keyRole"
+                dataKey="role"
+                title="Rol"
+                resizable={true}
+                width={100}
+              />
+              <Column
+                key="keyStatus"
+                dataKey="status"
+                title="Estado"
+                resizable={true}
+                width={75}
+              />
+              <Column
+                key="keyDate"
+                dataKey="joinDate"
+                title="Fecha entrada"
+                resizable={true}
+                width={120}
+              />
+              <Column
+                key="keyEmailAddress"
+                dataKey="emailAddress"
+                title="Correo"
+                resizable={true}
+                width={275}
+              />
+              <Column
+                key="keyActions"
+                dataKey="actions"
+                title="Acciones"
+                resizable={true}
+                width={120}
+              />
+            </BaseTable>
+          )}
+        </AutoResizer>
+      </Box>
+    </Flex>
   );
 }
 

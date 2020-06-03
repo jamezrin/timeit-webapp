@@ -27,7 +27,7 @@ const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
 });
 
-function InviteProjectSettings({ projectInfo }) {
+function InviteProjectSettings({ projectInfo, updateMembers }) {
   const { handleSubmit, reset, errors, register, formState } = useForm({
     validationSchema: schema,
   });
@@ -45,6 +45,9 @@ function InviteProjectSettings({ projectInfo }) {
 
       // Clean the form up
       reset();
+
+      // Refresh the user list
+      updateMembers();
     } catch (err) {
       if (err.response && err.response.data.error) {
         if (err.response.data.error.type === 'ACCOUNT_NOT_FOUND') {

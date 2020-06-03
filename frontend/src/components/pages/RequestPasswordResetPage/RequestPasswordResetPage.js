@@ -27,7 +27,7 @@ const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + '/request-pa
 const requestPasswordReset = (values) => axios.post(
   requestPasswordEndpoint,
   values,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const schema = yup.object().shape({

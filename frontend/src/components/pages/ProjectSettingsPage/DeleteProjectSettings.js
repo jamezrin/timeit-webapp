@@ -16,7 +16,7 @@ import axios from 'axios';
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectDelete = (projectId) => axios.delete(
   `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 function DeleteProjectSettings({ projectInfo }) {

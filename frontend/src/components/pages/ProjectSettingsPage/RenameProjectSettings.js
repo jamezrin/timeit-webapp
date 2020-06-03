@@ -59,12 +59,7 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
   }
 
   return (
-    <Box
-      p={4}
-      mt={12}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-      rounded="md"
-    >
+    <Box p={4} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
       <Heading as="h2" size="md">
         Cambiar nombre de proyecto
       </Heading>

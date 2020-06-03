@@ -15,10 +15,10 @@ export const wrapAsync = (fn: Function) => (req: Request, res: Response, next: N
 export const hashPassword = (rawPassword: string): Promise<string> =>
   bcrypt.hash(rawPassword, parseInt(process.env.TIMEIT_CRYPT_ROUNDS));
 
-// Only ADMIN and EMPLOYER roles can see entities of other project members
+// Only ADMIN and MANAGER roles can see entities of other project members
 export const isMemberPrivileged = (projectMember: ProjectMember): boolean =>
   projectMember.role === ProjectMemberRole.ADMIN ||
-  projectMember.role === ProjectMemberRole.EMPLOYER;
+  projectMember.role === ProjectMemberRole.MANAGER;
 
 // Convenient function just for updating the "updatedAt" column
 // Meant to be used when some kind of activity happens inside a project

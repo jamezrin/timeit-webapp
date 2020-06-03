@@ -16,7 +16,7 @@ function ProjectMemberSelect({
     return projectMembers
       .filter((projectMember) => {
         // If we are ourselves, we obviously have access to our own metrics
-        // If we are admins or employers, we have access to the metrics of everyone
+        // If we are admins or managers, we have access to the metrics of everyone
         return (
           projectMember.id === projectInfo.projectMember.id ||
           isMemberPrivileged(projectInfo.projectMember)

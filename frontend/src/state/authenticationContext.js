@@ -7,19 +7,19 @@ const deauthenticateEndpoint = process.env.REACT_APP_BACKEND_URL + '/deauthentic
 
 export const requestCurrentUser = () => axios.get(
   currentUserEndpoint,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 export const requestAuthentication = (values) => axios.post(
   authenticateEndpoint,
   values,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 export const requestDeauthentication = () => axios.post(
   deauthenticateEndpoint,
   {},
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 export const fetchAuthStatus = () =>

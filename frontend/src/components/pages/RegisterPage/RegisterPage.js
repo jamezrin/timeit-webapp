@@ -28,7 +28,7 @@ const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 const requestRegister = (values) => axios.post(
   registerEndpoint,
   values,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const schema = yup.object().shape({

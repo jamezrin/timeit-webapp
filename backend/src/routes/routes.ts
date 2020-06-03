@@ -48,8 +48,9 @@ export default function mountRoutes(app: express.Application, connection: Connec
   protectedRouter.post('/projects/:projectId/invite', wrapAsync(projectMemberController.inviteMember(mailer)));
   protectedRouter.post('/projects/:projectId/accept-invite/:token', wrapAsync(projectMemberController.acceptInvite))
   protectedRouter.get('/project_members/:memberId', wrapAsync(projectMemberController.getMember));
-  protectedRouter.patch('/project_members/:memberId', wrapAsync(projectMemberController.updateMember));
-  protectedRouter.delete('/project_members/:memberId', wrapAsync(projectMemberController.deleteMember));
+  protectedRouter.post('/project_members/:memberId/demote', wrapAsync(projectMemberController.demoteMember));
+  protectedRouter.post('/project_members/:memberId/promote', wrapAsync(projectMemberController.promoteMember));
+  protectedRouter.post('/project_members/:memberId/kick', wrapAsync(projectMemberController.kickMember));
 
   protectedRouter.get('/projects/:projectId/sessions', wrapAsync(projectSessionController.listSessions));
   protectedRouter.post('/projects/:projectId/sessions', wrapAsync(projectSessionController.createSession));

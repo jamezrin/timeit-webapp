@@ -20,7 +20,7 @@ const projectStatisticsHistoryEndpoint = process.env.REACT_APP_BACKEND_URL + '/d
 
 const requestProjectInfo = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const requestProjectSessions = (projectId, startDate, endDate, memberIds = []) => axios.get(
@@ -37,7 +37,7 @@ const requestProjectSessions = (projectId, startDate, endDate, memberIds = []) =
 
 const requestProjectMembers = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}/members`,
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const requestProjectStatistics = (projectId, startDate, endDate, memberIds = []) => axios.get(

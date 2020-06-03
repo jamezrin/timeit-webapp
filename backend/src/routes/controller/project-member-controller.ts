@@ -1,6 +1,11 @@
 import { isMemberPrivileged } from '../../utils';
 import { Request, Response } from 'express';
-import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from '../../entity/ProjectMember';
+import {
+  ProjectMember,
+  ProjectMemberRole,
+  ProjectMemberRoleLevel,
+  ProjectMemberStatus,
+} from '../../entity/ProjectMember';
 import HttpStatus from 'http-status-codes';
 import {
   accountNotFoundError,
@@ -176,11 +181,19 @@ const projectMemberController = {
       })
       .getOne();
 
+    // Member was kicked out or the project was deleted
     if (!projectMember) {
+      // Remove this mail token as its no longer valid
+      await mailToken.remove();
+
       return accountNotFoundError(req, res);
     }
 
+    // Member no longer has a status of invited
     if (projectMember.status !== ProjectMemberStatus.INVITED) {
+      // Remove this mail token as its no longer valid
+      await mailToken.remove();
+
       return alreadyProjectMemberError(req, res);
     }
 
@@ -223,11 +236,138 @@ const projectMemberController = {
 
     res.status(HttpStatus.OK).json(projectMember);
   },
-  async updateMember(req: Request, res: Response) {
-    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+  async promoteMember(req: Request, res: Response) {
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
+    const { memberId } = req.params;
+
+    // Current user as a member of the project with the member specified
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :memberId', { memberId })
+      .getOne();
+
+    if (!currentProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    // Member to delete that is a member of the project the current user is in
+    const targetProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.id = :targetMemberId', { targetMemberId: memberId })
+      .leftJoinAndSelect('projectMember.user', 'user')
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :currentMemberId', { currentMemberId: currentProjectMember.id })
+      .getOne();
+
+    if (!targetProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    if (currentProjectMember.role === ProjectMemberRole.EMPLOYEE) {
+      return insufficientPrivilegesError(req, res);
+    }
+
+    // prettier-ignore
+    if (currentProjectMember.role === ProjectMemberRole.ADMIN &&
+      targetProjectMember.role === ProjectMemberRole.EMPLOYEE) {
+      targetProjectMember.role = ProjectMemberRole.MANAGER;
+      await targetProjectMember.save();
+      res.sendStatus(HttpStatus.ACCEPTED);
+    }
+
+    res.sendStatus(HttpStatus.EXPECTATION_FAILED);
   },
-  async deleteMember(req: Request, res: Response) {
-    res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
+  async demoteMember(req: Request, res: Response) {
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
+    const { memberId } = req.params;
+
+    // Current user as a member of the project with the member specified
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :memberId', { memberId })
+      .getOne();
+
+    if (!currentProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    // Member to delete that is a member of the project the current user is in
+    const targetProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.id = :targetMemberId', { targetMemberId: memberId })
+      .leftJoinAndSelect('projectMember.user', 'user')
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :currentMemberId', { currentMemberId: currentProjectMember.id })
+      .getOne();
+
+    if (!targetProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    if (currentProjectMember.role === ProjectMemberRole.EMPLOYEE) {
+      return insufficientPrivilegesError(req, res);
+    }
+
+    // prettier-ignore
+    if (currentProjectMember.role === ProjectMemberRole.ADMIN &&
+      targetProjectMember.role === ProjectMemberRole.MANAGER) {
+      targetProjectMember.role = ProjectMemberRole.EMPLOYEE;
+      await targetProjectMember.save();
+      res.sendStatus(HttpStatus.ACCEPTED);
+    }
+
+    res.sendStatus(HttpStatus.EXPECTATION_FAILED);
+  },
+  async kickMember(req: Request, res: Response) {
+    const tokenPayload = res.locals.tokenPayload as TokenPayload;
+    const currentUserId = tokenPayload.userId;
+    const { memberId } = req.params;
+
+    // Current user as a member of the project with the member specified
+    const currentProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :memberId', { memberId })
+      .getOne();
+
+    if (!currentProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    // Member to delete that is a member of the project the current user is in
+    const targetProjectMember = await ProjectMember.createQueryBuilder('projectMember')
+      .where('projectMember.id = :targetMemberId', { targetMemberId: memberId })
+      .leftJoinAndSelect('projectMember.user', 'user')
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .andWhere('otherMembers.id = :currentMemberId', { currentMemberId: currentProjectMember.id })
+      .getOne();
+
+    if (!targetProjectMember) {
+      return resourceNotFoundError(req, res);
+    }
+
+    const currentProjectMemberLevel = ProjectMemberRoleLevel.get(currentProjectMember.role);
+    const targetProjectMemberLevel = ProjectMemberRoleLevel.get(targetProjectMember.role);
+
+    if (currentProjectMemberLevel < 10) {
+      return insufficientPrivilegesError(req, res);
+    }
+
+    if (currentProjectMemberLevel <= targetProjectMemberLevel) {
+      return insufficientPrivilegesError(req, res);
+    }
+
+    await targetProjectMember.remove();
+
+    res.sendStatus(HttpStatus.ACCEPTED);
   },
 };
 
