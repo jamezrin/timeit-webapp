@@ -9,7 +9,7 @@ import ProjectMemberList from './ProjectMemberList';
 import InviteProjectSettings from './InviteProjectSettings';
 import DeleteProjectSettings from './DeleteProjectSettings';
 import useDocumentTitle from '@rehooks/document-title';
-import { formatTitle } from '../../../utils';
+import { formatTitle, isMemberPrivileged } from '../../../utils';
 import { useToasts } from 'react-toast-notifications';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
@@ -28,6 +28,12 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
   const { addToast } = useToasts();
   const history = useHistory();
 
+  useEffect(() => {
+    if (!isMemberPrivileged(projectInfo.projectMember)) {
+      history.replace(`/project/${projectInfo.id}`);
+    }
+  }, [history, projectInfo]);
+
   const updateMembers = useCallback(() => {
     requestProjectMembers(projectInfo.id)
       .then((res) => {
@@ -39,7 +45,7 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
           autoDismiss: true,
         });
       });
-  }, [addToast, projectInfo.id]);
+  }, [addToast, projectInfo]);
 
   return (
     <Flex direction="column" py={10} mx={8}>
