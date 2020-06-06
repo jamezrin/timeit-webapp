@@ -161,8 +161,8 @@ const authController = {
         await user.save();
 
         const mailToken = new MailToken();
-        mailToken.emailAddress = emailAddress;
         mailToken.type = MailRequestType.ACCOUNT_CONFIRMATION;
+        mailToken.emailAddress = emailAddress;
         mailToken.expiresIn = 7 * 24 * 60 * 60; // 7 days
         await mailToken.save();
 
@@ -182,9 +182,14 @@ const authController = {
     };
   },
   async confirmAccount(req: Request, res: Response) {
-    const { token } = req.body;
+    const { token } = req.params;
 
-    const mailToken = await MailToken.findOne(token);
+    const mailToken = await MailToken.findOne({
+      where: {
+        id: token,
+        type: MailRequestType.ACCOUNT_CONFIRMATION,
+      },
+    });
 
     if (!mailToken) {
       return mailTokenNotFoundError(req, res);
@@ -263,16 +268,18 @@ const authController = {
   },
   performPasswordReset(mailer: Mail) {
     return async function (req: Request, res: Response) {
-      const { token, newPassword } = req.body;
+      const { newPassword } = req.body;
+      const { token } = req.params;
 
-      const mailToken = await MailToken.findOne(token);
+      const mailToken = await MailToken.findOne({
+        where: {
+          id: token,
+          type: MailRequestType.PASSWORD_RESET,
+        },
+      });
 
       if (!mailToken) {
         return mailTokenNotFoundError(req, res);
-      }
-
-      if (mailToken.type !== MailRequestType.PASSWORD_RESET) {
-        return incorrectMailTokenError(req, res);
       }
 
       if (hasMailTokenExpired(mailToken)) {

@@ -155,16 +155,17 @@ const projectMemberController = {
     };
   },
   async acceptInvite(req: Request, res: Response) {
-    const { token } = req.body;
+    const { token } = req.params;
 
-    const mailToken = await MailToken.findOne(token);
+    const mailToken = await MailToken.findOne({
+      where: {
+        id: token,
+        type: MailRequestType.PROJECT_INVITE,
+      },
+    });
 
     if (!mailToken) {
       return mailTokenNotFoundError(req, res);
-    }
-
-    if (mailToken.type !== MailRequestType.PROJECT_INVITE) {
-      return incorrectMailTokenError(req, res);
     }
 
     const mailTokenPayload = mailToken.payload as ProjectInvitationPayload;
