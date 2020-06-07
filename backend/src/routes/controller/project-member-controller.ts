@@ -10,6 +10,7 @@ import HttpStatus from 'http-status-codes';
 import {
   accountNotFoundError,
   alreadyProjectMemberError,
+  couldNotSendEmailError,
   inactiveAccountError,
   incorrectMailTokenError,
   insufficientPrivilegesError,
@@ -149,7 +150,12 @@ const projectMemberController = {
       await mailToken.save();
 
       // Sends the actual project invite email with the token
-      await sendProjectInvitationMail(mailer, mailToken, inviterProjectMember);
+      try {
+        await sendProjectInvitationMail(mailer, mailToken, inviterProjectMember);
+      } catch (err) {
+        console.log(err);
+        return couldNotSendEmailError(req, res);
+      }
 
       res.sendStatus(HttpStatus.ACCEPTED);
     };

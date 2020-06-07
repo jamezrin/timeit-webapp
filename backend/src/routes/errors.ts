@@ -83,8 +83,14 @@ export const expiredMailTokenError = (req: Request, res: Response) => {
     .json(error('EXPIRED_MAIL_TOKEN', 'The mail token provided has expired'));
 };
 
-export const alreadyRequestedMailToken = (req: Request, res: Response) => {
+export const alreadyRequestedMailTokenError = (req: Request, res: Response) => {
   res
     .status(HttpStatus.NOT_ACCEPTABLE)
     .json(error('ALREADY_REQUESTED_MAIL_TOKEN', 'There is already an unexpired mail token'));
+};
+
+export const couldNotSendEmailError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+    .json(error('COULD_NOT_SEND_EMAIL', 'Could not send the requested email'));
 };

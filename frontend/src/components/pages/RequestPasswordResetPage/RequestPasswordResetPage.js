@@ -72,10 +72,7 @@ export default function RequestPasswordResetPage() {
         ) {
           addToast(
             'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',
-            {
-              appearance: 'error',
-              autoDismiss: true,
-            },
+            { appearance: 'error', autoDismiss: true },
           );
         }
       } else {

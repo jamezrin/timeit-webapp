@@ -10,7 +10,8 @@ import jwt from 'jsonwebtoken';
 import {
   accountAlreadyExistsError,
   accountNotFoundError,
-  alreadyRequestedMailToken,
+  alreadyRequestedMailTokenError,
+  couldNotSendEmailError,
   expiredMailTokenError,
   inactiveAccountError,
   incorrectMailTokenError,
@@ -167,7 +168,12 @@ const authController = {
         await mailToken.save();
 
         // Sends the actual account confirmation email with the token
-        await sendAccountConfirmationEmail(mailer, mailToken);
+        try {
+          await sendAccountConfirmationEmail(mailer, mailToken);
+        } catch (err) {
+          console.log(err);
+          return couldNotSendEmailError(req, res);
+        }
 
         res.sendStatus(HttpStatus.ACCEPTED);
       } catch (err) {
@@ -245,7 +251,7 @@ const authController = {
       // Delete stale tokens async
       for (const previousMailToken of previousMailTokens) {
         if (!hasMailTokenExpired(previousMailToken)) {
-          return alreadyRequestedMailToken(req, res);
+          return alreadyRequestedMailTokenError(req, res);
         }
 
         // Token has expired, just remove it async
@@ -261,7 +267,12 @@ const authController = {
       await mailToken.save();
 
       // Sends the actual password reset email with the token
-      await sendPasswordResetEmail(mailer, mailToken);
+      try {
+        await sendPasswordResetEmail(mailer, mailToken);
+      } catch (err) {
+        console.log(err);
+        return couldNotSendEmailError(req, res);
+      }
 
       res.sendStatus(HttpStatus.ACCEPTED);
     };
@@ -303,7 +314,12 @@ const authController = {
       await mailToken.remove();
 
       // Sends the actual password reset email with the token
-      await sendPasswordResetPerformedEmail(mailer, mailToken);
+      try {
+        await sendPasswordResetPerformedEmail(mailer, mailToken);
+      } catch (err) {
+        console.log(err);
+        return couldNotSendEmailError(req, res);
+      }
 
       res.sendStatus(HttpStatus.ACCEPTED);
     };
