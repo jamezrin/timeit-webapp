@@ -24,7 +24,7 @@ const requestProjectRename = (projectId, name) => axios.patch(
 ); // prettier-ignore
 
 const schema = yup.object().shape({
-  projectName: yup.string().required(),
+  projectName: yup.string().required().trim().min(4),
 });
 
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {

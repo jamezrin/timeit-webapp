@@ -28,7 +28,7 @@ const requestPasswordReset = (values, token) => axios.post(
 ); // prettier-ignore
 
 const schema = yup.object().shape({
-  newPassword: yup.string().required(),
+  newPassword: yup.string().required().trim().min(8),
 });
 
 export default function RecoverPasswordPage() {

@@ -30,7 +30,7 @@ const requestProjectCreation = (values) => axios.post(
 export const ProjectCreationModalContext = React.createContext(null);
 
 const schema = yup.object().shape({
-  projectName: yup.string().required(),
+  projectName: yup.string().required().trim().min(4),
 });
 
 export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {

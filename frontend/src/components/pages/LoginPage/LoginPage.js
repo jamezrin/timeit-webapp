@@ -30,7 +30,7 @@ import * as yup from 'yup';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
-  password: yup.string().required(),
+  password: yup.string().required().trim().min(8),
 });
 
 export default function LoginPage() {

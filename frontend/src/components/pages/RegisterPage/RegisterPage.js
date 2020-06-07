@@ -33,9 +33,9 @@ const requestRegister = (values) => axios.post(
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
-  password: yup.string().required(),
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
+  password: yup.string().required().trim().min(8),
+  firstName: yup.string().trim().required(),
+  lastName: yup.string().trim().required(),
 });
 
 export default function RegisterPage() {
