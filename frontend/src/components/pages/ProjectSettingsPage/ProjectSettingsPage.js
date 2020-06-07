@@ -98,13 +98,34 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
 function ProjectSettingsPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const { projectId } = useParams();
+  const { addToast } = useToasts();
+  const history = useHistory();
+
   useDocumentTitle(formatTitle('Ajustes de proyecto'));
 
   useEffect(() => {
-    requestProjectInfo(projectId).then((res) => {
-      setProjectInfo(res.data);
-    });
-  }, [projectId]);
+    requestProjectInfo(projectId)
+      .then((res) => {
+        setProjectInfo(res.data);
+      })
+      .catch((err) => {
+        if (err.response && err.response.data.error) {
+          if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+            addToast(`No se ha podido encontrar la sesión que has pedido`, {
+              appearance: 'error',
+              autoDismiss: true,
+            });
+
+            history.push('/');
+          }
+        } else {
+          addToast(`Ha ocurrido un error desconocido: ${err}`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        }
+      });
+  }, [history, addToast, projectId]);
 
   return (
     <MainLayout>

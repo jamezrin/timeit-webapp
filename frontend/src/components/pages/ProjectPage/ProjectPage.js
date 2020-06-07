@@ -11,6 +11,7 @@ import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
 import useDocumentTitle from '@rehooks/document-title';
+import { useToasts } from 'react-toast-notifications';
 
 moment.locale('es');
 
@@ -198,20 +199,38 @@ function ProjectPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const [projectMembers, setProjectMembers] = useState(null);
   const { projectId } = useParams();
+  const { addToast } = useToasts();
+  const history = useHistory();
 
-  useDocumentTitle(
-    formatTitle('Proyecto ' + (projectInfo ? projectInfo.name : '')),
-  );
+  // prettier-ignore
+  useDocumentTitle(formatTitle('Proyecto ' + (projectInfo ? projectInfo.name : '')));
 
   useEffect(() => {
-    requestProjectInfo(projectId).then((res) => {
-      setProjectInfo(res.data);
-    });
+    Promise.all([
+      requestProjectInfo(projectId).then((res) => {
+        setProjectInfo(res.data);
+      }),
+      requestProjectMembers(projectId).then((res) => {
+        setProjectMembers(res.data);
+      }),
+    ]).catch((err) => {
+      if (err.response && err.response.data.error) {
+        if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+          addToast(`No se ha podido encontrar el proyecto que has pedido`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
 
-    requestProjectMembers(projectId).then((res) => {
-      setProjectMembers(res.data);
+          history.push('/');
+        }
+      } else {
+        addToast(`Ha ocurrido un error desconocido: ${err}`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     });
-  }, [projectId]);
+  }, [history, addToast, projectId]);
 
   return (
     <MainLayout>

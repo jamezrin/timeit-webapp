@@ -12,6 +12,7 @@ import useWindowDimensions from '../../../hooks/windowDimensionsHook';
 import { formatTitle, parseAndFormatTimestamp } from '../../../utils';
 import useResizeObserver from 'use-resize-observer';
 import useDocumentTitle from '@rehooks/document-title';
+import { useToasts } from 'react-toast-notifications';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
 const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions'; // prettier-ignore
@@ -127,19 +128,37 @@ function ProjectSessionPage() {
   const [projectInfo, setProjectInfo] = useState(null);
   const [sessionInfo, setSessionInfo] = useState(null);
   const { projectId, sessionId } = useParams();
+  const { addToast } = useToasts();
+  const history = useHistory();
+
   useDocumentTitle(formatTitle('Lista de eventos'));
 
   useEffect(() => {
-    requestProjectInfo(projectId).then((response) => {
-      setProjectInfo(response.data);
-    });
-  }, [projectId]);
+    Promise.all([
+      requestProjectInfo(projectId).then((response) => {
+        setProjectInfo(response.data);
+      }),
+      requestSessionInfo(sessionId).then((response) => {
+        setSessionInfo(response.data);
+      }),
+    ]).catch((err) => {
+      if (err.response && err.response.data.error) {
+        if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+          addToast(`No se ha podido encontrar la sesión que has pedido`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
 
-  useEffect(() => {
-    requestSessionInfo(sessionId).then((response) => {
-      setSessionInfo(response.data);
+          history.push('/');
+        }
+      } else {
+        addToast(`Ha ocurrido un error desconocido: ${err}`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      }
     });
-  }, [sessionId]);
+  }, [history, addToast, projectId, sessionId]);
 
   return (
     <MainLayout>
