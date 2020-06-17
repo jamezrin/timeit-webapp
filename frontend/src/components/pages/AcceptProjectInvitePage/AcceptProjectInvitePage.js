@@ -33,7 +33,7 @@ export default function AcceptProjectInvitePage() {
       .catch((err) => {
         if (err.response && err.response.data.error) {
           if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
-            addToast('Las credenciales introducidas no son validas', {
+            addToast('Las credenciales introducidas no son válidas', {
               appearance: 'error',
               autoDismiss: true,
             });
