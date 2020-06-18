@@ -15,7 +15,7 @@
     "emotion-theming": "10.0.27",
     "husky": "4.2.5",
     "lint-staged": "10.2.11",
-    "moment": "2.26.0",
+    "moment": "2.27.0",
     "prettier": "2.0.5",
     "react": "16.13.1",
     "react-base-table": "1.9.3",
