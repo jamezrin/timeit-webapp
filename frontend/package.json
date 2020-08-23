@@ -32,7 +32,7 @@
     "react-virtualized": "9.22.2",
     "react-with-styles": "4.1.0",
     "use-resize-observer": "6.1.0",
-    "yup": "0.29.1"
+    "yup": "0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
