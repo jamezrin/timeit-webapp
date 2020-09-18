@@ -51,6 +51,6 @@
       "nodemon": "2.0.4",
       "prettier": "2.1.1",
       "tsconfig-paths": "3.9.0",
-      "typescript": "4.0.2"
+      "typescript": "4.0.3"
    }
 }
