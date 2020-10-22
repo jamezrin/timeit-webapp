@@ -6,7 +6,7 @@
     "@chakra-ui/core": "0.8.0",
     "@emotion/core": "10.0.35",
     "@emotion/styled": "10.0.27",
-    "@nivo/line": "0.62.0",
+    "@nivo/line": "0.63.1",
     "@rehooks/document-title": "1.0.2",
     "@testing-library/jest-dom": "5.11.4",
     "@testing-library/react": "11.1.0",
