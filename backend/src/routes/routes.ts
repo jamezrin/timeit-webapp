@@ -79,5 +79,5 @@ export default function mountRoutes(app: express.Application, connection: Connec
   protectedRouter.get("/data_query/session_events_raw/:sessionId", wrapAsync(dataController.rawSessionEvents(connection)));
 
   apiRouter.use(protectedRouter);
-  app.use("/api", apiRouter);
+  app.use("/", apiRouter);
 }
