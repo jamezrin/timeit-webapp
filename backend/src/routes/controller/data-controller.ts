@@ -1,24 +1,26 @@
-import { Request, Response } from "express";
-import { TokenPayload } from "../middleware/auth-middleware";
-import { ProjectMember } from "../../entity/ProjectMember";
-import { resourceNotFoundError, unknownServerError } from "../errors";
-import HttpStatus from "http-status-codes";
-import { Connection } from "typeorm";
-import { Session } from "../../entity/Session";
-import { isMemberPrivileged } from "../../utils";
+import { Request, Response } from 'express';
+import { TokenPayload } from '../middleware/auth-middleware';
+import { ProjectMember } from '../../entity/ProjectMember';
+import { resourceNotFoundError, unknownServerError } from '../errors';
+import HttpStatus from 'http-status-codes';
+import { Connection } from 'typeorm';
+import { Session } from '../../entity/Session';
+import { isMemberPrivileged } from '../../utils';
 
 const dataController = {
   summaryStatistics(conn: Connection) {
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
       const { projectId } = req.params;
       const { memberIds, startDate, endDate } = req.query;
 
       // Current user as a member of the current project
-      const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-        .where("projectMember.project = :projectId", { projectId })
-        .andWhere("projectMember.user = :currentUserId", { currentUserId })
+      const currentProjectMember = await ProjectMember.createQueryBuilder(
+        'projectMember',
+      )
+        .where('projectMember.project = :projectId', { projectId })
+        .andWhere('projectMember.user = :currentUserId', { currentUserId })
         .getOne();
 
       if (!currentProjectMember) {
@@ -115,7 +117,7 @@ const dataController = {
               EXTRACT(YEAR FROM $2)
           ) AS lastMonthStats
         `,
-        [startDate, endDate, projectId, filteredMemberIds]
+        [startDate, endDate, projectId, filteredMemberIds],
       );
 
       // More than one row, wth?
@@ -127,16 +129,18 @@ const dataController = {
     };
   },
   historyStatistics(conn: Connection) {
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
       const { projectId } = req.params;
       const { memberId, startDate, endDate } = req.query;
 
       // Current user as a member of the current project
-      const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-        .where("projectMember.project = :projectId", { projectId })
-        .andWhere("projectMember.user = :currentUserId", { currentUserId })
+      const currentProjectMember = await ProjectMember.createQueryBuilder(
+        'projectMember',
+      )
+        .where('projectMember.project = :projectId', { projectId })
+        .andWhere('projectMember.user = :currentUserId', { currentUserId })
         .getOne();
 
       if (!currentProjectMember) {
@@ -179,7 +183,7 @@ const dataController = {
         ) AS period_date_series
         ORDER BY period_date DESC;
       `,
-        [startDate, endDate, projectId, memberId]
+        [startDate, endDate, projectId, memberId],
       );
 
       res.status(HttpStatus.OK).json(allHistory);
@@ -188,18 +192,20 @@ const dataController = {
   sessionEvents(conn: Connection) {
     // TODO: This should be paginated
     // TODO: Include from/to period
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
       const { sessionId } = req.params;
 
       // Current user as a member of the project that has this session
-      const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-        .where("projectMember.user = :currentUserId", { currentUserId })
-        .leftJoin("projectMember.project", "project")
-        .leftJoin("project.members", "otherMembers")
-        .leftJoin("otherMembers.sessions", "otherMemberSessions")
-        .andWhere("otherMemberSessions.id = :sessionId", { sessionId })
+      const currentProjectMember = await ProjectMember.createQueryBuilder(
+        'projectMember',
+      )
+        .where('projectMember.user = :currentUserId', { currentUserId })
+        .leftJoin('projectMember.project', 'project')
+        .leftJoin('project.members', 'otherMembers')
+        .leftJoin('otherMembers.sessions', 'otherMemberSessions')
+        .andWhere('otherMemberSessions.id = :sessionId', { sessionId })
         .getOne();
 
       if (!currentProjectMember) {
@@ -212,9 +218,12 @@ const dataController = {
 
       // Ensure the session being looked up is owned by the current member
       if (!isMemberPrivileged(currentProjectMember)) {
-        sessionQueryBuilder.andWhere("session.projectMember = :currentProjectMemberId", {
-          currentProjectMemberId: currentProjectMember.id
-        });
+        sessionQueryBuilder.andWhere(
+          'session.projectMember = :currentProjectMemberId',
+          {
+            currentProjectMemberId: currentProjectMember.id,
+          },
+        );
       }
 
       const session = await sessionQueryBuilder.getOne();
@@ -253,7 +262,7 @@ const dataController = {
         WHERE "sessionId" = $1
         ORDER BY "createdAt" DESC
       `,
-        [sessionId]
+        [sessionId],
       );
 
       res.status(HttpStatus.OK).json(allEvents);
@@ -262,18 +271,20 @@ const dataController = {
   rawSessionEvents(conn: Connection) {
     // TODO: This should be paginated
     // TODO: Include from/to period
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const tokenPayload = res.locals.tokenPayload as TokenPayload;
       const currentUserId = tokenPayload.userId;
       const { sessionId } = req.params;
 
       // Current user as a member of the project that has this session
-      const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-        .where("projectMember.user = :currentUserId", { currentUserId })
-        .leftJoin("projectMember.project", "project")
-        .leftJoin("project.members", "otherMembers")
-        .leftJoin("otherMembers.sessions", "otherMemberSessions")
-        .andWhere("otherMemberSessions.id = :sessionId", { sessionId })
+      const currentProjectMember = await ProjectMember.createQueryBuilder(
+        'projectMember',
+      )
+        .where('projectMember.user = :currentUserId', { currentUserId })
+        .leftJoin('projectMember.project', 'project')
+        .leftJoin('project.members', 'otherMembers')
+        .leftJoin('otherMembers.sessions', 'otherMemberSessions')
+        .andWhere('otherMemberSessions.id = :sessionId', { sessionId })
         .getOne();
 
       if (!currentProjectMember) {
@@ -286,9 +297,12 @@ const dataController = {
 
       // Ensure the session being looked up is owned by the current member
       if (!isMemberPrivileged(currentProjectMember)) {
-        sessionQueryBuilder.andWhere("session.projectMember = :currentProjectMemberId", {
-          currentProjectMemberId: currentProjectMember.id
-        });
+        sessionQueryBuilder.andWhere(
+          'session.projectMember = :currentProjectMemberId',
+          {
+            currentProjectMemberId: currentProjectMember.id,
+          },
+        );
       }
 
       const session = await sessionQueryBuilder.getOne();
@@ -323,12 +337,12 @@ const dataController = {
         WHERE "sessionId" = $1
         ORDER BY "createdAt" DESC;
       `,
-        [sessionId]
+        [sessionId],
       );
 
       res.status(HttpStatus.OK).json(allEvents);
     };
-  }
+  },
 };
 
 export default dataController;

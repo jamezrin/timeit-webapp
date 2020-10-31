@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react';
 
-import { Link as RouteLink, useHistory, useLocation } from "react-router-dom";
-import LoginRegisterLayout from "../../LoginRegisterLayout";
-import { useForm } from "react-hook-form";
-import { useToasts } from "react-toast-notifications";
+import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
+import LoginRegisterLayout from '../../LoginRegisterLayout';
+import { useForm } from 'react-hook-form';
+import { useToasts } from 'react-toast-notifications';
 
 import {
   Button,
@@ -17,29 +17,32 @@ import {
   InputRightElement,
   Link,
   List,
-  ListItem
-} from "@chakra-ui/core";
+  ListItem,
+} from '@chakra-ui/core';
 
-import AuthContext, { fetchAuthStatus, requestAuthentication } from "../../../state/authenticationContext";
-import useDocumentTitle from "@rehooks/document-title";
-import { formatTitle } from "../../../utils";
-import * as yup from "yup";
+import AuthContext, {
+  fetchAuthStatus,
+  requestAuthentication,
+} from '../../../state/authenticationContext';
+import useDocumentTitle from '@rehooks/document-title';
+import { formatTitle } from '../../../utils';
+import * as yup from 'yup';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
-  password: yup.string().required().trim().min(8)
+  password: yup.string().required().trim().min(8),
 });
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema
+    validationSchema: schema,
   });
   const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
   const { setAuthStatus } = useContext(AuthContext);
-  useDocumentTitle(formatTitle("Inicio de sesión"));
+  useDocumentTitle(formatTitle('Inicio de sesión'));
 
   async function onSubmit(values) {
     try {
@@ -47,32 +50,32 @@ export default function LoginPage() {
       fetchAuthStatus().then((authStatus) => {
         setAuthStatus(authStatus);
 
-        addToast("Has iniciado sesión correctamente", {
-          appearance: "success",
-          autoDismiss: true
+        addToast('Has iniciado sesión correctamente', {
+          appearance: 'success',
+          autoDismiss: true,
         });
 
         history.replace(
-          (location.state && location.state.previousLocation) || "/"
+          (location.state && location.state.previousLocation) || '/',
         );
       });
     } catch (err) {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === "INVALID_CREDENTIALS") {
-          addToast("Las credenciales introducidas no son válidas", {
-            appearance: "error",
-            autoDismiss: true
+        if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+          addToast('Las credenciales introducidas no son válidas', {
+            appearance: 'error',
+            autoDismiss: true,
           });
-        } else if (err.response.data.error.type === "INACTIVE_ACCOUNT") {
+        } else if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
           addToast(
-            "Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico",
-            { appearance: "error", autoDismiss: true }
+            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+            { appearance: 'error', autoDismiss: true },
           );
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: "error",
-          autoDismiss: true
+          appearance: 'error',
+          autoDismiss: true,
         });
       }
     }
@@ -119,7 +122,7 @@ export default function LoginPage() {
             <Input
               name="password"
               id="password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
               errorBorderColor="red.500"
@@ -130,7 +133,7 @@ export default function LoginPage() {
                 size="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? "Ocultar" : "Mostrar"}
+                {showPassword ? 'Ocultar' : 'Mostrar'}
               </Button>
             </InputRightElement>
           </InputGroup>

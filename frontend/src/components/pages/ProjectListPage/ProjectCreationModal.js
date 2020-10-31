@@ -12,15 +12,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure
-} from "@chakra-ui/core";
-import { useForm } from "react-hook-form";
-import React, { useState } from "react";
-import { useToasts } from "react-toast-notifications";
-import axios from "axios";
-import * as yup from "yup";
+  useDisclosure,
+} from '@chakra-ui/core';
+import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useToasts } from 'react-toast-notifications';
+import axios from 'axios';
+import * as yup from 'yup';
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects";
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectCreation = (values) => axios.post(
   projectsEndpoint,
   values,
@@ -30,12 +30,12 @@ const requestProjectCreation = (values) => axios.post(
 export const ProjectCreationModalContext = React.createContext(null);
 
 const schema = yup.object().shape({
-  projectName: yup.string().required().trim().min(4)
+  projectName: yup.string().required().trim().min(4),
 });
 
 export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema
+    validationSchema: schema,
   });
 
   return (
@@ -86,12 +86,12 @@ export function ProjectCreationModalProvider({ children }) {
 
   const makeRequest = async (data) => {
     await requestProjectCreation({
-      name: data.projectName
+      name: data.projectName,
     });
 
     addToast(`Has creado un nuevo proyecto llamado ${data.projectName}`, {
-      appearance: "success",
-      autoDismiss: true
+      appearance: 'success',
+      autoDismiss: true,
     });
 
     // This will cause an side effect we can use to reload the project list
@@ -107,7 +107,7 @@ export function ProjectCreationModalProvider({ children }) {
         openProjectCreationModal: onOpen,
         closeProjectCreationModal: onClose,
         isProjectCreationModalOpen: isOpen,
-        projectsCreatedCount
+        projectsCreatedCount,
       }}
     >
       <ProjectCreationModal

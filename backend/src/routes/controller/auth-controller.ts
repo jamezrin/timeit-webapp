@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { hashPassword, hasMailTokenExpired } from "../../utils";
-import { User, UserStatus } from "../../entity/User";
-import { AuthToken, AuthTokenStatus } from "../../entity/AuthToken";
-import { accessTokenCookieName } from "../middleware/auth-middleware";
-import { MailRequestType, MailToken } from "../../entity/MailToken";
-import HttpStatus from "http-status-codes";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { Request, Response } from 'express';
+import { hashPassword, hasMailTokenExpired } from '../../utils';
+import { User, UserStatus } from '../../entity/User';
+import { AuthToken, AuthTokenStatus } from '../../entity/AuthToken';
+import { accessTokenCookieName } from '../middleware/auth-middleware';
+import { MailRequestType, MailToken } from '../../entity/MailToken';
+import HttpStatus from 'http-status-codes';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import {
   accountAlreadyExistsError,
   accountNotFoundError,
@@ -16,15 +16,15 @@ import {
   inactiveAccountError,
   invalidCredentialsError,
   mailTokenNotFoundError,
-  unknownServerError
-} from "../errors";
-import Mail from "nodemailer/lib/mailer";
+  unknownServerError,
+} from '../errors';
+import Mail from 'nodemailer/lib/mailer';
 
 async function sendPasswordResetEmail(mailer: Mail, mailToken: MailToken) {
   const passwordResetCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL + `/recover-password/${mailToken.id}`;
   return await mailer.sendMail({
-    from: "\"Jaime de TimeIt\" <jaime@jamezrin.name>",
+    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Restablecimiento de tu contraseña`,
     text: `
@@ -34,13 +34,16 @@ async function sendPasswordResetEmail(mailer: Mail, mailToken: MailToken) {
     html: `
     <p>Has hecho una petición de restablecimiento de la contraseña de tu cuenta.</p> 
     <p>Si has hecho esta petición, puedes <a href="${passwordResetCallbackUrl}">restablecer tu contraseña</a>.</p>
-    <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`
+    <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`,
   });
 }
 
-async function sendPasswordResetPerformedEmail(mailer: Mail, mailToken: MailToken) {
+async function sendPasswordResetPerformedEmail(
+  mailer: Mail,
+  mailToken: MailToken,
+) {
   return await mailer.sendMail({
-    from: "\"Jaime de TimeIt\" <jaime@jamezrin.name>",
+    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Restablecimiento de contraseña realizado`,
     text: `
@@ -48,15 +51,18 @@ async function sendPasswordResetPerformedEmail(mailer: Mail, mailToken: MailToke
     Si no has sido tu quien ha hecho esta petición, pide una nueva contraseña.`,
     html: `
     <p>Tu petición de restablecimiento de contraseña se ha realizado correctamente.</p>
-    <p>Si no has sido tu quien ha hecho esta petición, pide una nueva contraseña.</p>`
+    <p>Si no has sido tu quien ha hecho esta petición, pide una nueva contraseña.</p>`,
   });
 }
 
-async function sendAccountConfirmationEmail(mailer: Mail, mailToken: MailToken) {
+async function sendAccountConfirmationEmail(
+  mailer: Mail,
+  mailToken: MailToken,
+) {
   const accountConfirmationCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL + `/confirm-account/${mailToken.id}`;
   return await mailer.sendMail({
-    from: "\"Jaime de TimeIt\" <jaime@jamezrin.name>",
+    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Confirmación de registro`,
     text: `
@@ -64,7 +70,7 @@ async function sendAccountConfirmationEmail(mailer: Mail, mailToken: MailToken) 
     Si no has hecho esta petición, simplemente ignora este correo electrónico.`,
     html: `
     <p>Te has registrado en TimeIt, procede a <a href="${accountConfirmationCallbackUrl}">confirmar tu cuenta</a>.</p>
-    <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`
+    <p>Si no has hecho esta petición, simplemente ignora este correo electrónico.</p>`,
   });
 }
 
@@ -73,7 +79,7 @@ const authController = {
     const { emailAddress, password } = req.body;
 
     const user = await User.findOne({
-      where: { emailAddress }
+      where: { emailAddress },
     });
 
     if (!user) {
@@ -91,8 +97,8 @@ const authController = {
       const mailToken = await MailToken.findOne({
         where: {
           emailAddress: emailAddress,
-          type: MailRequestType.ACCOUNT_CONFIRMATION
-        }
+          type: MailRequestType.ACCOUNT_CONFIRMATION,
+        },
       });
 
       if (mailToken && hasMailTokenExpired(mailToken)) {
@@ -115,19 +121,19 @@ const authController = {
     const accessToken = jwt.sign(
       {
         userId: user.id,
-        tokenId: authToken.id
+        tokenId: authToken.id,
       },
       process.env.TIMEIT_JWT_SECRET,
-      { expiresIn: "180 days" }
+      { expiresIn: '180 days' },
     );
 
     res.cookie(accessTokenCookieName, accessToken, {
-      path: "/",
+      path: '/',
       httpOnly: true,
       domain: process.env.TIMEIT_COOKIE_DOMAIN,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1000 * 60 * 60 * 24 * 180 // 180 days
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
     });
 
     res.sendStatus(HttpStatus.OK);
@@ -148,7 +154,7 @@ const authController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   createAccount(mailer: Mail) {
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const { emailAddress, password, firstName, lastName } = req.body;
 
       try {
@@ -177,7 +183,7 @@ const authController = {
         res.sendStatus(HttpStatus.ACCEPTED);
       } catch (err) {
         switch (err.code) {
-          case "23505":
+          case '23505':
             // duplicated key constraint error
             return accountAlreadyExistsError(req, res);
         }
@@ -192,8 +198,8 @@ const authController = {
     const mailToken = await MailToken.findOne({
       where: {
         id: token,
-        type: MailRequestType.ACCOUNT_CONFIRMATION
-      }
+        type: MailRequestType.ACCOUNT_CONFIRMATION,
+      },
     });
 
     if (!mailToken) {
@@ -209,8 +215,8 @@ const authController = {
 
     const user = await User.findOne({
       where: {
-        emailAddress: mailToken.emailAddress
-      }
+        emailAddress: mailToken.emailAddress,
+      },
     });
 
     if (!user) {
@@ -225,11 +231,11 @@ const authController = {
     res.sendStatus(HttpStatus.ACCEPTED);
   },
   requestPasswordReset(mailer: Mail) {
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const { emailAddress } = req.body;
 
       const user = await User.findOne({
-        where: { emailAddress }
+        where: { emailAddress },
       });
 
       if (!user) {
@@ -243,8 +249,8 @@ const authController = {
       const previousMailTokens = await MailToken.find({
         where: {
           emailAddress,
-          type: MailRequestType.PASSWORD_RESET
-        }
+          type: MailRequestType.PASSWORD_RESET,
+        },
       });
 
       // Delete stale tokens async
@@ -277,15 +283,15 @@ const authController = {
     };
   },
   performPasswordReset(mailer: Mail) {
-    return async function(req: Request, res: Response) {
+    return async function (req: Request, res: Response) {
       const { newPassword } = req.body;
       const { token } = req.params;
 
       const mailToken = await MailToken.findOne({
         where: {
           id: token,
-          type: MailRequestType.PASSWORD_RESET
-        }
+          type: MailRequestType.PASSWORD_RESET,
+        },
       });
 
       if (!mailToken) {
@@ -300,7 +306,7 @@ const authController = {
       }
 
       const user = await User.findOne({
-        where: { emailAddress: mailToken.emailAddress }
+        where: { emailAddress: mailToken.emailAddress },
       });
 
       if (!user) {
@@ -322,7 +328,7 @@ const authController = {
 
       res.sendStatus(HttpStatus.ACCEPTED);
     };
-  }
+  },
 };
 
 export default authController;

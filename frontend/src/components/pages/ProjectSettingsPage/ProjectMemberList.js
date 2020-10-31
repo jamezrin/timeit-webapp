@@ -1,9 +1,16 @@
-import React, { useEffect, useMemo } from "react";
-import { Box, Divider, Flex, Heading, IconButton, useColorMode } from "@chakra-ui/core";
-import { useToasts } from "react-toast-notifications";
-import axios from "axios";
-import BaseTable, { AutoResizer, Column } from "react-base-table";
-import { formatUserFullName, parseAndFormatDate } from "../../../utils";
+import React, { useEffect, useMemo } from 'react';
+import {
+  Box,
+  Divider,
+  Flex,
+  Heading,
+  IconButton,
+  useColorMode,
+} from '@chakra-ui/core';
+import { useToasts } from 'react-toast-notifications';
+import axios from 'axios';
+import BaseTable, { AutoResizer, Column } from 'react-base-table';
+import { formatUserFullName, parseAndFormatDate } from '../../../utils';
 
 const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + "/project_members"; // prettier-ignore
 
@@ -35,7 +42,7 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
 
       addToast(
         `Has ascendido al miembro ${formatUserFullName(memberInfo.user)}`,
-        { appearance: "success", autoDismiss: true }
+        { appearance: 'success', autoDismiss: true },
       );
     });
   };
@@ -46,15 +53,15 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
 
       addToast(
         `Has degradado al miembro ${formatUserFullName(memberInfo.user)}`,
-        { appearance: "success", autoDismiss: true }
+        { appearance: 'success', autoDismiss: true },
       );
     });
   };
 
   const kickMember = (memberInfo) => {
     const confirmResponse = window.confirm(
-      "¿Está seguro de que quiere expulsar a este miembro? " +
-      "Se borrarán todos los eventos e información almacenada."
+      '¿Está seguro de que quiere expulsar a este miembro? ' +
+        'Se borrarán todos los eventos e información almacenada.',
     );
 
     if (confirmResponse) {
@@ -63,7 +70,7 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
 
         addToast(
           `Has expulsado al miembro ${formatUserFullName(memberInfo.user)}`,
-          { appearance: "success", autoDismiss: true }
+          { appearance: 'success', autoDismiss: true },
         );
       });
     }
@@ -92,10 +99,10 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
             variant="outline"
             variantColor="blue"
             aria-label="Search database"
-            disabled={member.role === "admin"}
-            icon={member.role === "employee" ? "triangle-up" : "triangle-down"}
+            disabled={member.role === 'admin'}
+            icon={member.role === 'employee' ? 'triangle-up' : 'triangle-down'}
             onClick={() =>
-              member.role === "employee"
+              member.role === 'employee'
                 ? promoteMember(member)
                 : demoteMember(member)
             }
@@ -106,12 +113,12 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
             variant="outline"
             variantColor="blue"
             aria-label="Search database"
-            disabled={member.role === "admin"}
+            disabled={member.role === 'admin'}
             icon="not-allowed"
             onClick={() => kickMember(member)}
           />
         </>
-      )
+      ),
     }));
   }, [demoteMember, kickMember, projectMembers, promoteMember]);
 
@@ -121,7 +128,7 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
       flex={1}
       rounded="md"
       direction="column"
-      bg={colorMode === "dark" ? "gray.700" : "gray.100"}
+      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
     >
       <Heading as="h2" size="md">
         Miembros del proyecto

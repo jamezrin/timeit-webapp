@@ -1,30 +1,34 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { ProjectMember, ProjectMemberRole, ProjectMemberStatus } from "../../entity/ProjectMember";
-import { Project } from "../../entity/Project";
-import { AuthToken } from "../../entity/AuthToken";
-import HttpStatus from "http-status-codes";
-import { insufficientPrivilegesError, resourceNotFoundError } from "../errors";
-import { TokenPayload } from "../middleware/auth-middleware";
-import { isMemberPrivileged } from "../../utils";
+import {
+  ProjectMember,
+  ProjectMemberRole,
+  ProjectMemberStatus,
+} from '../../entity/ProjectMember';
+import { Project } from '../../entity/Project';
+import { AuthToken } from '../../entity/AuthToken';
+import HttpStatus from 'http-status-codes';
+import { insufficientPrivilegesError, resourceNotFoundError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
+import { isMemberPrivileged } from '../../utils';
 
 const projectController = {
   async listProjects(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
 
-    const projects = await Project.createQueryBuilder("project")
-      .loadRelationCountAndMap("project.memberCount", "project.members")
+    const projects = await Project.createQueryBuilder('project')
+      .loadRelationCountAndMap('project.memberCount', 'project.members')
       .leftJoinAndMapOne(
-        "project.projectMember",
-        "project.members",
-        "member",
-        "member.user = :currentUserId",
-        { currentUserId }
+        'project.projectMember',
+        'project.members',
+        'member',
+        'member.user = :currentUserId',
+        { currentUserId },
       )
-      .where("member.user = :currentUserId", { currentUserId })
-      .andWhere("member.status = :status", {
-        status: ProjectMemberStatus.ACTIVE
+      .where('member.user = :currentUserId', { currentUserId })
+      .andWhere('member.status = :status', {
+        status: ProjectMemberStatus.ACTIVE,
       })
       .getMany();
 
@@ -32,7 +36,7 @@ const projectController = {
   },
   async createProject(req: Request, res: Response) {
     const tokenInfo = res.locals.tokenInfo as AuthToken;
-    const projectName = req.body["name"];
+    const projectName = req.body['name'];
 
     const project = new Project();
     project.name = projectName;
@@ -54,8 +58,8 @@ const projectController = {
         id: projectMember.id,
         createdAt: projectMember.createdAt,
         role: projectMember.role,
-        status: projectMember.status
-      }
+        status: projectMember.status,
+      },
     });
   },
   async getProject(req: Request, res: Response) {
@@ -63,16 +67,16 @@ const projectController = {
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
-    const project = await Project.createQueryBuilder("project")
-      .where("project.id = :projectId", { projectId })
-      .andWhere("member.user = :currentUserId", { currentUserId })
-      .loadRelationCountAndMap("project.memberCount", "project.members")
+    const project = await Project.createQueryBuilder('project')
+      .where('project.id = :projectId', { projectId })
+      .andWhere('member.user = :currentUserId', { currentUserId })
+      .loadRelationCountAndMap('project.memberCount', 'project.members')
       .leftJoinAndMapOne(
-        "project.projectMember",
-        "project.members",
-        "member",
-        "member.user = :currentUserId",
-        { currentUserId }
+        'project.projectMember',
+        'project.members',
+        'member',
+        'member.user = :currentUserId',
+        { currentUserId },
       )
       .getOne();
 
@@ -85,13 +89,15 @@ const projectController = {
   async updateProject(req: Request, res: Response) {
     const tokenPayload = res.locals.tokenPayload as TokenPayload;
     const currentUserId = tokenPayload.userId;
-    const projectName = req.body["name"];
+    const projectName = req.body['name'];
     const { projectId } = req.params;
 
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .leftJoinAndSelect("projectMember.project", "project")
-      .where("projectMember.project = :projectId", { projectId })
-      .andWhere("projectMember.user = :currentUserId", { currentUserId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .leftJoinAndSelect('projectMember.project', 'project')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
       .getOne();
 
     if (!currentProjectMember) {
@@ -118,10 +124,12 @@ const projectController = {
     const currentUserId = tokenPayload.userId;
     const { projectId } = req.params;
 
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .leftJoinAndSelect("projectMember.project", "project")
-      .where("projectMember.project = :projectId", { projectId })
-      .andWhere("projectMember.user = :currentUserId", { currentUserId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .leftJoinAndSelect('projectMember.project', 'project')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
       .getOne();
 
     if (!currentProjectMember) {
@@ -141,7 +149,7 @@ const projectController = {
     await project.remove();
 
     res.sendStatus(HttpStatus.OK);
-  }
+  },
 };
 
 export default projectController;

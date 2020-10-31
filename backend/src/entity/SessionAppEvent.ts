@@ -1,13 +1,20 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-import { Session } from "./Session";
+import { Session } from './Session';
 
 @Entity()
 export class SessionAppEvent extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @Column()
@@ -20,8 +27,8 @@ export class SessionAppEvent extends BaseEntity {
   windowPid: number;
 
   @ManyToOne((type) => Session, (session) => session.sessionAppEvents, {
-    onDelete: "CASCADE",
-    nullable: false
+    onDelete: 'CASCADE',
+    nullable: false,
   })
   session: Session;
 }

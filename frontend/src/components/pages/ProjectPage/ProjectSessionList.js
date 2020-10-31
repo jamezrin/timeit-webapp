@@ -1,10 +1,14 @@
-import React, { useMemo } from "react";
-import { useHistory } from "react-router-dom";
-import BaseTable, { Column } from "react-base-table";
-import "react-base-table/styles.css";
-import styled from "@emotion/styled";
-import { findProjectMember, formatUserFullName, parseAndFormatTimestamp } from "../../../utils";
-import useResizeObserver from "use-resize-observer";
+import React, { useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
+import BaseTable, { Column } from 'react-base-table';
+import 'react-base-table/styles.css';
+import styled from '@emotion/styled';
+import {
+  findProjectMember,
+  formatUserFullName,
+  parseAndFormatTimestamp,
+} from '../../../utils';
+import useResizeObserver from 'use-resize-observer';
 
 const TableWrapper = styled.div`
   flex-grow: 1;
@@ -22,7 +26,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
     return sessions.map((session) => {
       const projectMember = findProjectMember(
         projectMembers,
-        session.projectMemberId
+        session.projectMemberId,
       );
 
       return {
@@ -32,7 +36,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
         keyUser: formatUserFullName(projectMember.user),
         keyEndDate: session.endedAt
           ? parseAndFormatTimestamp(session.endedAt)
-          : "En curso"
+          : 'En curso',
       };
     });
   }, [sessions, projectMembers]);
@@ -40,7 +44,7 @@ function ProjectSessionList({ projectInfo, projectMembers, sessions }) {
   const rowEventHandlers = {
     onClick: (event) => {
       history.push(`/project/${projectInfo.id}/session/${event.rowData.id}`);
-    }
+    },
   };
 
   const { ref, width = 0 } = useResizeObserver();

@@ -1,18 +1,18 @@
-import { Box, Heading } from "@chakra-ui/core";
-import ProjectStatIndicators from "./ProjectStatIndicators";
-import ProjectLineChart from "./ProjectLineChart";
-import ProjectSessionList from "./ProjectSessionList";
-import React from "react";
+import { Box, Heading } from '@chakra-ui/core';
+import ProjectStatIndicators from './ProjectStatIndicators';
+import ProjectLineChart from './ProjectLineChart';
+import ProjectSessionList from './ProjectSessionList';
+import React from 'react';
 
 export default function ProjectPageInfo({
-                                          projectInfo,
-                                          projectMembers,
-                                          projectStats,
-                                          projectHistoryStats,
-                                          sessions,
-                                          startDate,
-                                          endDate
-                                        }) {
+  projectInfo,
+  projectMembers,
+  projectStats,
+  projectHistoryStats,
+  sessions,
+  startDate,
+  endDate,
+}) {
   return (
     <Box>
       <Box mt={8}>
@@ -37,7 +37,7 @@ export default function ProjectPageInfo({
           Sesiones (
           {projectStats
             ? projectStats.currentPeriodSessionCount
-            : "Desconocido"}
+            : 'Desconocido'}
           )
         </Heading>
         <ProjectSessionList

@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import { ProjectMember } from "../../entity/ProjectMember";
-import HttpStatus from "http-status-codes";
-import { Session } from "../../entity/Session";
-import { resourceNotFoundError, sessionEndedError } from "../errors";
-import { TokenPayload } from "../middleware/auth-middleware";
-import { isMemberPrivileged } from "../../utils";
+import { Request, Response } from 'express';
+import { ProjectMember } from '../../entity/ProjectMember';
+import HttpStatus from 'http-status-codes';
+import { Session } from '../../entity/Session';
+import { resourceNotFoundError, sessionEndedError } from '../errors';
+import { TokenPayload } from '../middleware/auth-middleware';
+import { isMemberPrivileged } from '../../utils';
 
 const projectSessionControler = {
   async listSessions(req: Request, res: Response) {
@@ -14,35 +14,43 @@ const projectSessionControler = {
     const { memberIds, startDate, endDate } = req.query;
 
     // Current user as a member of the current project
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .where("projectMember.project = :projectId", { projectId })
-      .andWhere("projectMember.user = :currentUserId", { currentUserId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
       .getOne();
 
     if (!currentProjectMember) {
       return resourceNotFoundError(req, res);
     }
 
-    const sessionQueryBuilder = Session.createQueryBuilder("session")
-      .leftJoin("session.projectMember", "projectMember")
-      .where("projectMember.project = :projectId", { projectId })
-      .andWhere("session.createdAt BETWEEN :startDate AND DATE(:endDate) + interval '1 day'", {
-        startDate,
-        endDate
-      })
-      .loadRelationIdAndMap("session.projectMemberId", "session.projectMember")
-      .orderBy("session.updatedAt", "DESC");
+    const sessionQueryBuilder = Session.createQueryBuilder('session')
+      .leftJoin('session.projectMember', 'projectMember')
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere(
+        "session.createdAt BETWEEN :startDate AND DATE(:endDate) + interval '1 day'",
+        {
+          startDate,
+          endDate,
+        },
+      )
+      .loadRelationIdAndMap('session.projectMemberId', 'session.projectMember')
+      .orderBy('session.updatedAt', 'DESC');
 
     if (isMemberPrivileged(currentProjectMember)) {
       if (memberIds) {
-        sessionQueryBuilder.andWhere("projectMember.id IN (:...memberIds)", {
-          memberIds: [].concat(memberIds)
+        sessionQueryBuilder.andWhere('projectMember.id IN (:...memberIds)', {
+          memberIds: [].concat(memberIds),
         });
       }
     } else {
-      sessionQueryBuilder.andWhere("projectMember.id = :currentProjectMemberId", {
-        currentProjectMemberId: currentProjectMember.id
-      });
+      sessionQueryBuilder.andWhere(
+        'projectMember.id = :currentProjectMemberId',
+        {
+          currentProjectMemberId: currentProjectMember.id,
+        },
+      );
     }
 
     const sessions = await sessionQueryBuilder.getMany();
@@ -54,9 +62,11 @@ const projectSessionControler = {
     const { projectId } = req.params;
 
     // Current user as a member of the current project
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .where("projectMember.project = :projectId", { projectId })
-      .andWhere("projectMember.user = :currentUserId", { currentUserId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .where('projectMember.project = :projectId', { projectId })
+      .andWhere('projectMember.user = :currentUserId', { currentUserId })
       .getOne();
 
     if (!currentProjectMember) {
@@ -78,12 +88,14 @@ const projectSessionControler = {
     const { sessionId } = req.params;
 
     // Current user as a member of the project that has this session
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .where("projectMember.user = :currentUserId", { currentUserId })
-      .leftJoin("projectMember.project", "project")
-      .leftJoin("project.members", "otherMembers")
-      .leftJoin("otherMembers.sessions", "otherMemberSessions")
-      .andWhere("otherMemberSessions.id = :sessionId", { sessionId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .where('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .leftJoin('otherMembers.sessions', 'otherMemberSessions')
+      .andWhere('otherMemberSessions.id = :sessionId', { sessionId })
       .getOne();
 
     if (!currentProjectMember) {
@@ -99,9 +111,12 @@ const projectSessionControler = {
 
     // Ensure the session being looked up is owned by the current member
     if (!isMemberPrivileged(currentProjectMember)) {
-      sessionQueryBuilder.andWhere("session.projectMember = :currentProjectMemberId", {
-        currentProjectMemberId: currentProjectMember.id
-      });
+      sessionQueryBuilder.andWhere(
+        'session.projectMember = :currentProjectMemberId',
+        {
+          currentProjectMemberId: currentProjectMember.id,
+        },
+      );
     }
 
     const session = await sessionQueryBuilder.getOne();
@@ -118,12 +133,14 @@ const projectSessionControler = {
     const { sessionId } = req.params;
 
     // Current user as a member of the project that has this session
-    const currentProjectMember = await ProjectMember.createQueryBuilder("projectMember")
-      .where("projectMember.user = :currentUserId", { currentUserId })
-      .leftJoin("projectMember.project", "project")
-      .leftJoin("project.members", "otherMembers")
-      .leftJoin("otherMembers.sessions", "otherMemberSessions")
-      .andWhere("otherMemberSessions.id = :sessionId", { sessionId })
+    const currentProjectMember = await ProjectMember.createQueryBuilder(
+      'projectMember',
+    )
+      .where('projectMember.user = :currentUserId', { currentUserId })
+      .leftJoin('projectMember.project', 'project')
+      .leftJoin('project.members', 'otherMembers')
+      .leftJoin('otherMembers.sessions', 'otherMemberSessions')
+      .andWhere('otherMemberSessions.id = :sessionId', { sessionId })
       .getOne();
 
     if (!currentProjectMember) {
@@ -136,9 +153,12 @@ const projectSessionControler = {
 
     // Add an additional condition to only query their own sessions
     if (!isMemberPrivileged(currentProjectMember)) {
-      sessionQueryBuilder.andWhere("session.projectMember = :currentProjectMemberId", {
-        currentProjectMemberId: currentProjectMember.id
-      });
+      sessionQueryBuilder.andWhere(
+        'session.projectMember = :currentProjectMemberId',
+        {
+          currentProjectMemberId: currentProjectMember.id,
+        },
+      );
     }
 
     const session = await sessionQueryBuilder.getOne();
@@ -163,7 +183,7 @@ const projectSessionControler = {
   },
   async deleteSession(req: Request, res: Response) {
     res.sendStatus(HttpStatus.NOT_IMPLEMENTED);
-  }
+  },
 };
 
 export default projectSessionControler;

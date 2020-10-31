@@ -1,11 +1,18 @@
-import { BaseEntity, BeforeInsert, Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import {
+  BaseEntity,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+} from 'typeorm';
 
-import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
 
 export enum MailRequestType {
-  PASSWORD_RESET = "password_reset",
-  ACCOUNT_CONFIRMATION = "account_confirmation",
-  PROJECT_INVITE = "project_invite",
+  PASSWORD_RESET = 'password_reset',
+  ACCOUNT_CONFIRMATION = 'account_confirmation',
+  PROJECT_INVITE = 'project_invite',
 }
 
 export interface ProjectInvitationPayload {
@@ -14,8 +21,7 @@ export interface ProjectInvitationPayload {
   projectId: number;
 }
 
-export interface AccountConfirmationPayload {
-}
+export interface AccountConfirmationPayload {}
 
 @Entity()
 export class MailToken extends BaseEntity {
@@ -25,7 +31,7 @@ export class MailToken extends BaseEntity {
   @Column()
   emailAddress: string;
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @Column()
@@ -34,7 +40,7 @@ export class MailToken extends BaseEntity {
   @Column()
   type: MailRequestType;
 
-  @Column({ type: "jsonb", nullable: true })
+  @Column({ type: 'jsonb', nullable: true })
   payload: ProjectInvitationPayload | AccountConfirmationPayload | object;
 
   @BeforeInsert()

@@ -1,7 +1,7 @@
-import { Flex, Spinner, Text } from "@chakra-ui/core";
-import React from "react";
+import { Flex, Spinner, Text } from '@chakra-ui/core';
+import React from 'react';
 
-export const FullPageLoadSpinner = ({ message = "Cargando la aplicación" }) => (
+export const FullPageLoadSpinner = ({ message = 'Cargando la aplicación' }) => (
   <Flex
     height="100%"
     justifyContent="center"

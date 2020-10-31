@@ -1,17 +1,19 @@
-import express from "express";
-import { wrapAsync } from "../utils";
+import express from 'express';
+import { wrapAsync } from '../utils';
 
-import defaultAuthMiddleware, { authMiddleware } from "./middleware/auth-middleware";
-import authController from "./controller/auth-controller";
-import userController from "./controller/user-controller";
-import projectController from "./controller/project-controller";
-import projectSessionController from "./controller/project-session-controller";
-import sessionNoteController from "./controller/session-note-controller";
-import sessionAppEventController from "./controller/session-app-event-controller";
-import projectMemberController from "./controller/project-member-controller";
-import dataController from "./controller/data-controller";
-import Mail from "nodemailer/lib/mailer";
-import { Connection } from "typeorm";
+import defaultAuthMiddleware, {
+  authMiddleware,
+} from './middleware/auth-middleware';
+import authController from './controller/auth-controller';
+import userController from './controller/user-controller';
+import projectController from './controller/project-controller';
+import projectSessionController from './controller/project-session-controller';
+import sessionNoteController from './controller/session-note-controller';
+import sessionAppEventController from './controller/session-app-event-controller';
+import projectMemberController from './controller/project-member-controller';
+import dataController from './controller/data-controller';
+import Mail from 'nodemailer/lib/mailer';
+import { Connection } from 'typeorm';
 
 // prettier-ignore
 export default function mountRoutes(app: express.Application, connection: Connection, mailer: Mail) {

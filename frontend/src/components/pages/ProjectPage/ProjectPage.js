@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import MainLayout from "../../base/MainLayout";
-import FullPageLoadSpinner from "../../base/FullPageLoadSpinner";
-import { Box, Button, Flex } from "@chakra-ui/core";
-import { useHistory, useParams } from "react-router-dom";
-import ProjectMemberSelect from "./ProjectMemberSelect";
-import PeriodDateRangePicker from "./PeriodDateRangePicker";
-import moment from "moment";
-import ProjectPageInfo from "./ProjectPageInfo";
-import ProjectPageNoInfo from "./ProjectPageNoInfo";
-import { formatTitle, isMemberPrivileged } from "../../../utils";
-import useDocumentTitle from "@rehooks/document-title";
-import { useToasts } from "react-toast-notifications";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import MainLayout from '../../base/MainLayout';
+import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
+import { Box, Button, Flex } from '@chakra-ui/core';
+import { useHistory, useParams } from 'react-router-dom';
+import ProjectMemberSelect from './ProjectMemberSelect';
+import PeriodDateRangePicker from './PeriodDateRangePicker';
+import moment from 'moment';
+import ProjectPageInfo from './ProjectPageInfo';
+import ProjectPageNoInfo from './ProjectPageNoInfo';
+import { formatTitle, isMemberPrivileged } from '../../../utils';
+import useDocumentTitle from '@rehooks/document-title';
+import { useToasts } from 'react-toast-notifications';
 
-moment.locale("es");
+moment.locale('es');
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
 const projectStatisticsEndpoint = process.env.REACT_APP_BACKEND_URL + "/data_query/summary_statistics"; // prettier-ignore
@@ -68,7 +68,7 @@ const requestProjectHistory = (projectId, startDate, endDate, memberId) => axios
 function ProjectPageContent({ projectInfo, projectMembers }) {
   const history = useHistory();
 
-  const [startDate, setStartDate] = useState(moment().set("date", 1));
+  const [startDate, setStartDate] = useState(moment().set('date', 1));
   const [endDate, setEndDate] = useState(moment());
 
   const [projectStats, setProjectStats] = useState(null);
@@ -89,7 +89,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         projectInfo.id,
         startDate,
         endDate,
-        selectedProjectMembers
+        selectedProjectMembers,
       ).then((res) => {
         setProjectStats(res.data);
       });
@@ -98,7 +98,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         projectInfo.id,
         startDate,
         endDate,
-        selectedProjectMembers
+        selectedProjectMembers,
       ).then((res) => {
         setSessions(res.data);
       });
@@ -109,12 +109,12 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
             projectInfo.id,
             startDate,
             endDate,
-            memberId
+            memberId,
           ).then((res) => ({
             memberId,
-            data: res.data
-          }))
-        )
+            data: res.data,
+          })),
+        ),
       ).then((projectHistoryStats) => {
         setProjectHistoryStats(projectHistoryStats);
       });
@@ -133,7 +133,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
           variant="ghost"
           size="lg"
           whiteSpace="pre"
-          onClick={() => history.push("/")}
+          onClick={() => history.push('/')}
         >
           {projectInfo.name}
         </Button>
@@ -152,8 +152,8 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
 
       <Box mx={8}>
         <Flex
-          direction={{ base: "column", md: "row" }}
-          alignItems={{ base: "start", md: "center" }}
+          direction={{ base: 'column', md: 'row' }}
+          alignItems={{ base: 'start', md: 'center' }}
         >
           <Box minWidth="20rem" maxWidth="30rem">
             <ProjectMemberSelect
@@ -164,7 +164,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
               }}
             />
           </Box>
-          <Box ml={{ md: "auto" }} mt={{ base: "2rem", md: "0" }}>
+          <Box ml={{ md: 'auto' }} mt={{ base: '2rem', md: '0' }}>
             <PeriodDateRangePicker
               startDate={startDate}
               endDate={endDate}
@@ -212,21 +212,21 @@ function ProjectPage() {
       }),
       requestProjectMembers(projectId).then((res) => {
         setProjectMembers(res.data);
-      })
+      }),
     ]).catch((err) => {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === "RESOURCE_NOT_FOUND") {
+        if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
           addToast(`No se ha podido encontrar el proyecto que has pedido`, {
-            appearance: "error",
-            autoDismiss: true
+            appearance: 'error',
+            autoDismiss: true,
           });
 
-          history.push("/");
+          history.push('/');
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: "error",
-          autoDismiss: true
+          appearance: 'error',
+          autoDismiss: true,
         });
       }
     });

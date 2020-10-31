@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo } from "react";
-import { useColorMode, useTheme } from "@chakra-ui/core";
-import { formatUserFullName, isMemberPrivileged } from "../../../utils";
-import Select from "react-select";
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useColorMode, useTheme } from '@chakra-ui/core';
+import { formatUserFullName, isMemberPrivileged } from '../../../utils';
+import Select from 'react-select';
 
 function ProjectMemberSelect({
-                               projectInfo,
-                               projectMembers,
-                               onSelectedMemberChange: _onSelectedMemberChange
-                             }) {
+  projectInfo,
+  projectMembers,
+  onSelectedMemberChange: _onSelectedMemberChange,
+}) {
   const { colorMode } = useColorMode();
   const chakraTheme = useTheme();
 
@@ -25,7 +25,7 @@ function ProjectMemberSelect({
       .map((projectMember) => {
         return {
           label: formatUserFullName(projectMember.user),
-          value: projectMember.id
+          value: projectMember.id,
         };
       });
   }, [projectInfo, projectMembers]);
@@ -52,83 +52,83 @@ function ProjectMemberSelect({
       if (selectedProjectMembers) {
         onSelectedMemberChange(
           selectedProjectMembers.map(
-            (selectedProjectMember) => selectedProjectMember.value
-          )
+            (selectedProjectMember) => selectedProjectMember.value,
+          ),
         );
       } else {
         onSelectedMemberChange([]);
       }
     },
-    [onSelectedMemberChange]
+    [onSelectedMemberChange],
   );
 
   // TODO Mejorar esto
   const selectStyles = useMemo(() => {
     return {
       control: (styles) => {
-        if (colorMode !== "dark") {
+        if (colorMode !== 'dark') {
           return styles;
         }
 
         return {
           ...styles,
-          backgroundColor: chakraTheme.colors.gray["900"],
-          borderColor: chakraTheme.colors.gray["700"],
-          ":hover": {
-            ...styles[":hover"],
-            borderColor: chakraTheme.colors.gray["900"]
-          }
+          backgroundColor: chakraTheme.colors.gray['900'],
+          borderColor: chakraTheme.colors.gray['700'],
+          ':hover': {
+            ...styles[':hover'],
+            borderColor: chakraTheme.colors.gray['900'],
+          },
         };
       },
       menu: (styles, state) => {
-        if (colorMode !== "dark") {
+        if (colorMode !== 'dark') {
           return styles;
         }
 
         return {
           ...styles,
-          backgroundColor: chakraTheme.colors.gray["900"]
+          backgroundColor: chakraTheme.colors.gray['900'],
         };
       },
       option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-        if (colorMode !== "dark") {
+        if (colorMode !== 'dark') {
           return styles;
         }
 
         return {
           ...styles,
-          backgroundColor: chakraTheme.colors.gray["900"],
-          ":active": {
-            backgroundColor: chakraTheme.colors.gray["700"]
-          }
+          backgroundColor: chakraTheme.colors.gray['900'],
+          ':active': {
+            backgroundColor: chakraTheme.colors.gray['700'],
+          },
         };
       },
       multiValue: (styles, { data }) => {
-        if (colorMode !== "dark") {
+        if (colorMode !== 'dark') {
           return styles;
         }
 
         return {
-          ...styles
+          ...styles,
         };
       },
       multiValueLabel: (styles, { data }) => {
         return {
           ...styles,
-          textOverflow: "ellipsis",
-          maxWidth: "15ch"
+          textOverflow: 'ellipsis',
+          maxWidth: '15ch',
         };
       },
       multiValueRemove: (styles, { data, theme }) => {
-        if (colorMode !== "dark") {
+        if (colorMode !== 'dark') {
           return styles;
         }
 
         return {
           ...styles,
-          color: chakraTheme.colors.gray["800"]
+          color: chakraTheme.colors.gray['800'],
         };
-      }
+      },
     };
   }, [chakraTheme, colorMode]);
 

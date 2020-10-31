@@ -1,16 +1,16 @@
-import bcrypt from "bcrypt";
-import { NextFunction, Request, Response } from "express";
-import { ProjectMember, ProjectMemberRole } from "./entity/ProjectMember";
-import { Project } from "./entity/Project";
-import { UpdateResult } from "typeorm";
-import { Session } from "./entity/Session";
-import { MailToken } from "./entity/MailToken";
+import bcrypt from 'bcrypt';
+import { NextFunction, Request, Response } from 'express';
+import { ProjectMember, ProjectMemberRole } from './entity/ProjectMember';
+import { Project } from './entity/Project';
+import { UpdateResult } from 'typeorm';
+import { Session } from './entity/Session';
+import { MailToken } from './entity/MailToken';
 
 // https://medium.com/@Abazhenov/using-async-await-in-express-with-node-8-b8af872c0016
 export const wrapAsync = (fn: Function) => (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
@@ -40,15 +40,15 @@ export const hasMailTokenExpired = (mailToken: MailToken): boolean =>
 
 // Ends all previous open sessions of one project member
 export const endAllOpenSessions = (
-  projectMember: ProjectMember
+  projectMember: ProjectMember,
 ): Promise<UpdateResult> =>
   Session.createQueryBuilder()
     .update()
     .set({
-      endedAt: new Date(Date.now())
+      endedAt: new Date(Date.now()),
     })
-    .where("projectMember = :currentProjectMemberId", {
-      currentProjectMemberId: projectMember.id
+    .where('projectMember = :currentProjectMemberId', {
+      currentProjectMemberId: projectMember.id,
     })
-    .andWhere("endedAt IS NULL")
+    .andWhere('endedAt IS NULL')
     .execute();

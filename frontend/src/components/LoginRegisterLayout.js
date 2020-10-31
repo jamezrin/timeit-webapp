@@ -1,22 +1,22 @@
-import React from "react";
+import React from 'react';
 
-import timeManagementSvg from "../assets/time_management.svg";
-import mainAppCoverLogo from "../assets/brand-logo.svg";
-import { Box, Button, Flex, Image, Text, useColorMode } from "@chakra-ui/core";
-import { noDragOrSelectCss } from "../utils";
+import timeManagementSvg from '../assets/time_management.svg';
+import mainAppCoverLogo from '../assets/brand-logo.svg';
+import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
+import { noDragOrSelectCss } from '../utils';
 
 export default function LoginRegisterLayout({ children }) {
   const { colorMode } = useColorMode();
 
   return (
-    <Flex height="100vh" direction={{ base: "column", lg: "row" }}>
+    <Flex height="100vh" direction={{ base: 'column', lg: 'row' }}>
       <Box
         bg={
-          colorMode === "dark"
-            ? "gray.900"
-            : { base: "gray.100", lg: "gray.100" }
+          colorMode === 'dark'
+            ? 'gray.900'
+            : { base: 'gray.100', lg: 'gray.100' }
         }
-        width={{ base: "100%", lg: 6 / 10 }}
+        width={{ base: '100%', lg: 6 / 10 }}
         pb={10}
       >
         <Flex
@@ -28,9 +28,9 @@ export default function LoginRegisterLayout({ children }) {
           <Box
             py={{ base: 4, lg: 0 }}
             bg={
-              colorMode === "dark"
-                ? "gray.900"
-                : { base: "gray.100", lg: "transparent" }
+              colorMode === 'dark'
+                ? 'gray.900'
+                : { base: 'gray.100', lg: 'transparent' }
             }
             width="100%"
           >
@@ -40,7 +40,7 @@ export default function LoginRegisterLayout({ children }) {
               src={mainAppCoverLogo}
               alt=""
               css={{
-                ...noDragOrSelectCss
+                ...noDragOrSelectCss,
               }}
             />
           </Box>
@@ -48,15 +48,15 @@ export default function LoginRegisterLayout({ children }) {
           <Image
             maxWidth="24rem"
             src={timeManagementSvg}
-            display={{ base: "none", lg: "block" }}
+            display={{ base: 'none', lg: 'block' }}
             alt=""
             px={10}
             css={{
-              ...noDragOrSelectCss
+              ...noDragOrSelectCss,
             }}
           />
 
-          <Box mt={8} px={4} maxWidth={{ base: "auto", lg: "36rem" }}>
+          <Box mt={8} px={4} maxWidth={{ base: 'auto', lg: '36rem' }}>
             <Text textAlign="justify">
               Bienvenido/a a TimeIt, una plataforma de código abierto y libre
               para controlar tu tiempo. Podrás crear proyectos con multiples
@@ -80,9 +80,9 @@ export default function LoginRegisterLayout({ children }) {
 
       <Box
         bg={
-          colorMode === "dark" ? "gray.800" : { base: "white", lg: "gray.200" }
+          colorMode === 'dark' ? 'gray.800' : { base: 'white', lg: 'gray.200' }
         }
-        width={{ base: "100%", lg: 4 / 10 }}
+        width={{ base: '100%', lg: 4 / 10 }}
         px={4}
         py={10}
       >

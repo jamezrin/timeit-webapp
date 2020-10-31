@@ -1,5 +1,5 @@
-import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import axios from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const currentUserEndpoint = process.env.REACT_APP_BACKEND_URL + "/current-user"; // prettier-ignore
 const authenticateEndpoint = process.env.REACT_APP_BACKEND_URL + "/authenticate"; // prettier-ignore
@@ -27,12 +27,12 @@ export const fetchAuthStatus = () =>
     .then((response) => ({
       currentUser: response.data,
       isAuthenticated: true,
-      authenticationError: null
+      authenticationError: null,
     }))
     .catch((err) => ({
       currentUser: null,
       isAuthenticated: false,
-      authenticationError: err
+      authenticationError: err,
     }));
 
 const AuthContext = React.createContext(null);
@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {
     refreshStatus().then((status) => {
-      console.log("User authentication status:", status);
+      console.log('User authentication status:', status);
     });
   }, [refreshStatus]);
 
@@ -58,7 +58,7 @@ export const AuthContextProvider = ({ children }) => {
       value={{
         authStatus,
         refreshStatus,
-        setAuthStatus
+        setAuthStatus,
       }}
     >
       {children}

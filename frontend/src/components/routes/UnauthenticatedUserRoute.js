@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Redirect, Route } from "react-router-dom";
-import AuthContext from "../../state/authenticationContext";
+import React, { useContext } from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import AuthContext from '../../state/authenticationContext';
 
 export default function UnauthenticatedUserRoute({
-                                                   component: ChildComponent,
-                                                   ...rest
-                                                 }) {
+  component: ChildComponent,
+  ...rest
+}) {
   const { authStatus } = useContext(AuthContext);
 
   return (
@@ -19,7 +19,7 @@ export default function UnauthenticatedUserRoute({
         return (
           <Redirect
             to={{
-              pathname: props.location.from || "/"
+              pathname: props.location.from || '/',
             }}
           />
         );
