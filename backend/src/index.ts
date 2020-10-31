@@ -49,14 +49,14 @@ async function startExpress(connection: Connection, mailer: Mail) {
   app.use(morgan('combined'));
 
   app.all('/', (req, res) => {
-    res.status(HttpStatus.OK).send('API server is functioning normally');
+    res.sendStatus(HttpStatus.OK);
   });
 
   // From now on, there are only protected routes
   mountRoutes(app, connection, mailer);
 
-  // Start the app on the env port or the default 7001
-  app.listen(process.env.PORT || 7001);
+  // Start the app on the env port or the default 7000
+  app.listen(process.env.PORT || 7000);
 }
 
 createConnection()
