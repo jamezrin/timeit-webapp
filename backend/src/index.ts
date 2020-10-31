@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Connection, createConnection } from 'typeorm';
+import { Connection, createConnection, getConnectionOptions } from 'typeorm';
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -59,14 +59,29 @@ async function startExpress(connection: Connection, mailer: Mail) {
   app.listen(process.env.PORT || 7000);
 }
 
-createConnection()
-  .then(async (connection) => {
-    connection
-      .query(`SET timezone TO 'Europe/Madrid'`)
-      .then(() => console.log('Successfully set the timezone to Europe/Madrid'))
-      .catch(() => console.warn('Could not set the timezone'));
+async function startApp() {
+  // read connection options from ormconfig file (or ENV variables)
+  const connectionOptions = await getConnectionOptions();
 
-    const mailer = createMailTransport();
-    await startExpress(connection, mailer);
-  })
-  .catch((error) => console.log(error));
+  // do something with connectionOptions,
+  // for example append a custom naming strategy or a custom logger
+  // Object.assign(connectionOptions, { namingStrategy: new MyNamingStrategy() });
+
+  // create a connection using modified connection options
+  const connection = await createConnection(connectionOptions);
+
+  // TODO: move the timezone to env vars
+  // setting the application timezone
+  connection
+    .query(`SET timezone TO 'Europe/Madrid'`)
+    .then(() => console.log('Successfully set the timezone to Europe/Madrid'))
+    .catch(() => console.warn('Could not set the timezone'));
+
+  // create mail transport for mail routes
+  const mailer = createMailTransport();
+
+  // start the HTTP server
+  await startExpress(connection, mailer);
+}
+
+startApp().catch((err) => console.log('Failure starting app', err));

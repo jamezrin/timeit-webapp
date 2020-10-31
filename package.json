@@ -1,7 +1,13 @@
 {
   "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ]
+  "workspaces": {
+    "packages": [
+      "frontend",
+      "backend"
+    ],
+    "nohoist": [
+      "**/typeorm/**",
+      "**/typeorm"
+    ]
+  }
 }
