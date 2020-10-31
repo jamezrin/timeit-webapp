@@ -1,26 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
-import MainLayout from '../../base/MainLayout';
-import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { Button, Flex } from '@chakra-ui/core';
-import { useHistory, useParams } from 'react-router-dom';
-import RenameProjectSettings from './RenameProjectSettings';
-import ProjectMemberList from './ProjectMemberList';
-import InviteProjectSettings from './InviteProjectSettings';
-import DeleteProjectSettings from './DeleteProjectSettings';
-import useDocumentTitle from '@rehooks/document-title';
-import { formatTitle, isMemberPrivileged } from '../../../utils';
-import { useToasts } from 'react-toast-notifications';
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import MainLayout from "../../base/MainLayout";
+import FullPageLoadSpinner from "../../base/FullPageLoadSpinner";
+import { Button, Flex } from "@chakra-ui/core";
+import { useHistory, useParams } from "react-router-dom";
+import RenameProjectSettings from "./RenameProjectSettings";
+import ProjectMemberList from "./ProjectMemberList";
+import InviteProjectSettings from "./InviteProjectSettings";
+import DeleteProjectSettings from "./DeleteProjectSettings";
+import useDocumentTitle from "@rehooks/document-title";
+import { formatTitle, isMemberPrivileged } from "../../../utils";
+import { useToasts } from "react-toast-notifications";
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects";
 const requestProjectInfo = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const requestProjectMembers = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}/members`,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 function ProjectPageContent({ projectInfo, setProjectInfo }) {
@@ -41,8 +41,8 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
       })
       .catch((err) => {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
+          appearance: "error",
+          autoDismiss: true
         });
       });
   }, [addToast, projectInfo]);
@@ -58,14 +58,14 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
-          {projectInfo.name || 'Proyecto sin nombre'}
+          {projectInfo.name || "Proyecto sin nombre"}
         </Button>
       </Flex>
 
-      <Flex direction={{ base: 'column', lg: 'row' }}>
+      <Flex direction={{ base: "column", lg: "row" }}>
         <Flex
-          width={{ base: '100%', lg: '60%' }}
-          height={{ base: '30rem', lg: 'auto' }}
+          width={{ base: "100%", lg: "60%" }}
+          height={{ base: "30rem", lg: "auto" }}
           mx={{ base: 0, lg: 8 }}
           direction="column"
         >
@@ -76,7 +76,7 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
           />
         </Flex>
         <Flex
-          width={{ base: '100%', lg: '40%' }}
+          width={{ base: "100%", lg: "40%" }}
           mx={{ base: 0, lg: 8 }}
           direction="column"
         >
@@ -101,7 +101,7 @@ function ProjectSettingsPage() {
   const { addToast } = useToasts();
   const history = useHistory();
 
-  useDocumentTitle(formatTitle('Ajustes de proyecto'));
+  useDocumentTitle(formatTitle("Ajustes de proyecto"));
 
   useEffect(() => {
     requestProjectInfo(projectId)
@@ -110,18 +110,18 @@ function ProjectSettingsPage() {
       })
       .catch((err) => {
         if (err.response && err.response.data.error) {
-          if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+          if (err.response.data.error.type === "RESOURCE_NOT_FOUND") {
             addToast(`No se ha podido encontrar la sesión que has pedido`, {
-              appearance: 'error',
-              autoDismiss: true,
+              appearance: "error",
+              autoDismiss: true
             });
 
-            history.push('/');
+            history.push("/");
           }
         } else {
           addToast(`Ha ocurrido un error desconocido: ${err}`, {
-            appearance: 'error',
-            autoDismiss: true,
+            appearance: "error",
+            autoDismiss: true
           });
         }
       });

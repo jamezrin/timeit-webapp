@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -9,27 +9,27 @@ import {
   Input,
   InputGroup,
   Text,
-  useColorMode,
-} from '@chakra-ui/core';
-import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
+  useColorMode
+} from "@chakra-ui/core";
+import { useToasts } from "react-toast-notifications";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects";
 const requestProjectInvite = (projectId, emailAddress) => axios.post(
   `${projectsEndpoint}/${projectId}/invite`,
   { emailAddress },
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const schema = yup.object().shape({
-  emailAddress: yup.string().email().required(),
+  emailAddress: yup.string().email().required()
 });
 
 function InviteProjectSettings({ projectInfo, updateMembers }) {
   const { handleSubmit, reset, errors, register, formState } = useForm({
-    validationSchema: schema,
+    validationSchema: schema
   });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
@@ -39,8 +39,8 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
       await requestProjectInvite(projectInfo.id, emailAddress);
 
       addToast(`Has enviado una invitación a "${emailAddress}"`, {
-        appearance: 'success',
-        autoDismiss: true,
+        appearance: "success",
+        autoDismiss: true
       });
 
       // Clean the form up
@@ -50,21 +50,21 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
       updateMembers();
     } catch (err) {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === 'ACCOUNT_NOT_FOUND') {
-          addToast('No existe ningún usuario con ese correo electrónico', {
-            appearance: 'error',
-            autoDismiss: true,
+        if (err.response.data.error.type === "ACCOUNT_NOT_FOUND") {
+          addToast("No existe ningún usuario con ese correo electrónico", {
+            appearance: "error",
+            autoDismiss: true
           });
-        } else if (err.response.data.error.type === 'ALREADY_PROJECT_MEMBER') {
-          addToast('Este usuario ya es un miembro del proyecto', {
-            appearance: 'error',
-            autoDismiss: true,
+        } else if (err.response.data.error.type === "ALREADY_PROJECT_MEMBER") {
+          addToast("Este usuario ya es un miembro del proyecto", {
+            appearance: "error",
+            autoDismiss: true
           });
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
+          appearance: "error",
+          autoDismiss: true
         });
       }
     }
@@ -74,7 +74,7 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
     <Box
       p={4}
       mt={12}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
+      bg={colorMode === "dark" ? "gray.700" : "gray.100"}
       rounded="md"
     >
       <Heading as="h2" size="md">

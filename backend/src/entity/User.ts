@@ -1,26 +1,17 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  Index,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-import { ProjectMember } from './ProjectMember';
-import { AuthToken } from './AuthToken';
-import { MailToken } from './MailToken';
+import { ProjectMember } from "./ProjectMember";
+import { AuthToken } from "./AuthToken";
 
 export enum UserStatus {
-  NOT_CONFIRMED = 'not_confirmed',
-  ACTIVE = 'active',
-  DISABLED = 'disabled',
+  NOT_CONFIRMED = "not_confirmed",
+  ACTIVE = "active",
+  DISABLED = "disabled",
 }
 
 export enum UserType {
-  REGULAR = 'regular',
-  ADMIN = 'admin',
+  REGULAR = "regular",
+  ADMIN = "admin",
 }
 
 @Entity()
@@ -28,7 +19,7 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
   @Column({ default: UserStatus.DISABLED })
@@ -51,7 +42,7 @@ export class User extends BaseEntity {
   passwordHash: string;
 
   @OneToMany((type) => ProjectMember, (projectUser) => projectUser.user, {
-    eager: true,
+    eager: true
   })
   projects: ProjectMember[];
 

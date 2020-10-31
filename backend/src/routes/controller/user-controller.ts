@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
-import { hashPassword } from '../../utils';
-import { User } from '../../entity/User';
-import HttpStatus from 'http-status-codes';
-import { resourceNotFoundError } from '../errors';
-import { TokenPayload } from '../middleware/auth-middleware';
+import { Request, Response } from "express";
+import { hashPassword } from "../../utils";
+import { User } from "../../entity/User";
+import HttpStatus from "http-status-codes";
+import { resourceNotFoundError } from "../errors";
+import { TokenPayload } from "../middleware/auth-middleware";
 
 const userController = {
   async currentUser(req: Request, res: Response) {
@@ -12,7 +12,7 @@ const userController = {
 
     const user = await User.findOne(currentUserId, {
       loadEagerRelations: false,
-      select: ['id', 'createdAt', 'status', 'type', 'firstName', 'lastName', 'emailAddress'],
+      select: ["id", "createdAt", "status", "type", "firstName", "lastName", "emailAddress"]
     });
 
     if (!user) {
@@ -38,7 +38,7 @@ const userController = {
     user.passwordHash = password ? await hashPassword(password) : user.passwordHash;
 
     res.sendStatus(HttpStatus.ACCEPTED);
-  },
+  }
 };
 
 export default userController;

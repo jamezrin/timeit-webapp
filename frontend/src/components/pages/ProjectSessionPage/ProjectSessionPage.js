@@ -1,36 +1,36 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import MainLayout from '../../base/MainLayout';
-import axios from 'axios';
-import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Flex, Heading } from '@chakra-ui/core';
-import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
+import React, { useEffect, useMemo, useState } from "react";
+import MainLayout from "../../base/MainLayout";
+import axios from "axios";
+import { useHistory, useParams } from "react-router-dom";
+import { Box, Button, Flex, Heading } from "@chakra-ui/core";
+import FullPageLoadSpinner from "../../base/FullPageLoadSpinner";
 
-import BaseTable, { Column } from 'react-base-table';
-import 'react-base-table/styles.css';
+import BaseTable, { Column } from "react-base-table";
+import "react-base-table/styles.css";
 
-import useWindowDimensions from '../../../hooks/windowDimensionsHook';
-import { formatTitle, parseAndFormatTimestamp } from '../../../utils';
-import useResizeObserver from 'use-resize-observer';
-import useDocumentTitle from '@rehooks/document-title';
-import { useToasts } from 'react-toast-notifications';
+import useWindowDimensions from "../../../hooks/windowDimensionsHook";
+import { formatTitle, parseAndFormatTimestamp } from "../../../utils";
+import useResizeObserver from "use-resize-observer";
+import useDocumentTitle from "@rehooks/document-title";
+import { useToasts } from "react-toast-notifications";
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects'; // prettier-ignore
-const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + '/sessions'; // prettier-ignore
-const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + '/data_query/session_events'; // prettier-ignore
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
+const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + "/sessions"; // prettier-ignore
+const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + "/data_query/session_events"; // prettier-ignore
 
 const requestProjectInfo = (projectId) => axios.get(
   `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const requestSessionInfo = (sessionId) => axios.get(
   `${sessionsEndpoint}/${sessionId}`,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const requestSessionEvents = (sessionId) => axios.get(
   `${sessionEventEndpoint}/${sessionId}`,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
@@ -49,21 +49,21 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const data = useMemo(() => {
     if (!sessionEvents) return [];
     return sessionEvents.map((event) => {
-      if (event.type === 'app_event') {
+      if (event.type === "app_event") {
         return {
           id: event.id,
-          keyType: 'App',
+          keyType: "App",
           keyTimes: event.data.eventCount,
           keyDate: parseAndFormatTimestamp(event.createdAt),
-          keyContent: `${event.data.windowName} (${event.data.windowClass} ${event.data.windowPid})`,
+          keyContent: `${event.data.windowName} (${event.data.windowClass} ${event.data.windowPid})`
         };
-      } else if (event.type === 'note') {
+      } else if (event.type === "note") {
         return {
           id: event.id,
-          keyType: 'Nota',
+          keyType: "Nota",
           keyTimes: 1,
           keyDate: parseAndFormatTimestamp(event.createdAt),
-          keyContent: event.data.text,
+          keyContent: event.data.text
         };
       } else {
         return null;
@@ -82,7 +82,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
-          {projectInfo.name || 'Proyecto sin nombre'}
+          {projectInfo.name || "Proyecto sin nombre"}
         </Button>
       </Flex>
       <Box ref={ref} flexGrow="1" mx={{ base: 0, lg: 8 }}>
@@ -131,7 +131,7 @@ function ProjectSessionPage() {
   const { addToast } = useToasts();
   const history = useHistory();
 
-  useDocumentTitle(formatTitle('Lista de eventos'));
+  useDocumentTitle(formatTitle("Lista de eventos"));
 
   useEffect(() => {
     Promise.all([
@@ -140,21 +140,21 @@ function ProjectSessionPage() {
       }),
       requestSessionInfo(sessionId).then((response) => {
         setSessionInfo(response.data);
-      }),
+      })
     ]).catch((err) => {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+        if (err.response.data.error.type === "RESOURCE_NOT_FOUND") {
           addToast(`No se ha podido encontrar la sesión que has pedido`, {
-            appearance: 'error',
-            autoDismiss: true,
+            appearance: "error",
+            autoDismiss: true
           });
 
-          history.push('/');
+          history.push("/");
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
+          appearance: "error",
+          autoDismiss: true
         });
       }
     });

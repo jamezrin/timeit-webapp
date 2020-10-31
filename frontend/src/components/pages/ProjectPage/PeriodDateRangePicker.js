@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { DateRangePicker } from 'react-dates';
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-import 'moment/locale/es';
-import { useColorMode } from '@chakra-ui/core';
+import React, { useState } from "react";
+import { DateRangePicker } from "react-dates";
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+import "moment/locale/es";
+import { useColorMode } from "@chakra-ui/core";
 
 export default function PeriodDateRangePicker({
-  startDate,
-  endDate,
-  onDatesChange,
-}) {
+                                                startDate,
+                                                endDate,
+                                                onDatesChange
+                                              }) {
   const [focusedInput, setFocusedInput] = useState(null);
   const { colorMode } = useColorMode();
 

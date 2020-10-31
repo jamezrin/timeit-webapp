@@ -1,19 +1,19 @@
-import 'reflect-metadata';
-import { Connection, createConnection } from 'typeorm';
+import "reflect-metadata";
+import { Connection, createConnection } from "typeorm";
 
-import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import morgan from 'morgan';
-import helmet from 'helmet';
-import HttpStatus from 'http-status-codes';
-import mountRoutes from './routes/routes';
-import nodemailer from 'nodemailer';
-import Mail from 'nodemailer/lib/mailer';
+import express from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import morgan from "morgan";
+import helmet from "helmet";
+import HttpStatus from "http-status-codes";
+import mountRoutes from "./routes/routes";
+import nodemailer from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 
 // Very important for getting env populated
-import './env';
+import "./env";
 
 function createMailTransport() {
   return nodemailer.createTransport({
@@ -22,8 +22,8 @@ function createMailTransport() {
     secure: parseInt(process.env.TIMEIT_EMAIL_PORT) === 465,
     auth: {
       user: process.env.TIMEIT_EMAIL_USER,
-      pass: process.env.TIMEIT_EMAIL_PASS,
-    },
+      pass: process.env.TIMEIT_EMAIL_PASS
+    }
   });
 }
 
@@ -36,8 +36,8 @@ async function startExpress(connection: Connection, mailer: Mail) {
     cors({
       maxAge: 86400,
       credentials: true,
-      origin: process.env.TIMEIT_CORS_ORIGINS.split(','),
-    }),
+      origin: process.env.TIMEIT_CORS_ORIGINS.split(",")
+    })
   );
 
   // Parsers middlewares
@@ -46,10 +46,10 @@ async function startExpress(connection: Connection, mailer: Mail) {
   app.use(cookieParser());
 
   // Logging middleware
-  app.use(morgan('combined'));
+  app.use(morgan("combined"));
 
-  app.all('/', (req, res) => {
-    res.status(HttpStatus.OK).send('API server is functioning normally');
+  app.all("/", (req, res) => {
+    res.status(HttpStatus.OK).send("API server is functioning normally");
   });
 
   // From now on, there are only protected routes
@@ -63,8 +63,8 @@ createConnection()
   .then(async (connection) => {
     connection
       .query(`SET timezone TO 'Europe/Madrid'`)
-      .then(() => console.log('Successfully set the timezone to Europe/Madrid'))
-      .catch(() => console.warn('Could not set the timezone'));
+      .then(() => console.log("Successfully set the timezone to Europe/Madrid"))
+      .catch(() => console.warn("Could not set the timezone"));
 
     const mailer = createMailTransport();
     await startExpress(connection, mailer);

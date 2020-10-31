@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import { NextFunction, Request, Response } from 'express';
-import { AuthToken, AuthTokenStatus } from '../../entity/AuthToken';
-import { inactiveTokenError, invalidTokenError, noAccessTokenError } from '../errors';
+import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
+import { AuthToken, AuthTokenStatus } from "../../entity/AuthToken";
+import { inactiveTokenError, invalidTokenError, noAccessTokenError } from "../errors";
 
-export const accessTokenCookieName = 'timeit_accessToken';
+export const accessTokenCookieName = "timeit_accessToken";
 
 export interface TokenPayload {
   readonly tokenId: string;
@@ -11,7 +11,7 @@ export interface TokenPayload {
 }
 
 export function authMiddleware(ignoreExpiration: boolean) {
-  return async function (req: Request, res: Response, next: NextFunction) {
+  return async function(req: Request, res: Response, next: NextFunction) {
     const accessToken = req.cookies[accessTokenCookieName];
 
     if (!accessToken) {
@@ -19,9 +19,13 @@ export function authMiddleware(ignoreExpiration: boolean) {
     }
 
     try {
-      const decodedPayload = (await jwt.verify(accessToken, process.env.TIMEIT_JWT_SECRET, {
-        ignoreExpiration: ignoreExpiration,
-      })) as TokenPayload;
+      const decodedPayload = (await jwt.verify(
+        accessToken,
+        process.env.TIMEIT_JWT_SECRET,
+        {
+          ignoreExpiration: ignoreExpiration
+        }
+      )) as TokenPayload;
 
       const tokenInfo = await AuthToken.findOneOrFail(decodedPayload.tokenId);
 

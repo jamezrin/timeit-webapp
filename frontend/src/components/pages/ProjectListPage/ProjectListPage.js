@@ -1,32 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  List,
-  ListItem,
-  PseudoBox,
-  useColorMode,
-} from '@chakra-ui/core';
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Flex, Heading, Image, List, ListItem, PseudoBox, useColorMode } from "@chakra-ui/core";
 
-import workTimeSvg from '../../../assets/work_time.svg';
-import MainLayout from '../../base/MainLayout';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { formatTitle, noDragOrSelectCss } from '../../../utils';
-import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import {
-  ProjectCreationModalContext,
-  ProjectCreationModalProvider,
-} from './ProjectCreationModal';
-import useDocumentTitle from '@rehooks/document-title';
+import workTimeSvg from "../../../assets/work_time.svg";
+import MainLayout from "../../base/MainLayout";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { formatTitle, noDragOrSelectCss } from "../../../utils";
+import FullPageLoadSpinner from "../../base/FullPageLoadSpinner";
+import { ProjectCreationModalContext, ProjectCreationModalProvider } from "./ProjectCreationModal";
+import useDocumentTitle from "@rehooks/document-title";
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects";
 const requestProjectList = () => axios.get(
   projectsEndpoint,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 function ProjectListPlaceholder() {
@@ -44,7 +31,7 @@ function ProjectListPlaceholder() {
       <Image
         src={workTimeSvg}
         css={{
-          ...noDragOrSelectCss,
+          ...noDragOrSelectCss
         }}
         width="20rem"
       />
@@ -85,15 +72,15 @@ function ProjectListContent({ projects }) {
           <ListItem key={project.id}>
             <Link to={`/project/${project.id}`}>
               <PseudoBox
-                bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
+                bg={colorMode === "dark" ? "gray.900" : "gray.100"}
                 shadow="md"
                 p={6}
                 mb={4}
                 _hover={{
-                  transform: 'scale(1.03)',
+                  transform: "scale(1.03)"
                 }}
               >
-                {project.name || 'Proyecto sin nombre'}
+                {project.name || "Proyecto sin nombre"}
               </PseudoBox>
             </Link>
           </ListItem>
@@ -106,7 +93,7 @@ function ProjectListContent({ projects }) {
 function ProjectListPage() {
   const [projects, setProjects] = useState(null);
   const { projectsCreatedCount } = useContext(ProjectCreationModalContext);
-  useDocumentTitle(formatTitle('Lista de proyectos'));
+  useDocumentTitle(formatTitle("Lista de proyectos"));
 
   useEffect(() => {
     requestProjectList().then((response) => {

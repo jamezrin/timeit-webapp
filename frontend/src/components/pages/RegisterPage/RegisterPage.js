@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link as RouteLink, useHistory } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link as RouteLink, useHistory } from "react-router-dom";
 
-import LoginRegisterLayout from '../../LoginRegisterLayout';
-import { useToasts } from 'react-toast-notifications';
-import { useForm } from 'react-hook-form';
+import LoginRegisterLayout from "../../LoginRegisterLayout";
+import { useToasts } from "react-toast-notifications";
+import { useForm } from "react-hook-form";
 
 import {
   Button,
@@ -16,51 +16,51 @@ import {
   InputGroup,
   InputRightElement,
   Link,
-  Text,
-} from '@chakra-ui/core';
+  Text
+} from "@chakra-ui/core";
 
-import axios from 'axios';
-import useDocumentTitle from '@rehooks/document-title';
-import { formatTitle } from '../../../utils';
-import * as yup from 'yup';
+import axios from "axios";
+import useDocumentTitle from "@rehooks/document-title";
+import { formatTitle } from "../../../utils";
+import * as yup from "yup";
 
-const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
+const registerEndpoint = process.env.REACT_APP_BACKEND_URL + "/create-account";
 const requestRegister = (values) => axios.post(
   registerEndpoint,
   values,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
   password: yup.string().required().trim().min(8),
   firstName: yup.string().trim().required(),
-  lastName: yup.string().trim().required(),
+  lastName: yup.string().trim().required()
 });
 
 export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    validationSchema: schema
   });
   const history = useHistory();
   const { addToast } = useToasts();
-  useDocumentTitle(formatTitle('Creación de cuenta'));
+  useDocumentTitle(formatTitle("Creación de cuenta"));
 
   async function onSubmit(values) {
     try {
       await requestRegister(values);
 
       addToast(
-        'Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión',
-        { appearance: 'success', autoDismiss: true, autoDismissTimeout: 10000 },
+        "Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión",
+        { appearance: "success", autoDismiss: true, autoDismissTimeout: 10000 }
       );
 
-      history.push('/login');
+      history.push("/login");
     } catch (err) {
-      if (err.response.data.error.type === 'ACCOUNT_ALREADY_EXISTS') {
-        addToast('Ya existe una cuenta con ese correo electronico', {
-          appearance: 'error',
-          autoDismiss: true,
+      if (err.response.data.error.type === "ACCOUNT_ALREADY_EXISTS") {
+        addToast("Ya existe una cuenta con ese correo electronico", {
+          appearance: "error",
+          autoDismiss: true
         });
       }
     }
@@ -128,7 +128,7 @@ export default function RegisterPage() {
             <Input
               name="password"
               id="password"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
               errorBorderColor="red.500"
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 size="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? 'Ocultar' : 'Mostrar'}
+                {showPassword ? "Ocultar" : "Mostrar"}
               </Button>
             </InputRightElement>
           </InputGroup>

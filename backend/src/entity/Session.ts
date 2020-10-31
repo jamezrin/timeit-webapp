@@ -6,30 +6,30 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+  UpdateDateColumn
+} from "typeorm";
 
-import { SessionNote } from './SessionNote';
-import { ProjectMember } from './ProjectMember';
-import { SessionAppEvent } from './SessionAppEvent';
+import { SessionNote } from "./SessionNote";
+import { ProjectMember } from "./ProjectMember";
+import { SessionAppEvent } from "./SessionAppEvent";
 
 @Entity()
 export class Session extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({ type: 'timestamptz' })
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz' })
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: Date;
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @Column({ type: "timestamptz", nullable: true })
   endedAt: Date;
 
   @ManyToOne((type) => ProjectMember, (project) => project.sessions, {
-    onDelete: 'CASCADE',
-    nullable: false,
+    onDelete: "CASCADE",
+    nullable: false
   })
   projectMember: ProjectMember;
 

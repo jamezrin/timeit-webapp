@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
-import LoginRegisterLayout from '../../LoginRegisterLayout';
-import { useForm } from 'react-hook-form';
-import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
+import { Link as RouteLink, useHistory, useLocation } from "react-router-dom";
+import LoginRegisterLayout from "../../LoginRegisterLayout";
+import { useForm } from "react-hook-form";
+import { useToasts } from "react-toast-notifications";
+import axios from "axios";
 
 import {
   Button,
@@ -17,68 +17,68 @@ import {
   Link,
   List,
   ListItem,
-  Text,
-} from '@chakra-ui/core';
-import useDocumentTitle from '@rehooks/document-title';
-import { formatTitle } from '../../../utils';
-import * as yup from 'yup';
+  Text
+} from "@chakra-ui/core";
+import useDocumentTitle from "@rehooks/document-title";
+import { formatTitle } from "../../../utils";
+import * as yup from "yup";
 
-const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + '/request-password-reset'; // prettier-ignore
+const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + "/request-password-reset"; // prettier-ignore
 const requestPasswordReset = (values) => axios.post(
   requestPasswordEndpoint,
   values,
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const schema = yup.object().shape({
-  emailAddress: yup.string().email().required(),
+  emailAddress: yup.string().email().required()
 });
 
 export default function RequestPasswordResetPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    validationSchema: schema
   });
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
-  useDocumentTitle(formatTitle('Restablecimiento de contraseña'));
+  useDocumentTitle(formatTitle("Restablecimiento de contraseña"));
 
   async function onSubmit(values) {
     try {
       await requestPasswordReset(values);
 
       addToast(
-        'Te acabamos de enviar un correo electrónico para que puedas recuperar tu contraseña',
-        { appearance: 'success', autoDismiss: true },
+        "Te acabamos de enviar un correo electrónico para que puedas recuperar tu contraseña",
+        { appearance: "success", autoDismiss: true }
       );
 
       history.replace(
-        (location.state && location.state.previousLocation) || '/',
+        (location.state && location.state.previousLocation) || "/"
       );
     } catch (err) {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+        if (err.response.data.error.type === "INACTIVE_ACCOUNT") {
           addToast(
-            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
-            { appearance: 'error', autoDismiss: true },
+            "Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico",
+            { appearance: "error", autoDismiss: true }
           );
-        } else if (err.response.data.error.type === 'ACCOUNT_NOT_FOUND') {
-          addToast('No existe ningún usuario con ese correo electrónico', {
-            appearance: 'error',
-            autoDismiss: true,
+        } else if (err.response.data.error.type === "ACCOUNT_NOT_FOUND") {
+          addToast("No existe ningún usuario con ese correo electrónico", {
+            appearance: "error",
+            autoDismiss: true
           });
         } else if (
-          err.response.data.error.type === 'ALREADY_REQUESTED_MAIL_TOKEN'
+          err.response.data.error.type === "ALREADY_REQUESTED_MAIL_TOKEN"
         ) {
           addToast(
-            'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',
-            { appearance: 'error', autoDismiss: true },
+            "Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas",
+            { appearance: "error", autoDismiss: true }
           );
         }
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
-          appearance: 'error',
-          autoDismiss: true,
+          appearance: "error",
+          autoDismiss: true
         });
       }
     }

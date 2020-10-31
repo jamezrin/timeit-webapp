@@ -1,18 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-  useColorMode,
-} from '@chakra-ui/core';
-import { RiLogoutBoxRLine } from 'react-icons/ri';
-import AuthContext, {
-  requestDeauthentication,
-} from '../../state/authenticationContext';
-import { useToasts } from 'react-toast-notifications';
+import { Box, Flex, Heading, IconButton, Text, useColorMode } from "@chakra-ui/core";
+import { RiLogoutBoxRLine } from "react-icons/ri";
+import AuthContext, { requestDeauthentication } from "../../state/authenticationContext";
+import { useToasts } from "react-toast-notifications";
 
 const MenuItems = ({ children }) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
@@ -28,9 +19,9 @@ export default function Header(props) {
 
   const deauthenticateUser = () => {
     requestDeauthentication().then(() => {
-      addToast('Has cerrado tu sesión correctamente', {
-        appearance: 'info',
-        autoDismiss: true,
+      addToast("Has cerrado tu sesión correctamente", {
+        appearance: "info",
+        autoDismiss: true
       });
 
       refreshStatus();
@@ -44,7 +35,7 @@ export default function Header(props) {
       justify="space-between"
       wrap="wrap"
       padding="1rem"
-      bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+      bg={colorMode === "dark" ? "gray.800" : "white"}
       color="blue.500"
       shadow="md"
       position="sticky"
@@ -59,11 +50,11 @@ export default function Header(props) {
       </Flex>
 
       <Box
-        display={{ base: 'block', md: 'none' }}
+        display={{ base: "block", md: "none" }}
         onClick={() => setCollapse(!collapse)}
       >
         <svg
-          fill={colorMode === 'dark' ? '#fff' : '#000'}
+          fill={colorMode === "dark" ? "#fff" : "#000"}
           width="12px"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
@@ -74,8 +65,8 @@ export default function Header(props) {
       </Box>
 
       <Box
-        display={{ base: collapse ? 'block' : 'none', md: 'flex' }}
-        width={{ base: 'full', md: 'auto' }}
+        display={{ base: collapse ? "block" : "none", md: "flex" }}
+        width={{ base: "full", md: "auto" }}
         alignItems="center"
         flexGrow={1}
       >
@@ -87,13 +78,13 @@ export default function Header(props) {
       </Box>
 
       <Box
-        display={{ base: collapse ? 'block' : 'none', md: 'block' }}
+        display={{ base: collapse ? "block" : "none", md: "block" }}
         mt={{ base: 4, md: 0 }}
       >
         <IconButton
           aria-label="Cambiar modo de color"
           variant="ghost"
-          icon={colorMode === 'dark' ? 'sun' : 'moon'}
+          icon={colorMode === "dark" ? "sun" : "moon"}
           onClick={toggleColorMode}
           mx={1}
         />

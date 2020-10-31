@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from "react";
 import {
   Box,
   Button,
@@ -9,27 +9,27 @@ import {
   Input,
   InputGroup,
   Text,
-  useColorMode,
-} from '@chakra-ui/core';
-import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
+  useColorMode
+} from "@chakra-ui/core";
+import { useToasts } from "react-toast-notifications";
+import axios from "axios";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
 
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
+const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects";
 const requestProjectRename = (projectId, name) => axios.patch(
   `${projectsEndpoint}/${projectId}`,
   { name },
-  { withCredentials: true },
+  { withCredentials: true }
 ); // prettier-ignore
 
 const schema = yup.object().shape({
-  projectName: yup.string().required().trim().min(4),
+  projectName: yup.string().required().trim().min(4)
 });
 
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {
   const { handleSubmit, errors, reset, register, formState } = useForm({
-    validationSchema: schema,
+    validationSchema: schema
   });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
@@ -39,27 +39,27 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
       await requestProjectRename(projectInfo.id, projectName);
 
       addToast(`Has cambiado el nombre del proyecto a "${projectName}"`, {
-        appearance: 'success',
-        autoDismiss: true,
+        appearance: "success",
+        autoDismiss: true
       });
 
       setProjectInfo({
         ...projectInfo,
-        name: projectName,
+        name: projectName
       });
 
       // Clean the form up
       reset();
     } catch (err) {
       addToast(`Ha ocurrido un error desconocido: ${err}`, {
-        appearance: 'error',
-        autoDismiss: true,
+        appearance: "error",
+        autoDismiss: true
       });
     }
   }
 
   return (
-    <Box p={4} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
+    <Box p={4} bg={colorMode === "dark" ? "gray.700" : "gray.100"} rounded="md">
       <Heading as="h2" size="md">
         Cambiar nombre de proyecto
       </Heading>

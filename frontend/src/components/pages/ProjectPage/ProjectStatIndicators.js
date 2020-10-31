@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import { Box, Flex, Text, useColorMode } from '@chakra-ui/core';
+import { Box, Flex, Text, useColorMode } from "@chakra-ui/core";
 
 const TimeStatIndicatorContent = ({
-  title = 'Lorem ipsum dolor sit amet',
-  sumValue = '???',
-  avgValue = '??',
-  minValue = '??',
-  maxValue = '??',
-}) => {
+                                    title = "Lorem ipsum dolor sit amet",
+                                    sumValue = "???",
+                                    avgValue = "??",
+                                    minValue = "??",
+                                    maxValue = "??"
+                                  }) => {
   return (
     <>
       <Flex direction="row">
@@ -20,21 +20,21 @@ const TimeStatIndicatorContent = ({
             {sumValue > 60 ? Math.floor(sumValue / 60) : sumValue}
           </Text>
           <Text lineHeight={1} textAlign="center" fontSize="md" mt={0}>
-            {sumValue > 60 ? 'horas' : 'minutos'}
+            {sumValue > 60 ? "horas" : "minutos"}
           </Text>
         </Box>
       </Flex>
       <Box mt="auto">
         <Text fontSize="xs">
-          Mínimo{' '}
+          Mínimo{" "}
           {minValue > 60
             ? `${Math.floor(minValue / 60)} horas`
             : `${minValue} minutos`}
-          , maximo{' '}
+          , maximo{" "}
           {maxValue > 60
             ? `${Math.floor(maxValue / 60)} horas`
             : `${maxValue} minutos`}
-          , media{' '}
+          , media{" "}
           {avgValue > 60
             ? `${Math.floor(avgValue / 60)} horas`
             : `${avgValue} minutos`}
@@ -45,20 +45,20 @@ const TimeStatIndicatorContent = ({
 };
 
 const TimeStatIndicator = ({
-  title = 'Lorem ipsum dolor sit amet',
-  sumValue = '???',
-  avgValue = '??',
-  minValue = '??',
-  maxValue = '??',
-}) => {
+                             title = "Lorem ipsum dolor sit amet",
+                             sumValue = "???",
+                             avgValue = "??",
+                             minValue = "??",
+                             maxValue = "??"
+                           }) => {
   const { colorMode } = useColorMode();
 
   return (
     <Flex
       p={4}
       mx={4}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
-      mt={{ base: '1.5rem', md: '0' }}
+      bg={colorMode === "dark" ? "gray.700" : "gray.200"}
+      mt={{ base: "1.5rem", md: "0" }}
       rounded="md"
       shadow="md"
       direction="column"
@@ -82,7 +82,7 @@ function ProjectStatIndicators({ projectInfo, projectStats }) {
     <>
       {projectStats && (
         <Flex
-          direction={{ base: 'column', md: 'row' }}
+          direction={{ base: "column", md: "row" }}
           mx={-4}
           justifyContent="space-around"
         >

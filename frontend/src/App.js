@@ -1,31 +1,23 @@
-import React, { useContext } from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import React, { useContext } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
-import { ToastProvider } from 'react-toast-notifications';
-import {
-  ColorModeProvider,
-  CSSReset,
-  Flex,
-  theme,
-  ThemeProvider,
-} from '@chakra-ui/core';
-import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
-import AuthContext, {
-  AuthContextProvider,
-} from './state/authenticationContext';
+import { ToastProvider } from "react-toast-notifications";
+import { ColorModeProvider, CSSReset, Flex, theme, ThemeProvider } from "@chakra-ui/core";
+import UnauthenticatedUserRoute from "./components/routes/UnauthenticatedUserRoute";
+import AuthContext, { AuthContextProvider } from "./state/authenticationContext";
 
-import LoginPage from './components/pages/LoginPage/LoginPage';
-import ProjectListPage from './components/pages/ProjectListPage/ProjectListPage';
-import RegisterPage from './components/pages/RegisterPage/RegisterPage';
-import AuthenticatedUserRoute from './components/routes/AuthenticatedUserRoute';
-import ProjectPage from './components/pages/ProjectPage/ProjectPage';
-import FullPageLoadSpinner from './components/base/FullPageLoadSpinner';
-import ProjectSettingsPage from './components/pages/ProjectSettingsPage/ProjectSettingsPage';
-import ProjectSessionPage from './components/pages/ProjectSessionPage/ProjectSessionPage';
-import RequestPasswordResetPage from './components/pages/RequestPasswordResetPage/RequestPasswordResetPage';
-import ConfirmAccountPage from './components/pages/ConfirmAccountPage/ConfirmAccountPage';
-import AcceptProjectInvitePage from './components/pages/AcceptProjectInvitePage/AcceptProjectInvitePage';
-import RecoverPasswordPage from './components/pages/RecoverPasswordPage/RecoverPasswordPage';
+import LoginPage from "./components/pages/LoginPage/LoginPage";
+import ProjectListPage from "./components/pages/ProjectListPage/ProjectListPage";
+import RegisterPage from "./components/pages/RegisterPage/RegisterPage";
+import AuthenticatedUserRoute from "./components/routes/AuthenticatedUserRoute";
+import ProjectPage from "./components/pages/ProjectPage/ProjectPage";
+import FullPageLoadSpinner from "./components/base/FullPageLoadSpinner";
+import ProjectSettingsPage from "./components/pages/ProjectSettingsPage/ProjectSettingsPage";
+import ProjectSessionPage from "./components/pages/ProjectSessionPage/ProjectSessionPage";
+import RequestPasswordResetPage from "./components/pages/RequestPasswordResetPage/RequestPasswordResetPage";
+import ConfirmAccountPage from "./components/pages/ConfirmAccountPage/ConfirmAccountPage";
+import AcceptProjectInvitePage from "./components/pages/AcceptProjectInvitePage/AcceptProjectInvitePage";
+import RecoverPasswordPage from "./components/pages/RecoverPasswordPage/RecoverPasswordPage";
 
 const ProviderWrappedComponent = ({ children }) => {
   return (

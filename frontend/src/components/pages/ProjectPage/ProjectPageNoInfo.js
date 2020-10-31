@@ -1,8 +1,8 @@
-import React from 'react';
-import { Heading, Image } from '@chakra-ui/core';
-import analyticsSvg from '../../../assets/setup_analytics.svg';
-import Flex from '@chakra-ui/core/dist/Flex';
-import { noDragOrSelectCss } from '../../../utils';
+import React from "react";
+import { Heading, Image } from "@chakra-ui/core";
+import analyticsSvg from "../../../assets/setup_analytics.svg";
+import Flex from "@chakra-ui/core/dist/Flex";
+import { noDragOrSelectCss } from "../../../utils";
 
 export default function ProjectPageNoInfo() {
   return (
@@ -19,7 +19,7 @@ export default function ProjectPageNoInfo() {
         alt=""
         mt="8rem"
         css={{
-          ...noDragOrSelectCss,
+          ...noDragOrSelectCss
         }}
       />
       <Heading
