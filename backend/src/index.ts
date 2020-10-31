@@ -36,7 +36,7 @@ async function startExpress(connection: Connection, mailer: Mail) {
     cors({
       maxAge: 86400,
       credentials: true,
-      origin: process.env.TIMEIT_CORS_ORIGINS.split(','),
+      origin: (process.env.TIMEIT_CORS_ORIGINS || '').split(','),
     }),
   );
 
