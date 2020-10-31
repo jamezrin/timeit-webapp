@@ -1,12 +1,4 @@
 {
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "timeit_dev",
-  "password": "kS812Nc712bXCl92",
-  "database": "timeit_dev",
-  "synchronize": true,
-  "logging": true,
   "entities": ["build/entity/**/*.js"],
   "migrations": ["build/migration/**/*.js"],
   "subscribers": ["build/subscriber/**/*.js"],
