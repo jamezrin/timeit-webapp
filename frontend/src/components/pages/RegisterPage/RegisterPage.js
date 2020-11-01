@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/core';
 
 import axios from 'axios';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
 

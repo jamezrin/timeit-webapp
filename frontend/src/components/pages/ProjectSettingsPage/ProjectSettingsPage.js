@@ -8,7 +8,7 @@ import RenameProjectSettings from './RenameProjectSettings';
 import ProjectMemberList from './ProjectMemberList';
 import InviteProjectSettings from './InviteProjectSettings';
 import DeleteProjectSettings from './DeleteProjectSettings';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
 import { useToasts } from 'react-toast-notifications';
 

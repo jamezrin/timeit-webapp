@@ -10,7 +10,7 @@ import moment from 'moment';
 import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
 
 moment.locale('es');

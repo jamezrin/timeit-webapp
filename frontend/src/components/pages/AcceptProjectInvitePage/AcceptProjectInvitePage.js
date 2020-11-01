@@ -4,7 +4,7 @@ import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 import { Flex } from '@chakra-ui/core';
 import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + `/projects`;

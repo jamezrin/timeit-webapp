@@ -11,7 +11,7 @@ import 'react-base-table/styles.css';
 import useWindowDimensions from '../../../hooks/windowDimensionsHook';
 import { formatTitle, parseAndFormatTimestamp } from '../../../utils';
 import useResizeObserver from 'use-resize-observer';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore

@@ -21,7 +21,7 @@ import {
   ProjectCreationModalContext,
   ProjectCreationModalProvider,
 } from './ProjectCreationModal';
-import useDocumentTitle from '@rehooks/document-title';
+import useDocumentTitle from '../../../hooks/documentTitleHook';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectList = () => axios.get(
