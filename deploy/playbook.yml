@@ -1,0 +1,11 @@
+---
+- hosts: timeit
+  vars: {}
+  tasks:
+    - name: Execute uname
+      shell: uname -a
+      ignore_errors: yes
+      register: uname_result
+    - name: Print uname result
+      debug:
+        msg: '{{ uname_result.stdout }}'
