@@ -16,7 +16,7 @@ import Mail from 'nodemailer/lib/mailer';
 import './env';
 
 function createMailTransport() {
-  return nodemailer.createTransport({
+  const mailOptions = {
     host: process.env.TIMEIT_EMAIL_HOST,
     port: parseInt(process.env.TIMEIT_EMAIL_PORT),
     secure: parseInt(process.env.TIMEIT_EMAIL_PORT) === 465,
@@ -24,13 +24,15 @@ function createMailTransport() {
       user: process.env.TIMEIT_EMAIL_USER,
       pass: process.env.TIMEIT_EMAIL_PASS,
     },
-  });
+  };
+
+  return nodemailer.createTransport(mailOptions);
 }
 
 async function startExpress(connection: Connection, mailer: Mail) {
   const app = express();
 
-  // Security middlewares
+  // Security middlewaresç
   app.use(helmet());
   app.use(
     cors({

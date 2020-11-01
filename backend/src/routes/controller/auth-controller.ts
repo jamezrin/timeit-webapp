@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import { hashPassword, hasMailTokenExpired } from '../../utils';
+import { CookieOptions, Request, Response } from 'express';
+import { hashPassword, hasMailTokenExpired, setCookie } from '../../utils';
 import { User, UserStatus } from '../../entity/User';
 import { AuthToken, AuthTokenStatus } from '../../entity/AuthToken';
 import { accessTokenCookieName } from '../middleware/auth-middleware';
@@ -12,6 +12,7 @@ import {
   accountNotFoundError,
   alreadyRequestedMailTokenError,
   couldNotSendEmailError,
+  disabledAccountError,
   expiredMailTokenError,
   inactiveAccountError,
   invalidCredentialsError,
@@ -24,7 +25,7 @@ async function sendPasswordResetEmail(mailer: Mail, mailToken: MailToken) {
   const passwordResetCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL + `/recover-password/${mailToken.id}`;
   return await mailer.sendMail({
-    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
+    from: '"Jaime de TimeIt" <no-reply@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Restablecimiento de tu contraseña`,
     text: `
@@ -43,7 +44,7 @@ async function sendPasswordResetPerformedEmail(
   mailToken: MailToken,
 ) {
   return await mailer.sendMail({
-    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
+    from: '"Jaime de TimeIt" <no-reply@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Restablecimiento de contraseña realizado`,
     text: `
@@ -62,7 +63,7 @@ async function sendAccountConfirmationEmail(
   const accountConfirmationCallbackUrl =
     process.env.TIMEIT_FRONTEND_URL + `/confirm-account/${mailToken.id}`;
   return await mailer.sendMail({
-    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
+    from: '"Jaime de TimeIt" <no-reply@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Confirmación de registro`,
     text: `
@@ -127,14 +128,7 @@ const authController = {
       { expiresIn: '180 days' },
     );
 
-    res.cookie(accessTokenCookieName, accessToken, {
-      path: '/',
-      httpOnly: true,
-      domain: process.env.TIMEIT_COOKIE_DOMAIN,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 1000 * 60 * 60 * 24 * 180, // 180 days
-    });
+    setCookie(res, accessTokenCookieName, accessToken);
 
     res.sendStatus(HttpStatus.OK);
   },
@@ -242,41 +236,57 @@ const authController = {
         return accountNotFoundError(req, res);
       }
 
-      if (user.status !== UserStatus.ACTIVE) {
-        return inactiveAccountError(req, res);
+      if (user.status === UserStatus.DISABLED) {
+        return disabledAccountError(req, res);
       }
 
-      const previousMailTokens = await MailToken.find({
-        where: {
-          emailAddress,
-          type: MailRequestType.PASSWORD_RESET,
-        },
-      });
+      if (user.status === UserStatus.ACTIVE) {
+        const previousMailTokens = await MailToken.find({
+          where: {
+            emailAddress,
+            type: MailRequestType.PASSWORD_RESET,
+          },
+        });
 
-      // Delete stale tokens async
-      for (const previousMailToken of previousMailTokens) {
-        if (!hasMailTokenExpired(previousMailToken)) {
-          return alreadyRequestedMailTokenError(req, res);
+        // Delete stale tokens async
+        for (const previousMailToken of previousMailTokens) {
+          if (!hasMailTokenExpired(previousMailToken)) {
+            return alreadyRequestedMailTokenError(req, res);
+          }
+
+          // Token has expired, just remove it async
+          previousMailToken.remove().then(() => {
+            console.debug(`Successfully removed expired mail token`);
+          });
         }
 
-        // Token has expired, just remove it async
-        previousMailToken.remove().then(() => {
-          console.debug(`Successfully removed expired mail token`);
+        const mailToken = new MailToken();
+        mailToken.type = MailRequestType.PASSWORD_RESET;
+        mailToken.emailAddress = emailAddress;
+        mailToken.expiresIn = 12 * 60 * 60; // 12 hours
+        await mailToken.save();
+
+        // Sends the actual password reset email with the token
+        try {
+          await sendPasswordResetEmail(mailer, mailToken);
+        } catch (err) {
+          console.log(err);
+          return couldNotSendEmailError(req, res);
+        }
+      } else {
+        // Delete previous account confirmation token
+        await MailToken.delete({
+          emailAddress: emailAddress,
+          type: MailRequestType.ACCOUNT_CONFIRMATION,
         });
-      }
 
-      const mailToken = new MailToken();
-      mailToken.type = MailRequestType.PASSWORD_RESET;
-      mailToken.emailAddress = emailAddress;
-      mailToken.expiresIn = 12 * 60 * 60; // 12 hours
-      await mailToken.save();
+        const mailToken = new MailToken();
+        mailToken.type = MailRequestType.ACCOUNT_CONFIRMATION;
+        mailToken.emailAddress = emailAddress;
+        mailToken.expiresIn = 7 * 24 * 60 * 60; // 7 days
+        await mailToken.save();
 
-      // Sends the actual password reset email with the token
-      try {
-        await sendPasswordResetEmail(mailer, mailToken);
-      } catch (err) {
-        console.log(err);
-        return couldNotSendEmailError(req, res);
+        await sendAccountConfirmationEmail(mailer, mailToken);
       }
 
       res.sendStatus(HttpStatus.ACCEPTED);

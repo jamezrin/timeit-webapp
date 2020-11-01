@@ -15,6 +15,11 @@ export const inactiveAccountError = (req: Request, res: Response) => {
     .json(error('INACTIVE_ACCOUNT', 'Account not active'));
 };
 
+export const disabledAccountError = (req: Request, res: Response) => {
+  res
+    .status(HttpStatus.UNAUTHORIZED)
+    .json(error('DISABLED_ACCOUNT', 'Account is disabled'));
+};
 export const invalidCredentialsError = (req: Request, res: Response) => {
   res
     .status(HttpStatus.UNAUTHORIZED)

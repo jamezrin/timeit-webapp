@@ -35,7 +35,7 @@ async function sendProjectInvitationMail(
     process.env.TIMEIT_FRONTEND_URL +
     `/project/${inviter.project.id}/accept-invite/${mailToken.id}`;
   return await mailer.sendMail({
-    from: '"Jaime de TimeIt" <jaime@jamezrin.name>',
+    from: '"Jaime de TimeIt" <no-reply@jamezrin.name>',
     to: mailToken.emailAddress,
     subject: `Invitación al proyecto ${inviter.project.name}`,
     text: `

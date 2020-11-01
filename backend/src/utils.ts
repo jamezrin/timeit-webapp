@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { NextFunction, Request, Response } from 'express';
+import { CookieOptions, NextFunction, Request, Response } from 'express';
 import { ProjectMember, ProjectMemberRole } from './entity/ProjectMember';
 import { Project } from './entity/Project';
 import { UpdateResult } from 'typeorm';
@@ -52,3 +52,51 @@ export const endAllOpenSessions = (
     })
     .andWhere('endedAt IS NULL')
     .execute();
+
+export const createDefaultCookieOptions = (): CookieOptions => {
+  const defaultCookieMaxAge = 1000 * 60 * 60 * 24 * 180; // 180 days
+  const cookieDomain = process.env.TIMEIT_COOKIE_DOMAIN;
+  const secureCookie = process.env.TIMEIT_COOKIE_SECURE;
+  const maxAge = process.env.TIMEIT_COOKIE_MAXAGE;
+
+  const cookieOptions = {
+    path: '/',
+    httpOnly: true,
+    maxAge: maxAge || defaultCookieMaxAge,
+  } as CookieOptions;
+
+  if (cookieDomain) {
+    cookieOptions.domain = cookieDomain;
+    if (cookieDomain === 'localhost') {
+      console.log('⚠ Setting cookies to localhost, disable "Secure" flag requirement'); // prettier-ignore
+      console.log('Read more: https://www.chromium.org/updates/same-site/test-debug'); // prettier-ignore
+      console.log('For a workaround, use the localhost IP (127.0.0.1) instead'); // prettier-ignore
+
+      cookieOptions.sameSite = 'none';
+    } else {
+      cookieOptions.sameSite = 'lax';
+    }
+  }
+
+  if (secureCookie) {
+    cookieOptions.secure = secureCookie === 'true';
+  } else {
+    cookieOptions.secure = process.env.NODE_ENV === 'production';
+  }
+
+  return cookieOptions;
+};
+
+const defaultCookieOptions = createDefaultCookieOptions();
+
+export const setCookie = (
+  res: Response,
+  cookieName: string,
+  cookieValue: string,
+  options?: CookieOptions,
+) => {
+  res.cookie(cookieName, cookieValue, {
+    ...defaultCookieOptions,
+    ...options,
+  });
+};
