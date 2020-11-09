@@ -1,3 +1,8 @@
 ---
 deploy_dir: /var/deploy
 deploy_user: deploy
+local_project_dir: "{{ playbook_dir }}/../"
+secrets_dir: secrets
+secrets_file: "{{ secrets_dir }}/timeit.env"
+backend_port: 7000
+frontend_port: 7002

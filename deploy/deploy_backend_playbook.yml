@@ -2,20 +2,7 @@
 - hosts: timeit_hosts
   name: "Backend Deploy Playbook"
   vars:
-    backend_path: "../backend"
+    backend_path: "{{ local_project_dir }}/backend"
   vars_files:
     - common_variables.yml
-  tasks:
-    - name: Delete build directory
-      delegate_to: localhost
-      file:
-        path: "{{ frontend_build_path }}"
-        state: absent
-    - name: Compile react app
-      delegate_to: localhost
-      command: "yarn build"
-      args:
-        chdir: "{{ frontend_path }}"
-    - name: Test
-      community.general.docker_container:
-        env_file: ./
+  tasks: []

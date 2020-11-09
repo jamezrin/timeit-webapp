@@ -1,26 +1,48 @@
 ---
 - hosts: timeit_hosts
-  name: "Frontend Deploy Playbook"
+  name: "Frontend Deployment"
   vars:
-    app_dir_name: "timeit-frontend"
-    local_frontend_path: "../frontend"
-    local_frontend_build_path: "{{ local_frontend_path }}/build"
+    app_name: timeit-frontend
+    app_image: "{{ app_name }}.tar"
+    frontend_path: "{{ local_project_dir }}/frontend"
   vars_files:
     - common_variables.yml
   tasks:
-    - name: Delete build directory
+    - name: Build frontend image
+      delegate_to: localhost
+      command: "docker build -t {{ app_name }} ."
+      args:
+        chdir: "{{ frontend_path }}"
+    - name: Save frontend image
+      delegate_to: localhost
+      command: "docker save --output {{ app_image }} {{ app_name }}"
+    - name: Copy app image to the target
+      become: yes
+      copy:
+        src: "{{ app_image }}"
+        dest: "{{ deploy_dir }}/{{ app_image }}"
+    - name: Delete local image tar
       delegate_to: localhost
       file:
-        path: "{{ local_frontend_build_path }}"
         state: absent
-    - name: Build react app
-      delegate_to: localhost
-      command: "yarn build"
-      args:
-        chdir: "{{ local_frontend_path }}"
-    - name: Upload app to deploy directory
+        path: "{{ app_image }}"
+    - name: Load app image
       become: yes
-      become_user: root
-      copy:
-        src: "{{ local_frontend_build_path }}"
-        dest: "{{ deploy_dir }}/{{ app_dir_name }}/"
+      command: "docker load --input {{ deploy_dir }}/{{ app_image }}"
+    - name: Delete app image tar from the target
+      become: yes
+      file:
+        state: absent
+        path: "{{ deploy_dir }}/{{ app_image }}"
+    - name: Stop frontend container
+      docker_container:
+        state: absent
+        name: "{{ app_name }}"
+    - name: Start frontend container
+      docker_container:
+        state: started
+        recreate: yes
+        name: "{{ app_name }}"
+        image: "{{ app_name }}"
+        ports:
+          - "{{ frontend_port }}:80"
