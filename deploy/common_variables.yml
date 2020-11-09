@@ -1,0 +1,3 @@
+---
+deploy_dir: /var/deploy
+deploy_user: deploy

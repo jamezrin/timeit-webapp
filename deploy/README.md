@@ -2,6 +2,12 @@
 
 This project uses Ansible and Docker for deploying the application.
 
+## Running playbooks
+
+```
+ansible-playbook deploy/frontend-playbook.yml --key-file=~/.ssh/aws-vps1.pem
+```
+
 ## Help
 
 - https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-ansible-to-deploy-your-website/
@@ -11,8 +17,4 @@ This project uses Ansible and Docker for deploying the application.
 - https://codelike.pro/deploy-nodejs-app-with-ansible-git-pm2/
 
 
-## Running playbooks
 
-```
-ansible-playbook -vvvv --private-key=~/.ssh/aws-vps1 playbookname.yml
-```

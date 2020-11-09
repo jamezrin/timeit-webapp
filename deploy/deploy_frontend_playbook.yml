@@ -1,0 +1,26 @@
+---
+- hosts: timeit_hosts
+  name: "Frontend Deploy Playbook"
+  vars:
+    app_dir_name: "timeit-frontend"
+    local_frontend_path: "../frontend"
+    local_frontend_build_path: "{{ local_frontend_path }}/build"
+  vars_files:
+    - common_variables.yml
+  tasks:
+    - name: Delete build directory
+      delegate_to: localhost
+      file:
+        path: "{{ local_frontend_build_path }}"
+        state: absent
+    - name: Build react app
+      delegate_to: localhost
+      command: "yarn build"
+      args:
+        chdir: "{{ local_frontend_path }}"
+    - name: Upload app to deploy directory
+      become: yes
+      become_user: root
+      copy:
+        src: "{{ local_frontend_build_path }}"
+        dest: "{{ deploy_dir }}/{{ app_dir_name }}/"
