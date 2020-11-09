@@ -1,19 +1,19 @@
 ---
 - hosts: timeit_hosts
-  name: "Frontend Deployment"
+  name: "Backend Deployment"
   vars:
-    app_name: timeit-frontend
+    app_name: timeit-backend
     app_image: "{{ app_name }}.tar"
-    frontend_path: "{{ local_project_dir }}/frontend"
+    backend_path: "{{ local_project_dir }}/backend"
   vars_files:
     - common_variables.yml
   tasks:
-    - name: Build frontend image
+    - name: Build backend image
       delegate_to: localhost
       command: "docker build -t {{ app_name }} ."
       args:
-        chdir: "{{ frontend_path }}"
-    - name: Save frontend image
+        chdir: "{{ backend_path }}"
+    - name: Save backend image
       delegate_to: localhost
       command: "docker save --output {{ app_image }} {{ app_name }}"
     - name: Copy app image to the target
@@ -34,15 +34,6 @@
       file:
         state: absent
         path: "{{ deploy_dir }}/{{ app_image }}"
-    - name: Stop frontend container
-      docker_container:
-        state: absent
-        name: "{{ app_name }}"
-    - name: Start frontend container
-      docker_container:
-        state: started
-        recreate: yes
-        name: "{{ app_name }}"
-        image: "{{ app_name }}"
-        ports:
-          - "{{ frontend_port }}:80"
+
+- import_playbook: create_postgres.yml
+- import_playbook: create_backend.yml

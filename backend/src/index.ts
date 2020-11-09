@@ -32,7 +32,7 @@ function createMailTransport() {
 async function startExpress(connection: Connection, mailer: Mail) {
   const app = express();
 
-  // Security middlewaresç
+  // Security middlewares
   app.use(helmet());
   app.use(
     cors({
@@ -58,7 +58,7 @@ async function startExpress(connection: Connection, mailer: Mail) {
   mountRoutes(app, connection, mailer);
 
   // Start the app on the env port or the default 7000
-  app.listen(process.env.PORT || 7000);
+  app.listen(process.env.PORT || 8080);
 }
 
 async function startApp() {

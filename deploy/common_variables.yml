@@ -2,7 +2,11 @@
 deploy_dir: /var/deploy
 deploy_user: deploy
 local_project_dir: "{{ playbook_dir }}/../"
-secrets_dir: secrets
-secrets_file: "{{ secrets_dir }}/timeit.env"
+secrets_dir: "{{ deploy_dir }}/secrets"
+backend_env: "{{ secrets_dir }}/timeit_backend.env"
+postgres_env: "{{ secrets_dir }}/timeit_postgres.env"
+postgres_data_volume: timeit-postgres-data
+postgres_container: timeit-postgres
 backend_port: 7000
+database_port: 7001
 frontend_port: 7002

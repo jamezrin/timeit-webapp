@@ -5,7 +5,7 @@
   "username": "timeit_dev",
   "password": "timeit_dev",
   "database": "timeit_dev",
-  "synchronize": true,
+  "synchronize": false,
   "logging": true,
   "entities": ["build/entity/**/*.js"],
   "migrations": ["build/migration/**/*.js"],

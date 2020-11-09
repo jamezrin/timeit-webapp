@@ -2,19 +2,28 @@
 
 This project uses Ansible and Docker for deploying the application.
 
-## Running playbooks
+## Ansible Playbooks
 
+Deploying the frontend
+
+```bash
+ansible-playbook deploy/deploy_frontend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
-ansible-playbook deploy/frontend-playbook.yml --key-file=~/.ssh/aws-vps1.pem
+
+Deploying the backend
+
+```bash
+ansible-playbook deploy/deploy_backend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
 
-## Help
+Restarting the frontend
 
-- https://www.serverlab.ca/tutorials/dev-ops/automation/how-to-use-ansible-to-deploy-your-website/
-- https://www.ansible.com/blog/how-i-switched-from-docker-compose-to-pure-ansible
-- https://medium.com/@sairamkrish/simple-ansible-script-to-deploy-nodejs-microservices-37240ad59f1a
-- https://gist.github.com/kbariotis/58d6ed6d634a8f2ae2bfa4a558d3113c
-- https://codelike.pro/deploy-nodejs-app-with-ansible-git-pm2/
+```bash
+ansible-playbook deploy/create_frontend.yml --key-file=~/.ssh/aws-vps1.pem
+```
 
+Restarting the backend
 
-
+```bash
+ansible-playbook deploy/create_backend.yml --key-file=~/.ssh/aws-vps1.pem
+```

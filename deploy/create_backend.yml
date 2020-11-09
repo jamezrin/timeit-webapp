@@ -1,0 +1,24 @@
+---
+- hosts: timeit_hosts
+  name: "Restart Backend Containers"
+  vars:
+    app_name: timeit-backend
+  vars_files:
+    - common_variables.yml
+  tasks:
+    - name: Stop backend container
+      docker_container:
+        state: absent
+        name: "{{ app_name }}"
+    - name: Start backend container
+      docker_container:
+        state: started
+        recreate: yes
+        name: "{{ app_name }}"
+        image: "{{ app_name }}"
+        ports:
+          - "{{ backend_port }}:80"
+        links:
+          - "{{ postgres_container }}"
+        restart_policy: unless-stopped
+        env_file: "{{ backend_env }}"
