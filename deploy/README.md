@@ -4,26 +4,45 @@ This project uses Ansible and Docker for deploying the application.
 
 ## Ansible Playbooks
 
-Deploying the frontend
+### Deploy
 
-```bash
+#### Deploying the frontend
+
+```shell script
 ansible-playbook deploy/deploy_frontend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
 
-Deploying the backend
+#### Deploying the backend
 
-```bash
+```shell script
 ansible-playbook deploy/deploy_backend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
 
-Restarting the frontend
+### Restarting containers
 
-```bash
+#### Restarting the frontend
+
+```shell script
 ansible-playbook deploy/create_frontend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
 
-Restarting the backend
+#### Restarting the backend
 
-```bash
+```shell script
 ansible-playbook deploy/create_backend.yml --key-file=~/.ssh/aws-vps1.pem
 ```
+
+### Accessing production database
+
+#### SSH tunnel to access postgres database
+
+```shell script
+ssh -L 7001:localhost:7001 ubuntu@prd-vps01.jamezrin.name -i ~/.ssh/aws-vps1.pem
+```
+
+Then you can use the postgres CLI client like this
+
+```shell script
+psql -h 127.0.0.1 -U timeit_prd -d timeit_prd -p 7001
+```
+
