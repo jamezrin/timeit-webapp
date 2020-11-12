@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/index.js",
-    "dev": "tsc-watch --onSuccess \"node build/index.js\""
+    "dev": "tsc-watch --onSuccess \"node build/index.js\"",
+    "migrate": "tsc && typeorm migration:run"
   },
   "keywords": [],
   "author": "Jaime Martínez Rincón",
