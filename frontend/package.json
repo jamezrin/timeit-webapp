@@ -4,14 +4,14 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/core": "0.8.0",
-    "@emotion/core": "10.1.1",
-    "@emotion/styled": "10.0.27",
+    "@emotion/core": "11.0.0",
+    "@emotion/styled": "11.0.0",
     "@nivo/line": "0.64.0",
     "@testing-library/jest-dom": "5.11.5",
-    "@testing-library/react": "11.1.1",
-    "@testing-library/user-event": "12.2.0",
+    "@testing-library/react": "11.1.2",
+    "@testing-library/user-event": "12.2.2",
     "axios": "0.21.0",
-    "emotion-theming": "10.0.27",
+    "emotion-theming": "11.0.0",
     "husky": "4.3.0",
     "lint-staged": "10.5.1",
     "moment": "2.29.1",
@@ -30,7 +30,7 @@
     "react-unsplash-wrapper": "1.1.5",
     "react-virtualized": "9.22.2",
     "react-with-styles": "4.1.0",
-    "use-resize-observer": "6.1.0",
+    "use-resize-observer": "7.0.0",
     "yup": "0.29.3"
   },
   "scripts": {
