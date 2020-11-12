@@ -57,7 +57,7 @@ async function startExpress(connection: Connection, mailer: Mail) {
   // From now on, there are only protected routes
   mountRoutes(app, connection, mailer);
 
-  // Start the app on the env port or the default 7000
+  // Start the app on the env port or the default 8080
   app.listen(process.env.PORT || 8080);
 }
 
