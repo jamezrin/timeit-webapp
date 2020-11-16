@@ -5,7 +5,9 @@
   "dependencies": {
     "@chakra-ui/core": "0.8.0",
     "@emotion/core": "11.0.0",
+    "@emotion/react": "^11.0.0",
     "@emotion/styled": "11.0.0",
+    "@nivo/core": "^0.65.0",
     "@nivo/line": "0.65.0",
     "@testing-library/jest-dom": "5.11.6",
     "@testing-library/react": "11.1.2",
