@@ -22,6 +22,7 @@ import {
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + "/request-password-reset"; // prettier-ignore
 const requestPasswordReset = (values) => axios.post(
@@ -36,7 +37,7 @@ const schema = yup.object().shape({
 
 export default function RequestPasswordResetPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
   const { addToast } = useToasts();
   const location = useLocation();

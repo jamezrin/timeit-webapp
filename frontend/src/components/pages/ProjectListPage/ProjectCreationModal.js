@@ -19,6 +19,7 @@ import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectCreation = (values) => axios.post(
@@ -35,7 +36,7 @@ const schema = yup.object().shape({
 
 export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
 
   return (

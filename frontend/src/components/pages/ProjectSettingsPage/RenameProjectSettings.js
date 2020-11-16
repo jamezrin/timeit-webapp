@@ -15,6 +15,7 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectRename = (projectId, name) => axios.patch(
@@ -29,7 +30,7 @@ const schema = yup.object().shape({
 
 function RenameProjectSettings({ projectInfo, setProjectInfo }) {
   const { handleSubmit, errors, reset, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();

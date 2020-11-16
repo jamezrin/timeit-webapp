@@ -27,6 +27,7 @@ import AuthContext, {
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
@@ -35,7 +36,7 @@ const schema = yup.object().shape({
 
 export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
   const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();

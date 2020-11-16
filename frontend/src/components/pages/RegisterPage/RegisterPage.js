@@ -23,6 +23,7 @@ import axios from 'axios';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 const requestRegister = (values) => axios.post(
@@ -40,7 +41,7 @@ const schema = yup.object().shape({
 
 export default function RegisterPage() {
   const { handleSubmit, errors, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
   const history = useHistory();
   const { addToast } = useToasts();

@@ -15,6 +15,7 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInvite = (projectId, emailAddress) => axios.post(
@@ -29,7 +30,7 @@ const schema = yup.object().shape({
 
 function InviteProjectSettings({ projectInfo, updateMembers }) {
   const { handleSubmit, reset, errors, register, formState } = useForm({
-    validationSchema: schema,
+    resolver: yupResolver(schema),
   });
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
