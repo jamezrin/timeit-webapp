@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Flex, Text, useColorMode } from '@chakra-ui/core';
+import { Box, Flex, Text, useColorMode } from '@chakra-ui/react';
 
 const TimeStatIndicatorContent = ({
   title = 'Lorem ipsum dolor sit amet',
@@ -12,20 +12,20 @@ const TimeStatIndicatorContent = ({
   return (
     <>
       <Flex direction="row">
-        <Text fontSize="lg" lineHeight={1.35}>
+        <Text fontboxSize="lg" lineHeight={1.35}>
           {title}
         </Text>
         <Box ml="auto" pl={3}>
-          <Text lineHeight={1} textAlign="center" fontSize="2xl">
+          <Text lineHeight={1} textAlign="center" fontboxSize="2xl">
             {sumValue > 60 ? Math.floor(sumValue / 60) : sumValue}
           </Text>
-          <Text lineHeight={1} textAlign="center" fontSize="md" mt={0}>
+          <Text lineHeight={1} textAlign="center" fontboxSize="md" mt={0}>
             {sumValue > 60 ? 'horas' : 'minutos'}
           </Text>
         </Box>
       </Flex>
       <Box mt="auto">
-        <Text fontSize="xs">
+        <Text fontboxSize="xs">
           Mínimo{' '}
           {minValue > 60
             ? `${Math.floor(minValue / 60)} horas`

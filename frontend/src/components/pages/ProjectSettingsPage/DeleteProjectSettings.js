@@ -8,7 +8,7 @@ import {
   InputGroup,
   Text,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -49,7 +49,7 @@ function DeleteProjectSettings({ projectInfo }) {
       bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
       rounded="md"
     >
-      <Heading as="h2" size="md">
+      <Heading as="h2" boxSize="md">
         Borrar proyecto
       </Heading>
 
@@ -74,7 +74,7 @@ function DeleteProjectSettings({ projectInfo }) {
 
         <Button
           ml={6}
-          variantColor="red"
+          colorScheme="red"
           disabled={typedProjectName !== projectInfo.name}
           onClick={deleteProject}
         >

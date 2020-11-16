@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../../base/MainLayout';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { Box, Button, Flex } from '@chakra-ui/core';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { useHistory, useParams } from 'react-router-dom';
 import ProjectMemberSelect from './ProjectMemberSelect';
 import PeriodDateRangePicker from './PeriodDateRangePicker';
@@ -129,9 +129,9 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
       <Flex mb={12}>
         <Button
           leftIcon="arrow-back"
-          variantColor="gray"
+          colorScheme="gray"
           variant="ghost"
-          size="lg"
+          boxSize="lg"
           whiteSpace="pre"
           onClick={() => history.push('/')}
         >
@@ -140,7 +140,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         {isMemberPrivileged(projectInfo.projectMember) && (
           <Button
             rightIcon="settings"
-            variantColor="gray"
+            colorScheme="gray"
             variant="ghost"
             ml="auto"
             onClick={() => history.push(`/project/${projectInfo.id}/settings`)}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { Flex } from '@chakra-ui/core';
+import { Flex } from '@chakra-ui/react';
 import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
 import useDocumentTitle from '../../../hooks/documentTitleHook';

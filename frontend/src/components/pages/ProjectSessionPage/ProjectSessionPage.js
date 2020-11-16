@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import MainLayout from '../../base/MainLayout';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
-import { Box, Button, Flex, Heading } from '@chakra-ui/core';
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
 
 import BaseTable, { Column } from 'react-base-table';
@@ -76,9 +76,9 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
       <Flex mb={12}>
         <Button
           leftIcon="arrow-back"
-          variantColor="gray"
+          colorScheme="gray"
           variant="ghost"
-          size="lg"
+          boxSize="lg"
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
@@ -86,7 +86,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
         </Button>
       </Flex>
       <Box ref={ref} flexGrow="1" mx={{ base: 0, lg: 8 }}>
-        <Heading as="h2" size="lg" mb={3}>
+        <Heading as="h2" boxSize="lg" mb={3}>
           Lista de eventos
         </Heading>
         <BaseTable data={data} height={height - 300} width={width}>

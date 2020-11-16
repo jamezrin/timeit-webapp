@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import { Box } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/react';
 import { findProjectMember, formatUserFullName } from '../../../utils';
 import moment from 'moment';
 

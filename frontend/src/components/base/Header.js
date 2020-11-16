@@ -7,7 +7,7 @@ import {
   IconButton,
   Text,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import AuthContext, {
   requestDeauthentication,
@@ -53,7 +53,7 @@ export default function Header(props) {
       zIndex="100"
     >
       <Flex align="center" mr={5}>
-        <Heading as="h1" size="lg">
+        <Heading as="h1" boxSize="lg">
           TimeIt
         </Heading>
       </Flex>
@@ -100,7 +100,7 @@ export default function Header(props) {
         <IconButton
           aria-label="Cerrar sesión"
           variant="ghost"
-          fontSize="24px"
+          fontboxSize="24px"
           icon={RiLogoutBoxRLine}
           onClick={deauthenticateUser}
           mx={1}

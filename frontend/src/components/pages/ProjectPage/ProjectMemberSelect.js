@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { useColorMode, useTheme } from '@chakra-ui/core';
+import { useColorMode, useTheme } from '@chakra-ui/react';
 import { formatUserFullName, isMemberPrivileged } from '../../../utils';
 import Select from 'react-select';
 

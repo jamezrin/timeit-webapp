@@ -10,7 +10,7 @@ import {
   InputGroup,
   Text,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
@@ -77,7 +77,7 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
       bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
       rounded="md"
     >
-      <Heading as="h2" size="md">
+      <Heading as="h2" boxSize="md">
         Invitar a usuario
       </Heading>
 
@@ -104,7 +104,7 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
 
             <Button
               ml={6}
-              variantColor="blue"
+              colorScheme="blue"
               isLoading={formState.isSubmitting}
               type="submit"
             >

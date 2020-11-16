@@ -3,7 +3,7 @@ import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'moment/locale/es';
-import { useColorMode } from '@chakra-ui/core';
+import { useColorMode } from '@chakra-ui/react';
 
 export default function PeriodDateRangePicker({
   startDate,

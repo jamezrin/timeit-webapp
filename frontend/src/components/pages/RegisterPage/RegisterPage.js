@@ -17,7 +17,7 @@ import {
   InputRightElement,
   Link,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import axios from 'axios';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
@@ -124,7 +124,7 @@ export default function RegisterPage() {
 
         <FormControl mt={4} isInvalid={!!errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
-          <InputGroup size="md">
+          <InputGroup boxSize="md">
             <Input
               name="password"
               id="password"
@@ -136,7 +136,7 @@ export default function RegisterPage() {
             <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
                 h="1.75rem"
-                size="sm"
+                boxSize="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
@@ -149,7 +149,7 @@ export default function RegisterPage() {
         </FormControl>
         <Button
           mt={4}
-          variantColor="blue"
+          colorScheme="blue"
           isLoading={formState.isSubmitting}
           type="submit"
         >

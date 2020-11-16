@@ -12,7 +12,7 @@ import {
   InputGroup,
   InputRightElement,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
@@ -93,7 +93,7 @@ export default function RecoverPasswordPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={4} isInvalid={!!errors.newPassword}>
           <FormLabel htmlFor="newPassword">Nueva contraseña</FormLabel>
-          <InputGroup size="md">
+          <InputGroup boxSize="md">
             <Input
               name="newPassword"
               id="newPassword"
@@ -105,7 +105,7 @@ export default function RecoverPasswordPage() {
             <InputRightElement width="4.5rem" mr={12}>
               <Button
                 h="1.75rem"
-                size="sm"
+                boxSize="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
@@ -119,7 +119,7 @@ export default function RecoverPasswordPage() {
         </FormControl>
         <Button
           mt={4}
-          variantColor="blue"
+          colorScheme="blue"
           isLoading={formState.isSubmitting}
           type="submit"
         >

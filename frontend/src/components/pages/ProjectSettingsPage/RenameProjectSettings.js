@@ -10,7 +10,7 @@ import {
   InputGroup,
   Text,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import * as yup from 'yup';
@@ -60,7 +60,7 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
 
   return (
     <Box p={4} bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'} rounded="md">
-      <Heading as="h2" size="md">
+      <Heading as="h2" boxSize="md">
         Cambiar nombre de proyecto
       </Heading>
 
@@ -83,7 +83,7 @@ function RenameProjectSettings({ projectInfo, setProjectInfo }) {
 
             <Button
               ml={6}
-              variantColor="blue"
+              colorScheme="blue"
               isLoading={formState.isSubmitting}
               type="submit"
             >

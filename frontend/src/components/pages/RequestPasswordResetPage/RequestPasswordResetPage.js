@@ -18,7 +18,7 @@ import {
   List,
   ListItem,
   Text,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
@@ -120,7 +120,7 @@ export default function RequestPasswordResetPage() {
 
         <Button
           mt={4}
-          variantColor="blue"
+          colorScheme="blue"
           isLoading={formState.isSubmitting}
           type="submit"
         >

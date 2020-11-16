@@ -2,7 +2,7 @@ import React from 'react';
 
 import timeManagementSvg from '../assets/time_management.svg';
 import mainAppCoverLogo from '../assets/brand-logo.svg';
-import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/core';
+import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/react';
 import { noDragOrSelectCss } from '../utils';
 
 export default function LoginRegisterLayout({ children }) {
@@ -73,7 +73,7 @@ export default function LoginRegisterLayout({ children }) {
             href="https://github.com/jamezrin/timeit-client"
             target="_blank"
           >
-            <Button variantColor="blue">Cliente de escritorio</Button>
+            <Button colorScheme="blue">Cliente de escritorio</Button>
           </Box>
         </Flex>
       </Box>

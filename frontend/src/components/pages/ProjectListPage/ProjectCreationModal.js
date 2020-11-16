@@ -13,7 +13,7 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import React, { useState } from 'react';
 import { useToasts } from 'react-toast-notifications';
@@ -65,7 +65,7 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
 
           <ModalFooter>
             <Button
-              variantColor="blue"
+              colorScheme="blue"
               isLoading={formState.isSubmitting}
               type="submit"
             >

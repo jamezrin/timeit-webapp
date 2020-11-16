@@ -18,7 +18,7 @@ import {
   Link,
   List,
   ListItem,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import AuthContext, {
   fetchAuthStatus,
@@ -118,7 +118,7 @@ export default function LoginPage() {
 
         <FormControl mt={4} isInvalid={!!errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
-          <InputGroup size="md">
+          <InputGroup boxSize="md">
             <Input
               name="password"
               id="password"
@@ -130,7 +130,7 @@ export default function LoginPage() {
             <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
                 h="1.75rem"
-                size="sm"
+                boxSize="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
@@ -144,7 +144,7 @@ export default function LoginPage() {
         </FormControl>
         <Button
           mt={4}
-          variantColor="blue"
+          colorScheme="blue"
           isLoading={formState.isSubmitting}
           type="submit"
         >

@@ -6,7 +6,7 @@ import {
   Heading,
   IconButton,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import BaseTable, { AutoResizer, Column } from 'react-base-table';
@@ -95,9 +95,9 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
         <>
           <IconButton
             ml={1}
-            size="xs"
+            boxSize="xs"
             variant="outline"
-            variantColor="blue"
+            colorScheme="blue"
             aria-label="Search database"
             disabled={member.role === 'admin'}
             icon={member.role === 'employee' ? 'triangle-up' : 'triangle-down'}
@@ -109,9 +109,9 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
           />
           <IconButton
             ml={1}
-            size="xs"
+            boxSize="xs"
             variant="outline"
-            variantColor="blue"
+            colorScheme="blue"
             aria-label="Search database"
             disabled={member.role === 'admin'}
             icon="not-allowed"
@@ -130,7 +130,7 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
       direction="column"
       bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
     >
-      <Heading as="h2" size="md">
+      <Heading as="h2" boxSize="md">
         Miembros del proyecto
       </Heading>
 

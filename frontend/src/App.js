@@ -2,13 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import {
-  ColorModeProvider,
-  CSSReset,
-  Flex,
-  theme,
-  ThemeProvider,
-} from '@chakra-ui/core';
+import { ChakraProvider, Flex} from '@chakra-ui/react';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
 import AuthContext, {
   AuthContextProvider,
@@ -26,16 +20,17 @@ import RequestPasswordResetPage from './components/pages/RequestPasswordResetPag
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage/ConfirmAccountPage';
 import AcceptProjectInvitePage from './components/pages/AcceptProjectInvitePage/AcceptProjectInvitePage';
 import RecoverPasswordPage from './components/pages/RecoverPasswordPage/RecoverPasswordPage';
+import { ColorModeScript } from '@chakra-ui/color-mode';
 
 const ProviderWrappedComponent = ({ children }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <ColorModeProvider>
-        <ToastProvider>
-          <AuthContextProvider>{children}</AuthContextProvider>
-        </ToastProvider>
-      </ColorModeProvider>
-    </ThemeProvider>
+    <ChakraProvider>
+      <ToastProvider>
+        <AuthContextProvider>
+          {children}
+        </AuthContextProvider>
+      </ToastProvider>
+    </ChakraProvider>
   );
 };
 
@@ -112,7 +107,7 @@ const RouterWrappedComponent = () => {
 function App() {
   return (
     <ProviderWrappedComponent>
-      <CSSReset />
+      <ColorModeScript initialColorMode="light" />
       <RouterWrappedComponent />
     </ProviderWrappedComponent>
   );

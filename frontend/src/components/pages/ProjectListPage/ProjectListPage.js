@@ -7,9 +7,8 @@ import {
   Image,
   List,
   ListItem,
-  PseudoBox,
   useColorMode,
-} from '@chakra-ui/core';
+} from '@chakra-ui/react';
 
 import workTimeSvg from '../../../assets/work_time.svg';
 import MainLayout from '../../base/MainLayout';
@@ -49,15 +48,15 @@ function ProjectListPlaceholder() {
         width="20rem"
       />
 
-      <Heading as="h1" size="lg" color="blue.500" mt={8}>
+      <Heading as="h1" boxSize="lg" color="blue.500" mt={8}>
         Todavía no eres miembro de un proyecto
       </Heading>
 
-      <Heading as="h2" size="md" color="blue.500" mt={2}>
+      <Heading as="h2" boxSize="md" color="blue.500" mt={2}>
         ¡Crea uno o haz que te inviten!
       </Heading>
 
-      <Button onClick={openProjectCreationModal} variantColor="blue" mt={4}>
+      <Button onClick={openProjectCreationModal} colorScheme="blue" mt={4}>
         Crear un proyecto
       </Button>
     </Flex>
@@ -74,7 +73,7 @@ function ProjectListContent({ projects }) {
         <Heading as="h1">Tus proyectos</Heading>
         <Button
           onClick={openProjectCreationModal}
-          variantColor="blue"
+          colorScheme="blue"
           ml="auto"
         >
           Crear un proyecto
@@ -84,7 +83,7 @@ function ProjectListContent({ projects }) {
         {projects.map((project) => (
           <ListItem key={project.id}>
             <Link to={`/project/${project.id}`}>
-              <PseudoBox
+              <Box
                 bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
                 shadow="md"
                 p={6}
@@ -94,7 +93,7 @@ function ProjectListContent({ projects }) {
                 }}
               >
                 {project.name || 'Proyecto sin nombre'}
-              </PseudoBox>
+              </Box>
             </Link>
           </ListItem>
         ))}

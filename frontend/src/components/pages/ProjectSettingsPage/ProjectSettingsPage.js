@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import MainLayout from '../../base/MainLayout';
 import FullPageLoadSpinner from '../../base/FullPageLoadSpinner';
-import { Button, Flex } from '@chakra-ui/core';
+import { Button, Flex } from '@chakra-ui/react';
 import { useHistory, useParams } from 'react-router-dom';
 import RenameProjectSettings from './RenameProjectSettings';
 import ProjectMemberList from './ProjectMemberList';
@@ -52,9 +52,9 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
       <Flex mb={12}>
         <Button
           leftIcon="arrow-back"
-          variantColor="gray"
+          colorScheme="gray"
           variant="ghost"
-          size="lg"
+          boxSize="lg"
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
