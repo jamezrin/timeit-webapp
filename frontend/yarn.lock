@@ -10560,10 +10560,10 @@ react-hook-form-input@1.1.10:
   resolved "https://registry.yarnpkg.com/react-hook-form-input/-/react-hook-form-input-1.1.10.tgz#71a87d9c814176e7f127382e257bcb8de4498e22"
   integrity sha512-RkkJeQmfUDT+Wq6iVGdvNY3rLTAD7KW1utgbCIyKRpDh41lf2Z8dC57GSapAh8TMLL1s6F57CUqXBZuGHZQgxA==
 
-react-hook-form@6.11.2:
-  version "6.11.2"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.11.2.tgz#a0d81f71f85551457aa06892599aa07605f42154"
-  integrity sha512-3Go23kq3JAsUi5xNtOBi2YVJALufmycyS8eA/hdriAbj3U7/lffPlcl0QWviSy4L0EE+dsQwEX2YSTyMMADQsw==
+react-hook-form@6.11.3:
+  version "6.11.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.11.3.tgz#7de409d4e100452ac0d3255780b3af3d3027d87a"
+  integrity sha512-RWBQ2FdCI6B247hna8LM1oPThvZiGM8wJkTTOLHRHhSBgD5JrTBYOrteLRo7qKXP9CdVYSAK1kjPs1JCqeWb3g==
 
 react-icons@^3.11.0:
   version "3.11.0"
