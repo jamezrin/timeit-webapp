@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": [
-      "es5",
-      "es6"
+      "es6",
+      "dom"
     ],
     "target": "es5",
     "module": "commonjs",
@@ -12,5 +12,6 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true
-  }
+  },
+  "exclude": ["node_modules"]
 }
