@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useColorMode, useTheme } from '@chakra-ui/react';
 import { formatUserFullName, isMemberPrivileged } from '../../../utils';
 import Select from 'react-select';
@@ -37,7 +37,7 @@ function ProjectMemberSelect({
     });
   }, [projectMemberOptions, projectInfo]);
 
-  const onSelectedMemberChange = useCallback(_onSelectedMemberChange, []);
+  const onSelectedMemberChange = useRef(_onSelectedMemberChange).current;
 
   useEffect(() => {
     if (defaultProjectMember) {
@@ -47,6 +47,7 @@ function ProjectMemberSelect({
     }
   }, [onSelectedMemberChange, defaultProjectMember]);
 
+  // TODO: Improve this
   const handleSelectChange = useCallback(
     (selectedProjectMembers) => {
       if (selectedProjectMembers) {
@@ -62,7 +63,7 @@ function ProjectMemberSelect({
     [onSelectedMemberChange],
   );
 
-  // TODO Mejorar esto
+  // TODO: Improve this
   const selectStyles = useMemo(() => {
     return {
       control: (styles) => {

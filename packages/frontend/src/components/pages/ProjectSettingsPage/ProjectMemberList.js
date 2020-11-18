@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,
   Divider,
@@ -12,69 +12,78 @@ import axios from 'axios';
 import BaseTable, { AutoResizer, Column } from 'react-base-table';
 import { formatUserFullName, parseAndFormatDate } from '../../../utils';
 
-const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + "/project_members"; // prettier-ignore
+const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + '/project_members'; // prettier-ignore
 
 const requestMemberKick = (memberId) => axios.post(
   `${projectMembersEndpoint}/${memberId}/kick`,
   {},
-  { withCredentials: true }
-); // prettier-ignore
+  { withCredentials: true },
+); //prettier-ignore
 
 const requestMemberPromote = (memberId) => axios.post(
   `${projectMembersEndpoint}/${memberId}/promote`,
   {},
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 const requestMemberDemote = (memberId) => axios.post(
   `${projectMembersEndpoint}/${memberId}/demote`,
   {},
-  { withCredentials: true }
+  { withCredentials: true },
 ); // prettier-ignore
 
 function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
   const { colorMode } = useColorMode();
   const { addToast } = useToasts();
 
-  const promoteMember = (memberInfo) => {
-    requestMemberPromote(memberInfo.id).then(() => {
-      updateMembers();
-
-      addToast(
-        `Has ascendido al miembro ${formatUserFullName(memberInfo.user)}`,
-        { appearance: 'success', autoDismiss: true },
-      );
-    });
-  };
-
-  const demoteMember = (memberInfo) => {
-    requestMemberDemote(memberInfo.id).then(() => {
-      updateMembers();
-
-      addToast(
-        `Has degradado al miembro ${formatUserFullName(memberInfo.user)}`,
-        { appearance: 'success', autoDismiss: true },
-      );
-    });
-  };
-
-  const kickMember = (memberInfo) => {
-    const confirmResponse = window.confirm(
-      '¿Está seguro de que quiere expulsar a este miembro? ' +
-        'Se borrarán todos los eventos e información almacenada.',
-    );
-
-    if (confirmResponse) {
-      requestMemberKick(memberInfo.id).then(() => {
+  const promoteMember = useCallback(
+    (memberInfo) => {
+      requestMemberPromote(memberInfo.id).then(() => {
         updateMembers();
 
         addToast(
-          `Has expulsado al miembro ${formatUserFullName(memberInfo.user)}`,
+          `Has ascendido al miembro ${formatUserFullName(memberInfo.user)}`,
           { appearance: 'success', autoDismiss: true },
         );
       });
-    }
-  };
+    },
+    [addToast, updateMembers],
+  );
+
+  const demoteMember = useCallback(
+    (memberInfo) => {
+      requestMemberDemote(memberInfo.id).then(() => {
+        updateMembers();
+
+        addToast(
+          `Has degradado al miembro ${formatUserFullName(memberInfo.user)}`,
+          { appearance: 'success', autoDismiss: true },
+        );
+      });
+    },
+    [addToast, updateMembers],
+  );
+
+  const kickMember = useCallback(
+    (memberInfo) => {
+      const confirmResponse = window.confirm(
+        '¿Está seguro de que quiere expulsar a este miembro? ' +
+          'Se borrarán todos los eventos e información almacenada.',
+      );
+
+      if (confirmResponse) {
+        requestMemberKick(memberInfo.id).then(() => {
+          updateMembers();
+
+          addToast(
+            `Has expulsado al miembro ${formatUserFullName(memberInfo.user)}`,
+            { appearance: 'success', autoDismiss: true },
+          );
+        });
+      }
+    },
+    [addToast, updateMembers],
+  );
 
   useEffect(() => {
     updateMembers();

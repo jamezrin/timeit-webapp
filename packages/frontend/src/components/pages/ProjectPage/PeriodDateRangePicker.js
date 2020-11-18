@@ -3,7 +3,6 @@ import { DateRangePicker } from 'react-dates';
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import 'moment/locale/es';
-import { useColorMode } from '@chakra-ui/react';
 
 export default function PeriodDateRangePicker({
   startDate,
@@ -11,7 +10,6 @@ export default function PeriodDateRangePicker({
   onDatesChange,
 }) {
   const [focusedInput, setFocusedInput] = useState(null);
-  const { colorMode } = useColorMode();
 
   return (
     <DateRangePicker

@@ -14,6 +14,7 @@ import AuthContext, {
 } from '../../state/authenticationContext';
 import { useToasts } from 'react-toast-notifications';
 
+// eslint-disable-next-line no-unused-vars
 const MenuItems = ({ children }) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
     {children}
