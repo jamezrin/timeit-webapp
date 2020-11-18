@@ -1309,7 +1309,7 @@
     "@chakra-ui/utils" "1.0.0"
     "@chakra-ui/visually-hidden" "1.0.0"
 
-"@chakra-ui/react@^1.0.0":
+"@chakra-ui/react@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/react-1.0.0.tgz#67af2178075d31edbe438d3ab216e98195c32035"
   integrity sha512-BL9JNbTsg3QqWs/6/bK/UHQu9rgzOxaN7xmAZ0s3uNQ8YsO99MkVK0uFLnWHIBuCU0npVzkS/M21T34uXeCIMw==
@@ -1624,7 +1624,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.4.tgz#19bf0f5af19149111c40d98bb0cf82119f5d9eeb"
   integrity sha512-Ja/Vfqe3HpuzRsG1oBtWTHk2PGZ7GR+2Vz5iYGelAw8dx32K0y7PjVuxK6z1nMpZOqAFsRUPCkK1YjJ56qJlgw==
 
-"@emotion/react@^11.0.0":
+"@emotion/react@11.0.0":
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@emotion/react/-/react-11.0.0.tgz#6b39b5bb5e2d48d720a420ff885a95ff268dae0d"
   integrity sha512-mMQOuJcCVHUHUKZMamCbNnuUEgEff1W1JL3/1jGXFN52Ik5R/2ccVb3FherYFkSJkkjkPC3dUfFSeisXVh9Spg==
@@ -1669,7 +1669,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/sheet/-/sheet-1.0.0.tgz#a0ef06080f339477ad4ba7f56e1c931f7ba50822"
   integrity sha512-cdCHfZtf/0rahPDCZ9zyq+36EqfD/6c0WUqTFZ/hv9xadTUv2lGE5QK7/Z6Dnx2oRxC0usfVM2/BYn9q9B9wZA==
 
-"@emotion/styled@^11.0.0":
+"@emotion/styled@11.0.0":
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/@emotion/styled/-/styled-11.0.0.tgz#698196c2822746360a8644a73a5d842b2d1a78a5"
   integrity sha512-498laccxJlBiJqrr2r/fx9q+Pr55D0URP2UyOkoSGLjevb8LLAFWueqthsQ5XijE66iGo7y3rzzEYdA7CHmZEQ==
@@ -1753,7 +1753,7 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
-"@hookform/resolvers@^1.0.1":
+"@hookform/resolvers@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-1.0.1.tgz#a80029fb8e1fb8e17960731010d48b4cdbad1941"
   integrity sha512-hhixh7KHFr88kH+jwoQW3Y1h/77Q54RykO3vrrwnqkSW3aGjpJVzGjr5dvkJrguGljO62zryqHvQdR9Fhf1kig==
@@ -1987,7 +1987,7 @@
     lodash "^4.17.11"
     react-motion "^0.5.2"
 
-"@nivo/core@^0.65.0":
+"@nivo/core@0.65.0":
   version "0.65.0"
   resolved "https://registry.yarnpkg.com/@nivo/core/-/core-0.65.0.tgz#a356dcd740d7f70027edece36828185741fc3ff9"
   integrity sha512-9ag4Stx0aWkiIFArg6X+eTDzZEBJyx08UhIfxvUcMnkda8OcYlAPrnp2K7sV5d7egIrnsxBpDt2lx/cC7XL/pg==
@@ -6265,7 +6265,7 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framer-motion@^2.9.4:
+framer-motion@2.9.4:
   version "2.9.4"
   resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-2.9.4.tgz#366656ae240776c923cbd4359815e5c1ed56084d"
   integrity sha512-Bvgdwpu5UO6VnEEwenJEmnGeo9ILRRWh9f3iIX+71NiM5X60Qi6KlkBFGZc9DGbdIUAn0AYgaxVhTKL39OOYng==
@@ -10565,7 +10565,7 @@ react-hook-form@6.11.3:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.11.3.tgz#7de409d4e100452ac0d3255780b3af3d3027d87a"
   integrity sha512-RWBQ2FdCI6B247hna8LM1oPThvZiGM8wJkTTOLHRHhSBgD5JrTBYOrteLRo7qKXP9CdVYSAK1kjPs1JCqeWb3g==
 
-react-icons@^3.11.0:
+react-icons@3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-3.11.0.tgz#2ca2903dfab8268ca18ebd8cc2e879921ec3b254"
   integrity sha512-JRgiI/vdF6uyBgyZhVyYJUZAop95Sy4XDe/jmT3R/bKliFWpO/uZBwvSjWEdxwzec7SYbEPNPck0Kff2tUGM2Q==
