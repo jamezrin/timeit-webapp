@@ -1,10 +1,22 @@
 {
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
+    "packages": [
+      "packages/*"
+    ],
     "nohoist": [
       "**/typeorm/**",
       "**/typeorm"
     ]
+  },
+  "scripts": {
+    "frontend": "yarn workspace frontend",
+    "backend": "yarn workspace backend",
+    "dev:frontend": "yarn frontend start",
+    "dev:backend": "yarn backend dev",
+    "dev": "concurrently \"yarn run dev:*\""
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }
