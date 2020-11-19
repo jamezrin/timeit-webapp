@@ -1,6 +1,6 @@
 import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
-import { Box } from '@chakra-ui/react';
+import { Box, LightMode } from '@chakra-ui/react';
 import { findProjectMember, formatUserFullName } from '../../../utils';
 import moment from 'moment';
 
@@ -94,26 +94,28 @@ const ProjectLineChart = ({
   startDate,
   endDate,
 }) => (
-  <Box height="300px" width="100%">
-    {projectHistoryStats && (
-      <ProjectChartResponsiveLine
-        data={projectHistoryStats.map((memberHistoryStats) => ({
-          id: formatUserFullName(
-            findProjectMember(
-              projectMembers,
-              memberHistoryStats.memberId
-            ).user, // prettier-ignore
-          ),
-          data: memberHistoryStats.data.map((historyData) => ({
-            x: moment(historyData.day).format('YYYY-MM-DD'),
-            y: Math.round(historyData.minuteSum / 60),
-          })),
-        }))}
-        startDate={startDate}
-        endDate={endDate}
-      />
-    )}
-  </Box>
+  <LightMode>
+    <Box height="300px" width="100%">
+      {projectHistoryStats && (
+        <ProjectChartResponsiveLine
+          data={projectHistoryStats.map((memberHistoryStats) => ({
+            id: formatUserFullName(
+              findProjectMember(
+                projectMembers,
+                memberHistoryStats.memberId
+              ).user, // prettier-ignore
+            ),
+            data: memberHistoryStats.data.map((historyData) => ({
+              x: moment(historyData.day).format('YYYY-MM-DD'),
+              y: Math.round(historyData.minuteSum / 60),
+            })),
+          }))}
+          startDate={startDate}
+          endDate={endDate}
+        />
+      )}
+    </Box>
+  </LightMode>
 );
 
 export default ProjectLineChart;

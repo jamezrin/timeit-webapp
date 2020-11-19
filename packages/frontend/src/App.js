@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import { ToastProvider } from 'react-toast-notifications';
-import { ChakraProvider, Flex} from '@chakra-ui/react';
+import { ChakraProvider, Flex } from '@chakra-ui/react';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
 import AuthContext, {
   AuthContextProvider,
@@ -26,9 +26,7 @@ const ProviderWrappedComponent = ({ children }) => {
   return (
     <ChakraProvider>
       <ToastProvider>
-        <AuthContextProvider>
-          {children}
-        </AuthContextProvider>
+        <AuthContextProvider>{children}</AuthContextProvider>
       </ToastProvider>
     </ChakraProvider>
   );

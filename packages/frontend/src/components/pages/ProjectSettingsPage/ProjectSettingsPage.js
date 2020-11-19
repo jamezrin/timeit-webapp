@@ -11,6 +11,7 @@ import DeleteProjectSettings from './DeleteProjectSettings';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
 import { useToasts } from 'react-toast-notifications';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(
@@ -51,10 +52,9 @@ function ProjectPageContent({ projectInfo, setProjectInfo }) {
     <Flex direction="column" py={10} mx={8}>
       <Flex mb={12}>
         <Button
-          leftIcon="arrow-back"
+          leftIcon={<ArrowBackIcon />}
           colorScheme="gray"
           variant="ghost"
-          boxSize="lg"
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >

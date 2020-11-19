@@ -9,13 +9,13 @@ import {
   Input,
   InputGroup,
   Text,
-  useColorMode,
 } from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInvite = (projectId, emailAddress) => axios.post(
@@ -32,7 +32,10 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
   const { handleSubmit, reset, errors, register, formState } = useForm({
     resolver: yupResolver(schema),
   });
-  const { colorMode } = useColorMode();
+
+  const inputBg = useColorModeValue('white', 'gray.600');
+  const wrapperBg = useColorModeValue('gray.100', 'gray.700');
+
   const { addToast } = useToasts();
 
   async function onSubmit({ emailAddress }) {
@@ -72,17 +75,12 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
   }
 
   return (
-    <Box
-      p={4}
-      mt={12}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-      rounded="md"
-    >
-      <Heading as="h2" boxSize="md">
+    <Box p={4} mt={12} bg={wrapperBg} rounded="md">
+      <Heading as="h2" size="md">
         Invitar a usuario
       </Heading>
 
-      <Divider />
+      <Divider my={2} />
 
       <Text mt={4}>
         Invita a un usuario para monitorizar su trabajo. Podrás cambiar su rol
@@ -101,6 +99,7 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
               placeholder="Correo electrónico"
               ref={register}
               errorBorderColor="red.500"
+              bg={inputBg}
             />
 
             <Button

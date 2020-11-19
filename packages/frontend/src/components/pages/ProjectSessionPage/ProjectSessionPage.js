@@ -13,6 +13,7 @@ import { formatTitle, parseAndFormatTimestamp } from '../../../utils';
 import useResizeObserver from 'use-resize-observer';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
 const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + "/sessions"; // prettier-ignore
@@ -75,10 +76,10 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
     <Flex direction="column" py={10} mx={8}>
       <Flex mb={12}>
         <Button
-          leftIcon="arrow-back"
+          leftIcon={<ArrowBackIcon />}
           colorScheme="gray"
           variant="ghost"
-          boxSize="lg"
+          size="lg"
           whiteSpace="pre"
           onClick={() => history.push(`/project/${projectInfo.id}`)}
         >
@@ -86,7 +87,7 @@ function ProjectSessionContent({ projectInfo, sessionInfo }) {
         </Button>
       </Flex>
       <Box ref={ref} flexGrow="1" mx={{ base: 0, lg: 8 }}>
-        <Heading as="h2" boxSize="lg" mb={3}>
+        <Heading as="h2" size="lg" mb={3}>
           Lista de eventos
         </Heading>
         <BaseTable data={data} height={height - 300} width={width}>

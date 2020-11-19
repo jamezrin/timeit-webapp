@@ -12,6 +12,7 @@ import ProjectPageNoInfo from './ProjectPageNoInfo';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
+import { ArrowBackIcon, SettingsIcon } from '@chakra-ui/icons';
 
 moment.locale('es');
 
@@ -128,10 +129,9 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
     <Box py={10} mx={8}>
       <Flex mb={12}>
         <Button
-          leftIcon="arrow-back"
+          leftIcon={<ArrowBackIcon />}
           colorScheme="gray"
           variant="ghost"
-          boxSize="lg"
           whiteSpace="pre"
           onClick={() => history.push('/')}
         >
@@ -139,7 +139,7 @@ function ProjectPageContent({ projectInfo, projectMembers }) {
         </Button>
         {isMemberPrivileged(projectInfo.projectMember) && (
           <Button
-            rightIcon="settings"
+            rightIcon={<SettingsIcon />}
             colorScheme="gray"
             variant="ghost"
             ml="auto"

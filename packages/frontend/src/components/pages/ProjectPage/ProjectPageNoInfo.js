@@ -1,7 +1,6 @@
 import React from 'react';
-import { Heading, Image } from '@chakra-ui/react';
+import { Flex, Heading, Image } from '@chakra-ui/react';
 import analyticsSvg from '../../../assets/setup_analytics.svg';
-import {Flex} from '@chakra-ui/react';
 import { noDragOrSelectCss } from '../../../utils';
 
 export default function ProjectPageNoInfo() {
@@ -26,7 +25,7 @@ export default function ProjectPageNoInfo() {
         as="h2"
         mt={10}
         maxWidth="50%"
-        fontboxSize="2xl"
+        fontSize="2xl"
         color="blue.400"
         textAlign="center"
       >

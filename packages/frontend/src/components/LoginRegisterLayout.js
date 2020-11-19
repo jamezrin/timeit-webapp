@@ -2,38 +2,31 @@ import React from 'react';
 
 import timeManagementSvg from '../assets/time_management.svg';
 import mainAppCoverLogo from '../assets/brand-logo.svg';
-import { Box, Button, Flex, Image, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import { noDragOrSelectCss } from '../utils';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 export default function LoginRegisterLayout({ children }) {
-  const { colorMode } = useColorMode();
+  const imageBoxBg = useColorModeValue(
+    { base: 'gray.100', lg: 'transparent' },
+    'gray.900',
+  );
+  const wrapperBg = useColorModeValue('gray.100', 'gray.900');
+  const childWrapperBg = useColorModeValue(
+    { base: 'white', lg: 'gray.200' },
+    'gray.800',
+  );
 
   return (
     <Flex height="100vh" direction={{ base: 'column', lg: 'row' }}>
-      <Box
-        bg={
-          colorMode === 'dark'
-            ? 'gray.900'
-            : { base: 'gray.100', lg: 'gray.100' }
-        }
-        width={{ base: '100%', lg: 6 / 10 }}
-        pb={10}
-      >
+      <Box bg={wrapperBg} width={{ base: '100%', lg: 6 / 10 }} pb={10}>
         <Flex
           height="100%"
           direction="column"
           justifyContent="center"
           alignItems="center"
         >
-          <Box
-            py={{ base: 4, lg: 0 }}
-            bg={
-              colorMode === 'dark'
-                ? 'gray.900'
-                : { base: 'gray.100', lg: 'transparent' }
-            }
-            width="100%"
-          >
+          <Box py={{ base: 4, lg: 0 }} bg={imageBoxBg} width="100%">
             <Image
               m="auto"
               maxWidth="15rem"
@@ -79,9 +72,7 @@ export default function LoginRegisterLayout({ children }) {
       </Box>
 
       <Box
-        bg={
-          colorMode === 'dark' ? 'gray.800' : { base: 'white', lg: 'gray.200' }
-        }
+        bg={childWrapperBg}
         width={{ base: '100%', lg: 4 / 10 }}
         px={4}
         py={10}

@@ -12,7 +12,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
-  Icon,
   Input,
   Link,
   List,
@@ -23,6 +22,8 @@ import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ArrowRightIcon } from '@chakra-ui/icons';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + "/request-password-reset"; // prettier-ignore
 const requestPasswordReset = (values) => axios.post(
@@ -39,6 +40,9 @@ export default function RequestPasswordResetPage() {
   const { handleSubmit, errors, register, formState } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const inputBg = useColorModeValue('white', 'gray.600');
+
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
@@ -113,6 +117,7 @@ export default function RequestPasswordResetPage() {
             placeholder="usuario@ejemplo.org"
             ref={register}
             errorBorderColor="red.500"
+            bg={inputBg}
           />
           <FormErrorMessage>
             {errors.emailAddress && errors.emailAddress.message}
@@ -125,7 +130,7 @@ export default function RequestPasswordResetPage() {
           isLoading={formState.isSubmitting}
           type="submit"
         >
-          Continuar <Icon ml={4} name="arrow-right" />
+          Continuar <ArrowRightIcon ml={4} />
         </Button>
       </form>
     </LoginRegisterLayout>

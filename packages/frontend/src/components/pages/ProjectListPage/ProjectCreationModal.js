@@ -3,7 +3,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Icon,
   Input,
   Modal,
   ModalBody,
@@ -20,6 +19,8 @@ import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import { ArrowRightIcon } from '@chakra-ui/icons';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectCreation = (values) => axios.post(
@@ -39,6 +40,8 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
     resolver: yupResolver(schema),
   });
 
+  const inputBg = useColorModeValue('white', 'gray.600');
+
   return (
     <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
       <ModalOverlay zIndex="1000" />
@@ -57,6 +60,7 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
                 placeholder="Mi super proyecto"
                 ref={register}
                 errorBorderColor="red.500"
+                bg={inputBg}
               />
               <FormErrorMessage>
                 {errors.projectName && errors.projectName.message}
@@ -70,7 +74,7 @@ export function ProjectCreationModal({ isOpen, onClose, onSubmit }) {
               isLoading={formState.isSubmitting}
               type="submit"
             >
-              Crear proyecto <Icon ml={4} name="arrow-right" />
+              Crear proyecto <ArrowRightIcon ml={4} />
             </Button>
           </ModalFooter>
         </form>

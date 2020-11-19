@@ -7,11 +7,11 @@ import {
   Input,
   InputGroup,
   Text,
-  useColorMode,
 } from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectDelete = (projectId) => axios.delete(
@@ -21,7 +21,8 @@ const requestProjectDelete = (projectId) => axios.delete(
 
 function DeleteProjectSettings({ projectInfo }) {
   const [typedProjectName, setTypedProjectName] = useState('');
-  const { colorMode } = useColorMode();
+  const inputBg = useColorModeValue('white', 'gray.600');
+  const wrapperBg = useColorModeValue('gray.100', 'gray.700');
   const { addToast } = useToasts();
   const history = useHistory();
 
@@ -43,17 +44,12 @@ function DeleteProjectSettings({ projectInfo }) {
   }, [projectInfo, history, addToast]);
 
   return (
-    <Box
-      p={4}
-      mt={12}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-      rounded="md"
-    >
-      <Heading as="h2" boxSize="md">
+    <Box p={4} mt={12} bg={wrapperBg} rounded="md">
+      <Heading as="h2" size="md">
         Borrar proyecto
       </Heading>
 
-      <Divider />
+      <Divider my={2} />
 
       <Text mt={4}>
         Confirma que quieres borrar este proyecto escribiendo su nombre debajo.
@@ -70,6 +66,7 @@ function DeleteProjectSettings({ projectInfo }) {
           placeholder="Nombre de proyecto"
           value={typedProjectName}
           onChange={(e) => setTypedProjectName(e.target.value)}
+          bg={inputBg}
         />
 
         <Button

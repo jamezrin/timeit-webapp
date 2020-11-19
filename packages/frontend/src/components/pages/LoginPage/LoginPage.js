@@ -11,7 +11,6 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
@@ -28,6 +27,8 @@ import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ArrowRightIcon } from '@chakra-ui/icons';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
@@ -38,6 +39,9 @@ export default function LoginPage() {
   const { handleSubmit, errors, register, formState } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const inputBg = useColorModeValue('white', 'gray.600');
+
   const [showPassword, setShowPassword] = useState(false);
   const { addToast } = useToasts();
   const location = useLocation();
@@ -48,6 +52,7 @@ export default function LoginPage() {
   async function onSubmit(values) {
     try {
       await requestAuthentication(values);
+
       fetchAuthStatus().then((authStatus) => {
         setAuthStatus(authStatus);
 
@@ -111,6 +116,7 @@ export default function LoginPage() {
             placeholder="usuario@ejemplo.org"
             ref={register}
             errorBorderColor="red.500"
+            bg={inputBg}
           />
           <FormErrorMessage>
             {errors.emailAddress && errors.emailAddress.message}
@@ -119,7 +125,7 @@ export default function LoginPage() {
 
         <FormControl mt={4} isInvalid={!!errors.password}>
           <FormLabel htmlFor="password">Contraseña</FormLabel>
-          <InputGroup boxSize="md">
+          <InputGroup size="md">
             <Input
               name="password"
               id="password"
@@ -127,11 +133,12 @@ export default function LoginPage() {
               placeholder="$tr0ng p@ssw0rd"
               ref={register}
               errorBorderColor="red.500"
+              bg={inputBg}
             />
-            <InputRightElement width="4.5rem" mr={{ base: 4, lg: 12 }}>
+            <InputRightElement width="6.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
                 h="1.75rem"
-                boxSize="sm"
+                size="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
@@ -149,7 +156,7 @@ export default function LoginPage() {
           isLoading={formState.isSubmitting}
           type="submit"
         >
-          Continuar <Icon ml={4} name="arrow-right" />
+          Continuar <ArrowRightIcon ml={4} />
         </Button>
       </form>
     </LoginRegisterLayout>

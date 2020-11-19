@@ -7,7 +7,7 @@ import {
   Image,
   List,
   ListItem,
-  useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 import workTimeSvg from '../../../assets/work_time.svg';
@@ -48,11 +48,11 @@ function ProjectListPlaceholder() {
         width="20rem"
       />
 
-      <Heading as="h1" boxSize="lg" color="blue.500" mt={8}>
+      <Heading as="h1" size="lg" color="blue.500" mt={8}>
         Todavía no eres miembro de un proyecto
       </Heading>
 
-      <Heading as="h2" boxSize="md" color="blue.500" mt={2}>
+      <Heading as="h2" size="md" color="blue.500" mt={2}>
         ¡Crea uno o haz que te inviten!
       </Heading>
 
@@ -65,17 +65,13 @@ function ProjectListPlaceholder() {
 
 function ProjectListContent({ projects }) {
   const { openProjectCreationModal } = useContext(ProjectCreationModalContext);
-  const { colorMode } = useColorMode();
+  const projectBoxBg = useColorModeValue('gray.100', 'gray.900');
 
   return (
     <Box py={10} mx={8}>
       <Flex>
         <Heading as="h1">Tus proyectos</Heading>
-        <Button
-          onClick={openProjectCreationModal}
-          colorScheme="blue"
-          ml="auto"
-        >
+        <Button onClick={openProjectCreationModal} colorScheme="blue" ml="auto">
           Crear un proyecto
         </Button>
       </Flex>
@@ -84,7 +80,7 @@ function ProjectListContent({ projects }) {
           <ListItem key={project.id}>
             <Link to={`/project/${project.id}`}>
               <Box
-                bg={colorMode === 'dark' ? 'gray.900' : 'gray.100'}
+                bg={projectBoxBg}
                 shadow="md"
                 p={6}
                 mb={4}

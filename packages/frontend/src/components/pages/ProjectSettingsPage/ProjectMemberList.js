@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import {
-  Box,
-  Divider,
-  Flex,
-  Heading,
-  IconButton,
-  useColorMode,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, IconButton } from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
 import axios from 'axios';
 import BaseTable, { AutoResizer, Column } from 'react-base-table';
 import { formatUserFullName, parseAndFormatDate } from '../../../utils';
+import {
+  NotAllowedIcon,
+  TriangleDownIcon,
+  TriangleUpIcon,
+} from '@chakra-ui/icons';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 
 const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + '/project_members'; // prettier-ignore
 
@@ -33,7 +32,7 @@ const requestMemberDemote = (memberId) => axios.post(
 ); // prettier-ignore
 
 function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
-  const { colorMode } = useColorMode();
+  const wrapperBg = useColorModeValue('gray.100', 'gray.700');
   const { addToast } = useToasts();
 
   const promoteMember = useCallback(
@@ -104,12 +103,18 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
         <>
           <IconButton
             ml={1}
-            boxSize="xs"
+            size="xs"
             variant="outline"
             colorScheme="blue"
             aria-label="Search database"
             disabled={member.role === 'admin'}
-            icon={member.role === 'employee' ? 'triangle-up' : 'triangle-down'}
+            icon={
+              member.role === 'employee' ? (
+                <TriangleUpIcon />
+              ) : (
+                <TriangleDownIcon />
+              )
+            }
             onClick={() =>
               member.role === 'employee'
                 ? promoteMember(member)
@@ -118,12 +123,12 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
           />
           <IconButton
             ml={1}
-            boxSize="xs"
+            size="xs"
             variant="outline"
             colorScheme="blue"
             aria-label="Search database"
             disabled={member.role === 'admin'}
-            icon="not-allowed"
+            icon={<NotAllowedIcon />}
             onClick={() => kickMember(member)}
           />
         </>
@@ -132,18 +137,12 @@ function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
   }, [demoteMember, kickMember, projectMembers, promoteMember]);
 
   return (
-    <Flex
-      p={4}
-      flex={1}
-      rounded="md"
-      direction="column"
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.100'}
-    >
-      <Heading as="h2" boxSize="md">
+    <Flex p={4} flex={1} rounded="md" direction="column" bg={wrapperBg}>
+      <Heading as="h2" size="md">
         Miembros del proyecto
       </Heading>
 
-      <Divider />
+      <Divider my={2} />
 
       <Box flex={1}>
         <AutoResizer>

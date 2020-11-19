@@ -16,7 +16,7 @@ export default function ProjectPageInfo({
   return (
     <Box>
       <Box mt={8}>
-        <Heading as="h2" boxSize="lg" mb={3}>
+        <Heading as="h2" size="lg" mb={3}>
           Estadisticas
         </Heading>
         <ProjectStatIndicators
@@ -33,7 +33,7 @@ export default function ProjectPageInfo({
       </Box>
 
       <Box mt={8}>
-        <Heading as="h2" boxSize="lg" mb={3}>
+        <Heading as="h2" size="lg" mb={3}>
           Sesiones (
           {projectStats
             ? projectStats.currentPeriodSessionCount

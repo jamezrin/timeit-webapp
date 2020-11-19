@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Flex, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
 const TimeStatIndicatorContent = ({
   title = 'Lorem ipsum dolor sit amet',
@@ -12,20 +12,20 @@ const TimeStatIndicatorContent = ({
   return (
     <>
       <Flex direction="row">
-        <Text fontboxSize="lg" lineHeight={1.35}>
+        <Text fontSize="lg" lineHeight={1.35}>
           {title}
         </Text>
         <Box ml="auto" pl={3}>
-          <Text lineHeight={1} textAlign="center" fontboxSize="2xl">
+          <Text lineHeight={1} textAlign="center" fontSize="2xl">
             {sumValue > 60 ? Math.floor(sumValue / 60) : sumValue}
           </Text>
-          <Text lineHeight={1} textAlign="center" fontboxSize="md" mt={0}>
+          <Text lineHeight={1} textAlign="center" fontSize="md" mt={0}>
             {sumValue > 60 ? 'horas' : 'minutos'}
           </Text>
         </Box>
       </Flex>
       <Box mt="auto">
-        <Text fontboxSize="xs">
+        <Text fontSize="xs">
           Mínimo{' '}
           {minValue > 60
             ? `${Math.floor(minValue / 60)} horas`
@@ -51,13 +51,13 @@ const TimeStatIndicator = ({
   minValue = '??',
   maxValue = '??',
 }) => {
-  const { colorMode } = useColorMode();
+  const wrapperBg = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Flex
       p={4}
       mx={4}
-      bg={colorMode === 'dark' ? 'gray.700' : 'gray.200'}
+      bg={wrapperBg}
       mt={{ base: '1.5rem', md: '0' }}
       rounded="md"
       shadow="md"

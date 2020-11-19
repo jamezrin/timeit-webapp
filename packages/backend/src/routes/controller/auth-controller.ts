@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { hashPassword, hasMailTokenExpired, setCookie } from '../../utils';
 import { User, UserStatus } from '../../entity/User';
 import { AuthToken, AuthTokenStatus } from '../../entity/AuthToken';

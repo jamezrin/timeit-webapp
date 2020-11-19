@@ -7,12 +7,14 @@ import {
   IconButton,
   Text,
   useColorMode,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import AuthContext, {
   requestDeauthentication,
 } from '../../state/authenticationContext';
 import { useToasts } from 'react-toast-notifications';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 // eslint-disable-next-line no-unused-vars
 const MenuItems = ({ children }) => (
@@ -26,6 +28,7 @@ export default function Header(props) {
   const { colorMode, toggleColorMode } = useColorMode();
   const { refreshStatus } = useContext(AuthContext);
   const { addToast } = useToasts();
+  const navbarBg = useColorModeValue('white', 'gray.800');
 
   const deauthenticateUser = () => {
     requestDeauthentication().then(() => {
@@ -45,7 +48,7 @@ export default function Header(props) {
       justify="space-between"
       wrap="wrap"
       padding="1rem"
-      bg={colorMode === 'dark' ? 'gray.800' : 'white'}
+      bg={navbarBg}
       color="blue.500"
       shadow="md"
       position="sticky"
@@ -54,7 +57,7 @@ export default function Header(props) {
       zIndex="100"
     >
       <Flex align="center" mr={5}>
-        <Heading as="h1" boxSize="lg">
+        <Heading as="h1" fontSize="24px">
           TimeIt
         </Heading>
       </Flex>
@@ -94,15 +97,15 @@ export default function Header(props) {
         <IconButton
           aria-label="Cambiar modo de color"
           variant="ghost"
-          icon={colorMode === 'dark' ? 'sun' : 'moon'}
+          icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
           onClick={toggleColorMode}
           mx={1}
         />
         <IconButton
           aria-label="Cerrar sesión"
           variant="ghost"
-          fontboxSize="24px"
-          icon={RiLogoutBoxRLine}
+          icon={<RiLogoutBoxRLine />}
+          fontSize="24px"
           onClick={deauthenticateUser}
           mx={1}
         />

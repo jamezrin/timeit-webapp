@@ -94,7 +94,7 @@ export default function RecoverPasswordPage() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mt={4} isInvalid={!!errors.newPassword}>
           <FormLabel htmlFor="newPassword">Nueva contraseña</FormLabel>
-          <InputGroup boxSize="md">
+          <InputGroup size="md">
             <Input
               name="newPassword"
               id="newPassword"
@@ -106,7 +106,7 @@ export default function RecoverPasswordPage() {
             <InputRightElement width="4.5rem" mr={12}>
               <Button
                 h="1.75rem"
-                boxSize="sm"
+                size="sm"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? 'Ocultar' : 'Mostrar'}
