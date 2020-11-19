@@ -17,6 +17,6 @@
     "dev": "concurrently \"yarn run dev:*\""
   },
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "5.3.0"
   }
 }
