@@ -10,11 +10,11 @@
     ]
   },
   "scripts": {
-    "frontend": "yarn workspace frontend",
-    "backend": "yarn workspace backend",
-    "dev:frontend": "yarn frontend start",
-    "dev:backend": "yarn backend dev",
-    "dev": "concurrently \"yarn run dev:*\""
+    "dev": "concurrently \"yarn run dev:*\"",
+    "dev:common": "yarn workspace common dev",
+    "dev:frontend": "yarn workspace frontend start",
+    "dev:backend": "yarn workspace backend dev",
+    "prepare": "yarn workspace common build"
   },
   "devDependencies": {
     "concurrently": "5.3.0"

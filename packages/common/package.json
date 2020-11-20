@@ -1,0 +1,22 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "typings": "build/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [],
+  "author": "Jaime Martínez Rincón",
+  "license": "GPL-3.0",
+  "files": ["dist"],
+  "exports": {
+    ".": {
+      "require": "./build/index.js",
+      "default": "./build/index.js"
+    }
+  }
+}
