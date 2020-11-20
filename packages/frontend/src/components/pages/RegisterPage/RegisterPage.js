@@ -25,6 +25,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { ACCOUNT_ALREADY_EXISTS_ERROR } from 'common';
 
 const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
 const requestRegister = (values) => axios.post(
@@ -62,7 +63,7 @@ export default function RegisterPage() {
 
       history.push('/login');
     } catch (err) {
-      if (err.response.data.error.type === 'ACCOUNT_ALREADY_EXISTS') {
+      if (err.response.data.error.type === ACCOUNT_ALREADY_EXISTS_ERROR) {
         addToast('Ya existe una cuenta con ese correo electronico', {
           appearance: 'error',
           autoDismiss: true,

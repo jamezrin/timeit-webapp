@@ -24,6 +24,11 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import {
+  ACCOUNT_NOT_FOUND_ERROR,
+  ALREADY_REQUESTED_MAIL_TOKEN_ERROR,
+  INACTIVE_ACCOUNT_ERROR,
+} from 'common';
 
 const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + "/request-password-reset"; // prettier-ignore
 const requestPasswordReset = (values) => axios.post(
@@ -62,18 +67,18 @@ export default function RequestPasswordResetPage() {
       );
     } catch (err) {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+        if (err.response.data.error.type === INACTIVE_ACCOUNT_ERROR) {
           addToast(
             'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
             { appearance: 'error', autoDismiss: true },
           );
-        } else if (err.response.data.error.type === 'ACCOUNT_NOT_FOUND') {
+        } else if (err.response.data.error.type === ACCOUNT_NOT_FOUND_ERROR) {
           addToast('No existe ningún usuario con ese correo electrónico', {
             appearance: 'error',
             autoDismiss: true,
           });
         } else if (
-          err.response.data.error.type === 'ALREADY_REQUESTED_MAIL_TOKEN'
+          err.response.data.error.type === ALREADY_REQUESTED_MAIL_TOKEN_ERROR
         ) {
           addToast(
             'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',

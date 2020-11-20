@@ -6,6 +6,11 @@ import axios from 'axios';
 import { useToasts } from 'react-toast-notifications';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
+import {
+  EXPIRED_MAIL_TOKEN_ERROR,
+  INACTIVE_ACCOUNT_ERROR,
+  INVALID_CREDENTIALS_ERROR,
+} from 'common';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + `/projects`;
 const requestAcceptProjectInvite = (projectId, token) => axios.post(
@@ -32,17 +37,19 @@ export default function AcceptProjectInvitePage() {
       })
       .catch((err) => {
         if (err.response && err.response.data.error) {
-          if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+          if (err.response.data.error.type === INVALID_CREDENTIALS_ERROR) {
             addToast('Las credenciales introducidas no son válidas', {
               appearance: 'error',
               autoDismiss: true,
             });
-          } else if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+          } else if (err.response.data.error.type === INACTIVE_ACCOUNT_ERROR) {
             addToast(
               'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
               { appearance: 'error', autoDismiss: true },
             );
-          } else if (err.response.data.error.type === 'EXPIRED_MAIL_TOKEN') {
+          } else if (
+            err.response.data.error.type === EXPIRED_MAIL_TOKEN_ERROR
+          ) {
             addToast(
               'El enlace que has usado ha caducado, solicita uno nuevo',
               {

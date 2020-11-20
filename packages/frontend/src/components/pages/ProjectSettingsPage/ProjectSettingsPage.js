@@ -12,6 +12,7 @@ import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle, isMemberPrivileged } from '../../../utils';
 import { useToasts } from 'react-toast-notifications';
 import { ArrowBackIcon } from '@chakra-ui/icons';
+import { RESOURCE_NOT_FOUND_ERROR } from 'common';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInfo = (projectId) => axios.get(
@@ -110,7 +111,7 @@ function ProjectSettingsPage() {
       })
       .catch((err) => {
         if (err.response && err.response.data.error) {
-          if (err.response.data.error.type === 'RESOURCE_NOT_FOUND') {
+          if (err.response.data.error.type === RESOURCE_NOT_FOUND_ERROR) {
             addToast(`No se ha podido encontrar la sesión que has pedido`, {
               appearance: 'error',
               autoDismiss: true,

@@ -29,6 +29,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { INACTIVE_ACCOUNT_ERROR, INVALID_CREDENTIALS_ERROR } from 'common';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
@@ -67,12 +68,12 @@ export default function LoginPage() {
       });
     } catch (err) {
       if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === 'INVALID_CREDENTIALS') {
+        if (err.response.data.error.type === INVALID_CREDENTIALS_ERROR) {
           addToast('Las credenciales introducidas no son válidas', {
             appearance: 'error',
             autoDismiss: true,
           });
-        } else if (err.response.data.error.type === 'INACTIVE_ACCOUNT') {
+        } else if (err.response.data.error.type === INACTIVE_ACCOUNT_ERROR) {
           addToast(
             'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
             { appearance: 'error', autoDismiss: true },
