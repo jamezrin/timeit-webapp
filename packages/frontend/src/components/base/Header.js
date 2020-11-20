@@ -10,9 +10,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
-import AuthContext, {
-  requestDeauthentication,
-} from '../../state/authenticationContext';
+import AuthContext, { requestDeauthentication } from '../../state/authContext';
 import { useToasts } from 'react-toast-notifications';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 

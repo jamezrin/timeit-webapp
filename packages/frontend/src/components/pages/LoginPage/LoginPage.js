@@ -22,7 +22,7 @@ import {
 import AuthContext, {
   fetchAuthStatus,
   requestAuthentication,
-} from '../../../state/authenticationContext';
+} from '../../../state/authContext';
 import useDocumentTitle from '../../../hooks/documentTitleHook';
 import { formatTitle } from '../../../utils';
 import * as yup from 'yup';

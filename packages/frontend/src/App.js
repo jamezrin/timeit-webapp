@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-
 import { ToastProvider } from 'react-toast-notifications';
 import { ChakraProvider, Flex } from '@chakra-ui/react';
+import { ColorModeScript } from '@chakra-ui/color-mode';
 import UnauthenticatedUserRoute from './components/routes/UnauthenticatedUserRoute';
-import AuthContext, {
-  AuthContextProvider,
-} from './state/authenticationContext';
-
+import AuthContext, { AuthContextProvider } from './state/authContext';
 import LoginPage from './components/pages/LoginPage/LoginPage';
 import ProjectListPage from './components/pages/ProjectListPage/ProjectListPage';
 import RegisterPage from './components/pages/RegisterPage/RegisterPage';
@@ -20,7 +17,6 @@ import RequestPasswordResetPage from './components/pages/RequestPasswordResetPag
 import ConfirmAccountPage from './components/pages/ConfirmAccountPage/ConfirmAccountPage';
 import AcceptProjectInvitePage from './components/pages/AcceptProjectInvitePage/AcceptProjectInvitePage';
 import RecoverPasswordPage from './components/pages/RecoverPasswordPage/RecoverPasswordPage';
-import { ColorModeScript } from '@chakra-ui/color-mode';
 
 const ProviderWrappedComponent = ({ children }) => {
   return (

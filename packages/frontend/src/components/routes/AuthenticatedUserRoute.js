@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import AuthContext from '../../state/authenticationContext';
+import AuthContext from '../../state/authContext';
 
 export default function AuthenticatedUserRoute({
   component: ChildComponent,
