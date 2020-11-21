@@ -12,13 +12,13 @@ import {
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 import AuthContext from '../state/authContext';
 import { useToasts } from 'react-toast-notifications';
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { DownloadIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { requestDeauthentication } from '../api';
+import { Button } from '@chakra-ui/button';
 
-// eslint-disable-next-line no-unused-vars
-const MenuItems = ({ children }) => (
-  <Text mt={{ base: 4, md: 0 }} mr={6} display="block">
-    {children}
+const MenuItem = (props) => (
+  <Text mt={{ base: 4, md: 0 }} mr={6} display="block" {...props}>
+    {props.children}
   </Text>
 );
 
@@ -82,11 +82,22 @@ export default function Header(props) {
         alignItems="center"
         flexGrow={1}
       >
-        {/*
-        <MenuItems>Docs</MenuItems>
-        <MenuItems>Examples</MenuItems>
-        <MenuItems>Blog</MenuItems>
-        */}
+        <MenuItem ml="auto" mr="8">
+          <Box
+            as="a"
+            href="https://github.com/jamezrin/timeit-client"
+            target="_blank"
+          >
+            <Button
+              colorScheme="blue"
+              size="sm"
+              variant="outline"
+              leftIcon={<DownloadIcon />}
+            >
+              Descargar Cliente
+            </Button>
+          </Box>
+        </MenuItem>
       </Box>
 
       <Box
