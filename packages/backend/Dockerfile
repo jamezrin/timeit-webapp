@@ -2,7 +2,7 @@
 # Build stage
 #
 
-FROM node:12 AS builder
+FROM node:14-slim AS builder
 
 WORKDIR /usr/src/app
 
@@ -25,7 +25,7 @@ RUN yarn workspace backend build
 # Production stage
 #
 
-FROM node:12
+FROM node:14-slim
 
 WORKDIR /app
 
