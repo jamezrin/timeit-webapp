@@ -113,7 +113,7 @@ export default function RecoverPasswordPage() {
               errorBorderColor="red.500"
               bg={inputBg}
             />
-            <InputRightElement width="4.5rem" mr={12}>
+            <InputRightElement width="6.5rem" mr={{ base: 4, lg: 12 }}>
               <Button
                 h="1.75rem"
                 size="sm"
@@ -123,7 +123,6 @@ export default function RecoverPasswordPage() {
               </Button>
             </InputRightElement>
           </InputGroup>
-
           <FormErrorMessage>
             {errors.newPassword && errors.newPassword.message}
           </FormErrorMessage>

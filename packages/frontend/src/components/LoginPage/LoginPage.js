@@ -146,7 +146,6 @@ export default function LoginPage() {
               </Button>
             </InputRightElement>
           </InputGroup>
-
           <FormErrorMessage>
             {errors.password && errors.password.message}
           </FormErrorMessage>
