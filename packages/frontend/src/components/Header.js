@@ -10,9 +10,10 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
-import AuthContext, { requestDeauthentication } from '../state/authContext';
+import AuthContext from '../state/authContext';
 import { useToasts } from 'react-toast-notifications';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import { requestDeauthentication } from '../api';
 
 // eslint-disable-next-line no-unused-vars
 const MenuItems = ({ children }) => (

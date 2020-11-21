@@ -19,10 +19,7 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 
-import AuthContext, {
-  fetchAuthStatus,
-  requestAuthentication,
-} from '../../state/authContext';
+import AuthContext, { fetchAuthStatus } from '../../state/authContext';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
 import * as yup from 'yup';
@@ -30,6 +27,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { INACTIVE_ACCOUNT_ERROR, INVALID_CREDENTIALS_ERROR } from 'common';
+import { requestAuthentication } from '../../api';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
@@ -48,6 +46,7 @@ export default function LoginPage() {
   const location = useLocation();
   const history = useHistory();
   const { setAuthStatus } = useContext(AuthContext);
+
   useDocumentTitle(formatTitle('Inicio de sesión'));
 
   async function onSubmit(values) {

@@ -20,14 +20,7 @@ import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import axios from 'axios';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectCreation = (values) => axios.post(
-  projectsEndpoint,
-  values,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectCreation } from '../../api';
 
 export const ProjectCreationModalContext = React.createContext(null);
 

@@ -11,20 +11,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { ACCOUNT_NOT_FOUND_ERROR, ALREADY_PROJECT_MEMBER_ERROR } from 'common';
 import { isResponseError } from '../../utils';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInvite = (projectId, emailAddress) => axios.post(
-  `${projectsEndpoint}/${projectId}/invite`,
-  { emailAddress },
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectInvite } from '../../api';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),

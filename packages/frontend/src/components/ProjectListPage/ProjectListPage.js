@@ -19,13 +19,7 @@ import {
   ProjectCreationModalContext,
   ProjectCreationModalProvider,
 } from './ProjectCreationModal';
-import axios from 'axios';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectList = () => axios.get(
-  projectsEndpoint,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectList } from '../../api';
 
 function ProjectListPlaceholder() {
   const { openProjectCreationModal } = useContext(ProjectCreationModalContext);
@@ -100,6 +94,7 @@ function ProjectListContent({ projects }) {
 function ProjectListPage() {
   const [projects, setProjects] = useState(null);
   const { projectsCreatedCount } = useContext(ProjectCreationModalContext);
+
   useDocumentTitle(formatTitle('Lista de proyectos'));
 
   useEffect(() => {

@@ -11,13 +11,7 @@ import {
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { useToasts } from 'react-toast-notifications';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectDelete = (projectId) => axios.delete(
-  `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectDelete } from '../../api';
 
 function DeleteProjectSettings({ projectInfo }) {
   const [typedProjectName, setTypedProjectName] = useState('');

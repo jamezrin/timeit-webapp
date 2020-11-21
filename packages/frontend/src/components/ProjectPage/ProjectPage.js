@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { ArrowBackIcon, SettingsIcon } from '@chakra-ui/icons';
-import axios from 'axios';
 import moment from 'moment';
 import ProjectMemberSelect from './ProjectMemberSelect';
 import PeriodDateRangePicker from './PeriodDateRangePicker';
@@ -14,58 +13,15 @@ import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
+import {
+  requestProjectHistory,
+  requestProjectInfo,
+  requestProjectMembers,
+  requestProjectSessions,
+  requestProjectStatistics,
+} from '../../api';
 
 moment.locale('es');
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
-const projectStatisticsEndpoint = process.env.REACT_APP_BACKEND_URL + "/data_query/summary_statistics"; // prettier-ignore
-const projectStatisticsHistoryEndpoint = process.env.REACT_APP_BACKEND_URL + "/data_query/history_statistics"; // prettier-ignore
-
-const requestProjectInfo = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
-); // prettier-ignore
-
-const requestProjectSessions = (projectId, startDate, endDate, memberIds = []) => axios.get(
-  `${projectsEndpoint}/${projectId}/sessions`,
-  {
-    withCredentials: true,
-    params: {
-      memberIds,
-      startDate,
-      endDate
-    }
-  }
-); // prettier-ignore
-
-const requestProjectMembers = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}/members`,
-  { withCredentials: true }
-); // prettier-ignore
-
-const requestProjectStatistics = (projectId, startDate, endDate, memberIds = []) => axios.get(
-  `${projectStatisticsEndpoint}/${projectId}`,
-  {
-    withCredentials: true,
-    params: {
-      memberIds,
-      startDate,
-      endDate
-    }
-  }
-); // prettier-ignore
-
-const requestProjectHistory = (projectId, startDate, endDate, memberId) => axios.get(
-  `${projectStatisticsHistoryEndpoint}/${projectId}`,
-  {
-    withCredentials: true,
-    params: {
-      memberId,
-      startDate,
-      endDate
-    }
-  }
-); // prettier-ignore
 
 function ProjectPageContent({ projectInfo, projectMembers }) {
   const history = useHistory();

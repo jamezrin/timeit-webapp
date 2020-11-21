@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
 import { Button, Flex } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useHistory, useParams } from 'react-router-dom';
@@ -13,17 +12,7 @@ import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import { useToasts } from 'react-toast-notifications';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectInfo = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
-); // prettier-ignore
-
-const requestProjectMembers = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}/members`,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectInfo, requestProjectMembers } from '../../api';
 
 function ProjectPageContent({ projectInfo, setProjectInfo }) {
   const [projectMembers, setProjectMembers] = useState();

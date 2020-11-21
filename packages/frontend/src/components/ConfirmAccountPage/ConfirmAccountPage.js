@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { Flex } from '@chakra-ui/react';
-import axios from 'axios';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
@@ -11,13 +10,7 @@ import {
   INACTIVE_ACCOUNT_ERROR,
   INVALID_CREDENTIALS_ERROR,
 } from 'common';
-
-const confirmAccountEndpoint = process.env.REACT_APP_BACKEND_URL + `/confirm-account`; // prettier-ignore
-const requestConfirmAccount = (token) => axios.post(
-  `${confirmAccountEndpoint}/${token}`,
-  {},
-  { withCredentials: true }
-); // prettier-ignore
+import { requestConfirmAccount } from '../../api';
 
 export default function ConfirmAccountPage() {
   const { token } = useParams();

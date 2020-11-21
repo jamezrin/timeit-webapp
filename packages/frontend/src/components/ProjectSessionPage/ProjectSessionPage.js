@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import useResizeObserver from 'use-resize-observer';
 import { useToasts } from 'react-toast-notifications';
 import BaseTable, { Column } from 'react-base-table';
-
 import 'react-base-table/styles.css';
-
 import MainLayout from '../MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import useDocumentTitle from '../../hooks/documentTitleHook';
@@ -19,25 +16,11 @@ import {
   parseAndFormatTimestamp,
 } from '../../utils';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
-const sessionsEndpoint = process.env.REACT_APP_BACKEND_URL + "/sessions"; // prettier-ignore
-const sessionEventEndpoint = process.env.REACT_APP_BACKEND_URL + "/data_query/session_events"; // prettier-ignore
-
-const requestProjectInfo = (projectId) => axios.get(
-  `${projectsEndpoint}/${projectId}`,
-  { withCredentials: true }
-); // prettier-ignore
-
-const requestSessionInfo = (sessionId) => axios.get(
-  `${sessionsEndpoint}/${sessionId}`,
-  { withCredentials: true }
-); // prettier-ignore
-
-const requestSessionEvents = (sessionId) => axios.get(
-  `${sessionEventEndpoint}/${sessionId}`,
-  { withCredentials: true }
-); // prettier-ignore
+import {
+  requestProjectInfo,
+  requestSessionEvents,
+  requestSessionInfo,
+} from '../../api';
 
 function ProjectSessionContent({ projectInfo, sessionInfo }) {
   const history = useHistory();

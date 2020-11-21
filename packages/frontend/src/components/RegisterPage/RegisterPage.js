@@ -16,20 +16,13 @@ import {
 } from '@chakra-ui/react';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import axios from 'axios';
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ACCOUNT_ALREADY_EXISTS_ERROR } from 'common';
-
-const registerEndpoint = process.env.REACT_APP_BACKEND_URL + '/create-account';
-const requestRegister = (values) => axios.post(
-  registerEndpoint,
-  values,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestAccountCreation } from '../../api';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),
@@ -51,7 +44,7 @@ export default function RegisterPage() {
 
   async function onSubmit(values) {
     try {
-      await requestRegister(values);
+      await requestAccountCreation(values);
 
       addToast(
         'Te has registrado correctamente, verifica tu cuenta para poder iniciar sesión',

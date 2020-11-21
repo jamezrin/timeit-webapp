@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Box, Divider, Flex, Heading, IconButton } from '@chakra-ui/react';
 import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
 import BaseTable, { AutoResizer, Column } from 'react-base-table';
 import { formatUserFullName, parseAndFormatDate } from '../../utils';
 import {
@@ -10,26 +9,11 @@ import {
   TriangleUpIcon,
 } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-
-const projectMembersEndpoint = process.env.REACT_APP_BACKEND_URL + '/project_members'; // prettier-ignore
-
-const requestMemberKick = (memberId) => axios.post(
-  `${projectMembersEndpoint}/${memberId}/kick`,
-  {},
-  { withCredentials: true },
-); //prettier-ignore
-
-const requestMemberPromote = (memberId) => axios.post(
-  `${projectMembersEndpoint}/${memberId}/promote`,
-  {},
-  { withCredentials: true },
-); // prettier-ignore
-
-const requestMemberDemote = (memberId) => axios.post(
-  `${projectMembersEndpoint}/${memberId}/demote`,
-  {},
-  { withCredentials: true },
-); // prettier-ignore
+import {
+  requestMemberDemote,
+  requestMemberKick,
+  requestMemberPromote,
+} from '../../api';
 
 function ProjectMemberList({ projectInfo, projectMembers, updateMembers }) {
   const wrapperBg = useColorModeValue('gray.100', 'gray.700');

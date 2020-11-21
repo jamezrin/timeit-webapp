@@ -12,17 +12,10 @@ import {
 } from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
-const requestProjectRename = (projectId, name) => axios.patch(
-  `${projectsEndpoint}/${projectId}`,
-  { name },
-  { withCredentials: true }
-); // prettier-ignore
+import { requestProjectRename } from '../../api';
 
 const schema = yup.object().shape({
   projectName: yup.string().required().trim().min(4),

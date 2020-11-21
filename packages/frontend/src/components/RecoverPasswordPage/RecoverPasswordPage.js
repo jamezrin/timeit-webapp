@@ -15,7 +15,6 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useToasts } from 'react-toast-notifications';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
@@ -26,13 +25,7 @@ import {
   INACTIVE_ACCOUNT_ERROR,
   INVALID_CREDENTIALS_ERROR,
 } from 'common';
-
-const recoverPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + `/perform-password-reset`; // prettier-ignore
-const requestPasswordReset = (values, token) => axios.post(
-  `${recoverPasswordEndpoint}/${token}`,
-  values,
-  { withCredentials: true }
-); // prettier-ignore
+import { performPasswordReset } from '../../api';
 
 const schema = yup.object().shape({
   newPassword: yup.string().required().trim().min(8),
@@ -53,7 +46,7 @@ export default function RecoverPasswordPage() {
 
   async function onSubmit(values) {
     try {
-      await requestPasswordReset(values, token);
+      await performPasswordReset(values, token);
 
       addToast(
         'Has cambiado tu contraseña correctamente, ya puedes iniciar sesión con ella',

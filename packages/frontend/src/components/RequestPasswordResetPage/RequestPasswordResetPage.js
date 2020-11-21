@@ -3,7 +3,6 @@ import React from 'react';
 import { Link as RouteLink, useHistory, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useToasts } from 'react-toast-notifications';
-import axios from 'axios';
 import {
   Button,
   FormControl,
@@ -28,13 +27,7 @@ import {
   ALREADY_REQUESTED_MAIL_TOKEN_ERROR,
   INACTIVE_ACCOUNT_ERROR,
 } from 'common';
-
-const requestPasswordEndpoint = process.env.REACT_APP_BACKEND_URL + "/request-password-reset"; // prettier-ignore
-const requestPasswordReset = (values) => axios.post(
-  requestPasswordEndpoint,
-  values,
-  { withCredentials: true }
-); // prettier-ignore
+import { requestPasswordReset } from '../../api';
 
 const schema = yup.object().shape({
   emailAddress: yup.string().email().required(),

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useToasts } from 'react-toast-notifications';
 import { Flex } from '@chakra-ui/react';
-import axios from 'axios';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
@@ -11,13 +10,7 @@ import {
   INACTIVE_ACCOUNT_ERROR,
   INVALID_CREDENTIALS_ERROR,
 } from 'common';
-
-const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + `/projects`;
-const requestAcceptProjectInvite = (projectId, token) => axios.post(
-  `${projectsEndpoint}/${projectId}/accept-invite/${token}`,
-  {},
-  { withCredentials: true }
-); // prettier-ignore
+import { requestAcceptProjectInvite } from '../../api';
 
 export default function AcceptProjectInvitePage() {
   const { projectId, token } = useParams();
@@ -28,7 +21,7 @@ export default function AcceptProjectInvitePage() {
   useEffect(() => {
     requestAcceptProjectInvite(projectId, token)
       .then((res) => {
-        history.push(`${projectsEndpoint}/${projectId}`);
+        history.push(`/projects/${projectId}`);
 
         addToast('Has aceptado la invitación de proyecto', {
           appearance: 'success',
