@@ -1,7 +1,6 @@
 ---
 deploy_dir: /var/deploy
 deploy_user: deploy
-local_project_dir: "{{ playbook_dir }}/../"
 secrets_dir: "{{ deploy_dir }}/secrets"
 backend_env: "{{ secrets_dir }}/timeit_backend.env"
 postgres_env: "{{ secrets_dir }}/timeit_postgres.env"

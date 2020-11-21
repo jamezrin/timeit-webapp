@@ -4,15 +4,14 @@
   vars:
     app_name: timeit-backend
     app_image: "{{ app_name }}.tar"
-    backend_path: "{{ local_project_dir }}/backend"
+    backend_path: "../packages/backend"
+    backend_dockerfile: "{{ backend_path }}/Dockerfile"
   vars_files:
     - common_variables.yml
   tasks:
     - name: Build backend image
       delegate_to: localhost
-      command: "docker build -t {{ app_name }} ."
-      args:
-        chdir: "{{ backend_path }}"
+      command: "docker build -t {{ app_name }} -f {{ backend_dockerfile }} .."
     - name: Save backend image
       delegate_to: localhost
       command: "docker save --output {{ app_image }} {{ app_name }}"

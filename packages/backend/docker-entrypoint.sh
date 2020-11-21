@@ -2,8 +2,8 @@
 
 if [ -n "$TIMEIT_RUN_MIGRATIONS" ]; then
   echo "=== Running typeorm migrations..."
-  yarn run typeorm migration:run
+  yarn workspace backend typeorm migration:run
 fi
 
 echo "=== Starting the server..."
-node /app/build/index.js
+node /app/packages/backend/build/index.js
