@@ -6,6 +6,7 @@ import {
   Heading,
   IconButton,
   Text,
+  Button,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -14,7 +15,6 @@ import AuthContext from '../state/authContext';
 import { useToasts } from 'react-toast-notifications';
 import { DownloadIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { requestDeauthentication } from '../api';
-import { Button } from '@chakra-ui/button';
 
 const MenuItem = (props) => (
   <Text mt={{ base: 4, md: 0 }} mr={6} display="block" {...props}>
