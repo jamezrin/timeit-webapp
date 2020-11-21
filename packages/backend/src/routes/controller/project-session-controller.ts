@@ -103,11 +103,11 @@ const projectSessionControler = {
     }
 
     // prettier-ignore
-    const sessionQueryBuilder = Session.createQueryBuilder("session")
-      .where("session.id = :sessionId", { sessionId })
-      .loadRelationCountAndMap("session.appEventCount", "session.sessionAppEvents")
-      .loadRelationCountAndMap("session.noteCount", "session.sessionNotes")
-      .loadRelationIdAndMap("session.projectMemberId", "session.projectMember");
+    const sessionQueryBuilder = Session.createQueryBuilder('session')
+      .where('session.id = :sessionId', { sessionId })
+      .loadRelationCountAndMap('session.appEventCount', 'session.sessionAppEvents')
+      .loadRelationCountAndMap('session.noteCount', 'session.sessionNotes')
+      .loadRelationIdAndMap('session.projectMemberId', 'session.projectMember');
 
     // Ensure the session being looked up is owned by the current member
     if (!isMemberPrivileged(currentProjectMember)) {
@@ -148,8 +148,8 @@ const projectSessionControler = {
     }
 
     // prettier-ignore
-    const sessionQueryBuilder = Session.createQueryBuilder("session")
-      .where("session.id = :sessionId", { sessionId });
+    const sessionQueryBuilder = Session.createQueryBuilder('session')
+      .where('session.id = :sessionId', { sessionId });
 
     // Add an additional condition to only query their own sessions
     if (!isMemberPrivileged(currentProjectMember)) {

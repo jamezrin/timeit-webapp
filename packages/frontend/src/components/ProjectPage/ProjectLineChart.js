@@ -102,7 +102,7 @@ const ProjectLineChart = ({
             id: formatUserFullName(
               findProjectMember(
                 projectMembers,
-                memberHistoryStats.memberId
+                memberHistoryStats.memberId,
               ).user, // prettier-ignore
             ),
             data: memberHistoryStats.data.map((historyData) => ({

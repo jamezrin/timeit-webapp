@@ -213,8 +213,8 @@ const dataController = {
       }
 
       // prettier-ignore
-      const sessionQueryBuilder = Session.createQueryBuilder("session")
-        .where("session.id = :sessionId", { sessionId });
+      const sessionQueryBuilder = Session.createQueryBuilder('session')
+        .where('session.id = :sessionId', { sessionId });
 
       // Ensure the session being looked up is owned by the current member
       if (!isMemberPrivileged(currentProjectMember)) {
@@ -292,8 +292,8 @@ const dataController = {
       }
 
       // prettier-ignore
-      const sessionQueryBuilder = Session.createQueryBuilder("session")
-        .where("session.id = :sessionId", { sessionId });
+      const sessionQueryBuilder = Session.createQueryBuilder('session')
+        .where('session.id = :sessionId', { sessionId });
 
       // Ensure the session being looked up is owned by the current member
       if (!isMemberPrivileged(currentProjectMember)) {

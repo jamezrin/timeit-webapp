@@ -159,7 +159,7 @@ function ProjectPage() {
   const { addToast } = useToasts();
   const history = useHistory();
 
-  useDocumentTitle(formatTitle(`Proyecto ${projectInfo?.name || "Desconocido"}`)); // prettier-ignore
+  useDocumentTitle(formatTitle(`Proyecto ${projectInfo?.name || 'Desconocido'}`)); // prettier-ignore
 
   useEffect(() => {
     Promise.all([

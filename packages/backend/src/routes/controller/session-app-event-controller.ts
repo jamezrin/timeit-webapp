@@ -115,8 +115,8 @@ const sessionAppEventController = {
     }
 
     // prettier-ignore
-    const appEventQueryBuilder = SessionAppEvent.createQueryBuilder("appEvent")
-      .where("appEvent.id = :appEventId", { appEventId });
+    const appEventQueryBuilder = SessionAppEvent.createQueryBuilder('appEvent')
+      .where('appEvent.id = :appEventId', { appEventId });
 
     // Ensure the app event session being looked up is owned by the current member
     if (!isMemberPrivileged(currentProjectMember)) {

@@ -117,8 +117,8 @@ const sessionNoteController = {
     }
 
     // prettier-ignore
-    const sessionNoteQueryBuilder = SessionNote.createQueryBuilder("sessionNote")
-      .where("sessionNote.id = :noteId", { noteId });
+    const sessionNoteQueryBuilder = SessionNote.createQueryBuilder('sessionNote')
+      .where('sessionNote.id = :noteId', { noteId });
 
     // Ensure the note session being looked up is owned by the current member
     if (!isMemberPrivileged(currentProjectMember)) {

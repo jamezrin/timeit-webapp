@@ -25,8 +25,7 @@ export const formatUserFullName = (user) =>
 
 export const formatMinutes = (minutes) => {
   if (minutes < 60) return `${minutes}m`;
-  return Math.floor(minutes / 60) + "h"
-    + Math.floor(minutes % 60) + "m"; // prettier-ignore
+  return Math.floor(minutes / 60) + 'h' + Math.floor(minutes % 60) + 'm';
 };
 
 export const formatTitle = (title) => `${title} - TimeIt`;

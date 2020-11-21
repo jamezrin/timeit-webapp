@@ -1,7 +1,7 @@
 ---
 - hosts: timeit_hosts
   name: "Recreate Postgres Containers"
-  vars: {}
+  vars: { }
   vars_files:
     - common_variables.yml
   tasks:
