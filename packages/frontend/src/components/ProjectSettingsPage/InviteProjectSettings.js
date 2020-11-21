@@ -17,6 +17,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import { ACCOUNT_NOT_FOUND_ERROR, ALREADY_PROJECT_MEMBER_ERROR } from 'common';
+import { isResponseError } from '../../utils';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + '/projects';
 const requestProjectInvite = (projectId, emailAddress) => axios.post(
@@ -54,20 +55,16 @@ function InviteProjectSettings({ projectInfo, updateMembers }) {
       // Refresh the user list
       updateMembers();
     } catch (err) {
-      if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === ACCOUNT_NOT_FOUND_ERROR) {
-          addToast('No existe ningún usuario con ese correo electrónico', {
-            appearance: 'error',
-            autoDismiss: true,
-          });
-        } else if (
-          err.response.data.error.type === ALREADY_PROJECT_MEMBER_ERROR
-        ) {
-          addToast('Este usuario ya es un miembro del proyecto', {
-            appearance: 'error',
-            autoDismiss: true,
-          });
-        }
+      if (isResponseError(err, ACCOUNT_NOT_FOUND_ERROR)) {
+        addToast('No existe ningún usuario con ese correo electrónico', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } else if (isResponseError(err, ALREADY_PROJECT_MEMBER_ERROR)) {
+        addToast('Este usuario ya es un miembro del proyecto', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',

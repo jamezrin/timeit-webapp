@@ -10,7 +10,7 @@ import DeleteProjectSettings from './DeleteProjectSettings';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import MainLayout from '../MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
-import { formatTitle, isMemberPrivileged } from '../../utils';
+import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import { useToasts } from 'react-toast-notifications';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
 
@@ -110,15 +110,13 @@ function ProjectSettingsPage() {
         setProjectInfo(res.data);
       })
       .catch((err) => {
-        if (err.response && err.response.data.error) {
-          if (err.response.data.error.type === RESOURCE_NOT_FOUND_ERROR) {
-            addToast(`No se ha podido encontrar la sesión que has pedido`, {
-              appearance: 'error',
-              autoDismiss: true,
-            });
+        if (isResponseError(err, RESOURCE_NOT_FOUND_ERROR)) {
+          addToast(`No se ha podido encontrar la sesión que has pedido`, {
+            appearance: 'error',
+            autoDismiss: true,
+          });
 
-            history.push('/');
-          }
+          history.push('/');
         } else {
           addToast(`Ha ocurrido un error desconocido: ${err}`, {
             appearance: 'error',

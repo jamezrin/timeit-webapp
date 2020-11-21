@@ -5,7 +5,7 @@ import { Flex } from '@chakra-ui/react';
 import axios from 'axios';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import useDocumentTitle from '../../hooks/documentTitleHook';
-import { formatTitle } from '../../utils';
+import { formatTitle, isResponseError } from '../../utils';
 import {
   EXPIRED_MAIL_TOKEN_ERROR,
   INACTIVE_ACCOUNT_ERROR,
@@ -36,30 +36,23 @@ export default function AcceptProjectInvitePage() {
         });
       })
       .catch((err) => {
-        if (err.response && err.response.data.error) {
-          if (err.response.data.error.type === INVALID_CREDENTIALS_ERROR) {
-            addToast('Las credenciales introducidas no son válidas', {
-              appearance: 'error',
-              autoDismiss: true,
-            });
-          } else if (err.response.data.error.type === INACTIVE_ACCOUNT_ERROR) {
-            addToast(
-              'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
-              { appearance: 'error', autoDismiss: true },
-            );
-          } else if (
-            err.response.data.error.type === EXPIRED_MAIL_TOKEN_ERROR
-          ) {
-            addToast(
-              'El enlace que has usado ha caducado, solicita uno nuevo',
-              {
-                appearance: 'error',
-                autoDismiss: true,
-              },
-            );
+        if (isResponseError(err, INVALID_CREDENTIALS_ERROR)) {
+          addToast('Las credenciales introducidas no son válidas', {
+            appearance: 'error',
+            autoDismiss: true,
+          });
+        } else if (isResponseError(err, INACTIVE_ACCOUNT_ERROR)) {
+          addToast(
+            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+            { appearance: 'error', autoDismiss: true },
+          );
+        } else if (isResponseError(err, EXPIRED_MAIL_TOKEN_ERROR)) {
+          addToast('El enlace que has usado ha caducado, solicita uno nuevo', {
+            appearance: 'error',
+            autoDismiss: true,
+          });
 
-            history.push('/');
-          }
+          history.push('/');
         } else {
           addToast(`Ha ocurrido un error desconocido: ${err}`, {
             appearance: 'error',

@@ -20,7 +20,7 @@ import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import useDocumentTitle from '../../hooks/documentTitleHook';
-import { formatTitle } from '../../utils';
+import { formatTitle, isResponseError } from '../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -50,6 +50,7 @@ export default function RequestPasswordResetPage() {
   const { addToast } = useToasts();
   const location = useLocation();
   const history = useHistory();
+
   useDocumentTitle(formatTitle('Restablecimiento de contraseña'));
 
   async function onSubmit(values) {
@@ -65,25 +66,21 @@ export default function RequestPasswordResetPage() {
         (location.state && location.state.previousLocation) || '/',
       );
     } catch (err) {
-      if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === INACTIVE_ACCOUNT_ERROR) {
-          addToast(
-            'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
-            { appearance: 'error', autoDismiss: true },
-          );
-        } else if (err.response.data.error.type === ACCOUNT_NOT_FOUND_ERROR) {
-          addToast('No existe ningún usuario con ese correo electrónico', {
-            appearance: 'error',
-            autoDismiss: true,
-          });
-        } else if (
-          err.response.data.error.type === ALREADY_REQUESTED_MAIL_TOKEN_ERROR
-        ) {
-          addToast(
-            'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',
-            { appearance: 'error', autoDismiss: true },
-          );
-        }
+      if (isResponseError(err, INACTIVE_ACCOUNT_ERROR)) {
+        addToast(
+          'Todavía no has confirmado tu cuenta de usuario, comprueba tu correo electrónico',
+          { appearance: 'error', autoDismiss: true },
+        );
+      } else if (isResponseError(err, ACCOUNT_NOT_FOUND_ERROR)) {
+        addToast('No existe ningún usuario con ese correo electrónico', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } else if (isResponseError(err, ALREADY_REQUESTED_MAIL_TOKEN_ERROR)) {
+        addToast(
+          'Solo puedes pedir restablecer la contraseña de tu cuenta cada 12 horas',
+          { appearance: 'error', autoDismiss: true },
+        );
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',

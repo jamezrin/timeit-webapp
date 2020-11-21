@@ -10,7 +10,7 @@ import ProjectPageInfo from './ProjectPageInfo';
 import ProjectPageNoInfo from './ProjectPageNoInfo';
 import MainLayout from '../MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
-import { formatTitle, isMemberPrivileged } from '../../utils';
+import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
@@ -203,8 +203,7 @@ function ProjectPage() {
   const { addToast } = useToasts();
   const history = useHistory();
 
-  // prettier-ignore
-  useDocumentTitle(formatTitle("Proyecto " + (projectInfo ? projectInfo.name : "")));
+  useDocumentTitle(formatTitle(`Proyecto ${projectInfo?.name || "Desconocido"}`)); // prettier-ignore
 
   useEffect(() => {
     Promise.all([
@@ -215,15 +214,13 @@ function ProjectPage() {
         setProjectMembers(res.data);
       }),
     ]).catch((err) => {
-      if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === RESOURCE_NOT_FOUND_ERROR) {
-          addToast(`No se ha podido encontrar el proyecto que has pedido`, {
-            appearance: 'error',
-            autoDismiss: true,
-          });
+      if (isResponseError(err, RESOURCE_NOT_FOUND_ERROR)) {
+        addToast(`No se ha podido encontrar el proyecto que has pedido`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
 
-          history.push('/');
-        }
+        history.push('/');
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',

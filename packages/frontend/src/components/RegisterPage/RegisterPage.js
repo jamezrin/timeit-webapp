@@ -19,7 +19,7 @@ import { useColorModeValue } from '@chakra-ui/color-mode';
 import axios from 'axios';
 import LoginRegisterLayout from '../LoginRegisterLayout';
 import useDocumentTitle from '../../hooks/documentTitleHook';
-import { formatTitle } from '../../utils';
+import { formatTitle, isResponseError } from '../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ACCOUNT_ALREADY_EXISTS_ERROR } from 'common';
@@ -60,8 +60,13 @@ export default function RegisterPage() {
 
       history.push('/login');
     } catch (err) {
-      if (err.response.data.error.type === ACCOUNT_ALREADY_EXISTS_ERROR) {
+      if (isResponseError(err, ACCOUNT_ALREADY_EXISTS_ERROR)) {
         addToast('Ya existe una cuenta con ese correo electronico', {
+          appearance: 'error',
+          autoDismiss: true,
+        });
+      } else {
+        addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',
           autoDismiss: true,
         });

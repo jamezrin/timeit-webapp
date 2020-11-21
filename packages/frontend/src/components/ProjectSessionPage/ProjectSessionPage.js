@@ -13,7 +13,11 @@ import MainLayout from '../MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import useWindowDimensions from '../../hooks/windowDimensionsHook';
-import { formatTitle, parseAndFormatTimestamp } from '../../utils';
+import {
+  formatTitle,
+  isResponseError,
+  parseAndFormatTimestamp,
+} from '../../utils';
 import { RESOURCE_NOT_FOUND_ERROR } from 'common';
 
 const projectsEndpoint = process.env.REACT_APP_BACKEND_URL + "/projects"; // prettier-ignore
@@ -144,15 +148,13 @@ function ProjectSessionPage() {
         setSessionInfo(response.data);
       }),
     ]).catch((err) => {
-      if (err.response && err.response.data.error) {
-        if (err.response.data.error.type === RESOURCE_NOT_FOUND_ERROR) {
-          addToast(`No se ha podido encontrar la sesión que has pedido`, {
-            appearance: 'error',
-            autoDismiss: true,
-          });
+      if (isResponseError(err, RESOURCE_NOT_FOUND_ERROR)) {
+        addToast(`No se ha podido encontrar la sesión que has pedido`, {
+          appearance: 'error',
+          autoDismiss: true,
+        });
 
-          history.push('/');
-        }
+        history.push('/');
       } else {
         addToast(`Ha ocurrido un error desconocido: ${err}`, {
           appearance: 'error',

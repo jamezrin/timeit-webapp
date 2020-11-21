@@ -31,4 +31,7 @@ export const formatMinutes = (minutes) => {
 
 export const formatTitle = (title) => `${title} - TimeIt`;
 
-export const isErrorType = (error, errorType) => error?.response?.data?.error === errorType
+export const isResponseError = (caughtError, expectedError) => {
+  const errorType = caughtError?.response?.data?.error?.type;
+  return errorType && errorType === expectedError;
+};
