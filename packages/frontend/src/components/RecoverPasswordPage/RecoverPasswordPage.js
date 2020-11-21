@@ -6,13 +6,13 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
-  Icon,
   Input,
   InputGroup,
   InputRightElement,
   Text,
 } from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/color-mode';
+import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useToasts } from 'react-toast-notifications';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
@@ -133,7 +133,7 @@ export default function RecoverPasswordPage() {
           isLoading={formState.isSubmitting}
           type="submit"
         >
-          Continuar <Icon ml={4} name="arrow-right" />
+          Continuar <ArrowRightIcon ml={4} />
         </Button>
       </form>
     </LoginRegisterLayout>
