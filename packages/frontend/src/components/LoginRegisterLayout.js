@@ -1,10 +1,10 @@
 import React from 'react';
 
+import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/color-mode';
 import timeManagementSvg from '../assets/time_management.svg';
 import mainAppCoverLogo from '../assets/brand-logo.svg';
-import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import { noDragOrSelectCss } from '../utils';
-import { useColorModeValue } from '@chakra-ui/color-mode';
 
 export default function LoginRegisterLayout({ children }) {
   const imageBoxBg = useColorModeValue(
