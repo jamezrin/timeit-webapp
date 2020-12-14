@@ -9,7 +9,7 @@
     "@chakra-ui/react": "1.0.3",
     "@emotion/react": "11.1.2",
     "@emotion/styled": "11.0.0",
-    "@hookform/resolvers": "1.1.2",
+    "@hookform/resolvers": "1.2.0",
     "@nivo/core": "0.67.0",
     "@nivo/line": "0.67.0",
     "@testing-library/jest-dom": "5.11.6",
