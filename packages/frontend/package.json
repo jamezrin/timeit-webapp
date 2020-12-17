@@ -6,7 +6,7 @@
     "common": "*",
     "@chakra-ui/color-mode": "1.0.2",
     "@chakra-ui/icons": "1.0.1",
-    "@chakra-ui/react": "1.0.3",
+    "@chakra-ui/react": "1.0.4",
     "@emotion/react": "11.1.2",
     "@emotion/styled": "11.0.0",
     "@hookform/resolvers": "1.2.0",
