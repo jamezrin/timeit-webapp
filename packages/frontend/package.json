@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "common": "*",
-    "@chakra-ui/color-mode": "1.0.2",
+    "@chakra-ui/color-mode": "1.0.3",
     "@chakra-ui/icons": "1.0.2",
     "@chakra-ui/react": "1.1.2",
     "@emotion/react": "11.1.4",
