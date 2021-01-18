@@ -1107,14 +1107,6 @@
     "@chakra-ui/icon" "1.0.3"
     "@chakra-ui/utils" "1.1.0"
 
-"@chakra-ui/color-mode@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/color-mode/-/color-mode-1.0.3.tgz#9d984cbf038144c3270daa0fc1f2d5aff1bf514a"
-  integrity sha512-5SjvZP3z4FUWYQZM619gHgITbibu5SOfnuZDk/KkseL2WiRxj9qNmHrg/MKfdhROdgehha5Vb355bvIcfpbFxg==
-  dependencies:
-    "@chakra-ui/hooks" "1.1.0"
-    "@chakra-ui/utils" "1.1.0"
-
 "@chakra-ui/color-mode@1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@chakra-ui/color-mode/-/color-mode-1.0.4.tgz#c0e108700f020986cbab15e6f0966d3de4b1eba9"
@@ -1174,15 +1166,6 @@
     "@chakra-ui/hooks" "1.1.1"
     "@chakra-ui/icon" "1.0.3"
     "@chakra-ui/utils" "1.1.0"
-
-"@chakra-ui/hooks@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-1.1.0.tgz#18ad0125bdf244171e39995b0392ee06f886b497"
-  integrity sha512-DDCs4Q308j1bEMhP57SUYXpwsoaeY/dLvMuVGFYvBswQA/CaeQ4t8g5mQsTpot5ex9OKsd9PHyTqhoqpHVo0KQ==
-  dependencies:
-    "@chakra-ui/utils" "1.1.0"
-    compute-scroll-into-view "1.0.14"
-    copy-to-clipboard "3.3.1"
 
 "@chakra-ui/hooks@1.1.1":
   version "1.1.1"
@@ -11440,10 +11423,10 @@ react-hook-form-input@1.1.10:
   resolved "https://registry.yarnpkg.com/react-hook-form-input/-/react-hook-form-input-1.1.10.tgz#71a87d9c814176e7f127382e257bcb8de4498e22"
   integrity sha512-RkkJeQmfUDT+Wq6iVGdvNY3rLTAD7KW1utgbCIyKRpDh41lf2Z8dC57GSapAh8TMLL1s6F57CUqXBZuGHZQgxA==
 
-react-hook-form@6.14.1:
-  version "6.14.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.14.1.tgz#c15f03fe8a7df76232bd4ac07b87317acab0cbd8"
-  integrity sha512-Bf2fWcL2F34hUUqrx1rpgZ8ZErQ4/DvrPs6Je+lUYL59km8PXIQqyCTz/NbggC1RQUj7rChSmTx6eFap+mCttw==
+react-hook-form@6.14.2:
+  version "6.14.2"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.14.2.tgz#60ab0b5367b220a3d96aa0b17bd0f13f9d8c326a"
+  integrity sha512-GgDUuT3Yfhl1BOcMl862uAFbCixSomtm3CVlQQ1qVu9Tq5BN2uUIRUIXP8l2Gy99eLUrBqU9x4E7N+si9cnvaw==
 
 react-icons@4.1.0:
   version "4.1.0"
