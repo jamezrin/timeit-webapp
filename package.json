@@ -6,7 +6,9 @@
     ],
     "nohoist": [
       "**/typeorm/**",
-      "**/typeorm"
+      "**/typeorm",
+      "**/react/**",
+      "**/react"
     ]
   },
   "scripts": {
