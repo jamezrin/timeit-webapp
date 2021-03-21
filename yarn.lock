@@ -1828,6 +1828,14 @@
     "@chakra-ui/hooks" "1.1.5"
     "@chakra-ui/utils" "1.3.0"
 
+"@chakra-ui/color-mode@1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/color-mode/-/color-mode-1.1.2.tgz#824ea170b04152021bc5c39a7f17f7f0b6d59801"
+  integrity sha512-RnJvLFNmLyC9bnYgzunJ19pwr7chc3T6mvZJG4Goqxdn8jPQ3QJPh6A0vA5tvIIgbXqvIPn8imknBntHq1P0kw==
+  dependencies:
+    "@chakra-ui/hooks" "1.2.0"
+    "@chakra-ui/utils" "1.4.0"
+
 "@chakra-ui/control-box@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@chakra-ui/control-box/-/control-box-1.0.5.tgz#a2c0bbf329d47b17b6ce0321c8a76d7a263401ea"
@@ -1886,6 +1894,15 @@
   integrity sha512-JBBeQ5woByVRV0yuc318ogyjjIHJJSujdBhOZUmB+nAjlmx5lpFoAm59IAKuH8ZIqZBEzjwcnhKNw67wXjoowQ==
   dependencies:
     "@chakra-ui/utils" "1.3.0"
+    compute-scroll-into-view "1.0.14"
+    copy-to-clipboard "3.3.1"
+
+"@chakra-ui/hooks@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/hooks/-/hooks-1.2.0.tgz#4faedf2840c9c8bfad6dac289cdd13ffbb36e6a5"
+  integrity sha512-un6FuNRVtX4YKT842otuthOPvsBMsRfiDFSu0afoOZHcxfUPmtPFdE0mWQGlyAcolaj5wkL7zxXR6tbY47FnBA==
+  dependencies:
+    "@chakra-ui/utils" "1.4.0"
     compute-scroll-into-view "1.0.14"
     copy-to-clipboard "3.3.1"
 
@@ -2242,6 +2259,16 @@
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.3.0.tgz#7bfe8ffd4a8613ec562f51d27a08c4c430b88132"
   integrity sha512-MezHglxjRaAZIQDVAi1uOMVNd4a0zKGmV4cvp8+r3xTmGMU/XJCC5J49qufEqLLJbR31Y7UiCRTz86O66s1r5A==
+  dependencies:
+    "@types/lodash.mergewith" "4.6.6"
+    "@types/object-assign" "4.0.30"
+    css-box-model "1.2.1"
+    lodash.mergewith "4.6.2"
+
+"@chakra-ui/utils@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/utils/-/utils-1.4.0.tgz#4b20c522141d68dc62b5c7be929bb6d1596db190"
+  integrity sha512-ND7NIilpncnkzcNBnAySGBFpOXb3urO1X9esSY0+M5zXiq+VSSfK9JuoJd3ilvV4Dbwgzil7hMAELBuHme4uTg==
   dependencies:
     "@types/lodash.mergewith" "4.6.6"
     "@types/object-assign" "4.0.30"
