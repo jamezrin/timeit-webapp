@@ -42,7 +42,7 @@
     "@types/jsonwebtoken": "8.5.4",
     "@types/morgan": "1.9.3",
     "@types/node": "8.10.66",
-    "@types/nodemailer": "6.4.3",
+    "@types/nodemailer": "6.4.4",
     "@types/qs": "6.9.7",
     "@types/serve-static": "1.13.10",
     "@typescript-eslint/eslint-plugin": "4.28.2",
