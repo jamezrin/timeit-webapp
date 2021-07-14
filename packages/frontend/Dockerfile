@@ -2,7 +2,7 @@
 # Build stage
 #
 
-FROM node:14-slim AS builder
+FROM node:16-slim AS builder
 
 WORKDIR /usr/src/app
 
