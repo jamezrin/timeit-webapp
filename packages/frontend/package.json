@@ -34,7 +34,7 @@
     "react-toast-notifications": "2.5.1",
     "react-unsplash-wrapper": "1.1.5",
     "react-virtualized": "9.22.3",
-    "react-with-styles": "4.2.0",
+    "react-with-styles": "5.0.0",
     "use-resize-observer": "7.0.1",
     "yup": "0.32.9"
   },
