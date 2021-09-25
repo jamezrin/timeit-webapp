@@ -20,7 +20,7 @@
     "husky": "7.0.2",
     "lint-staged": "11.1.2",
     "moment": "2.29.1",
-    "prettier": "2.3.2",
+    "prettier": "2.4.1",
     "react": "17.0.2",
     "react-base-table": "1.12.0",
     "react-dates": "21.8.0",
