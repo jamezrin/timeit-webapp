@@ -7,7 +7,7 @@
 - [common](./packages/common) (código compartido entre el frontend y el backend)
 - [frontend](./packages/frontend) (el código relevante al frontend)
 - [backend](./packages/backend) (el código relevante al backend)
-- [deploy](./deploy) (playbooks para el despliegue de la aplicación)
+- [deploy](./deploy) (DEPRECATED! Ansible playbooks para el despliegue de la aplicación)
 - [assets](./assets) (iconos y recursos de la aplicación)
 
 ### Otros repositorios:

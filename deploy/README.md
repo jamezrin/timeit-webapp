@@ -1,4 +1,4 @@
-# Deployment steps
+# (Deprecated) Deployment of the app with Ansible
 
 This project uses Ansible and Docker for deploying the application.
 
