@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
 
+concurrency:
+  group: build-images
+  cancel-in-progress: true
+
 env:
   REGISTRY: registry.jamezrin.name
 
