@@ -19,6 +19,6 @@
     "prepare": "yarn workspace common build"
   },
   "devDependencies": {
-    "concurrently": "6.2.2"
+    "concurrently": "6.3.0"
   }
 }
