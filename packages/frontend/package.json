@@ -36,7 +36,7 @@
     "react-virtualized": "9.22.3",
     "react-with-styles": "5.0.0",
     "use-resize-observer": "7.0.1",
-    "yup": "0.32.10"
+    "yup": "0.32.11"
   },
   "scripts": {
     "start": "cross-env BROWSER=none react-scripts start",
