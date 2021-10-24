@@ -45,8 +45,8 @@ ENV NODE_ENV=production
 ENV TYPEORM_CONNECTION=postgres
 ENV TYPEORM_SYNCHRONIZE=false
 ENV TYPEORM_LOGGING=true
-ENV TYPEORM_MIGRATIONS=packages/backend/build/migration/**/*.js
-ENV TYPEORM_ENTITIES=packages/backend/build/entity/**/*.js
+ENV TYPEORM_MIGRATIONS=build/migration/**/*.js
+ENV TYPEORM_ENTITIES=build/entity/**/*.js
 
 ENV PORT=80
 EXPOSE 80
