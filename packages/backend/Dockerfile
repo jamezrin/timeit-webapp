@@ -34,19 +34,19 @@ COPY yarn.lock ./
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 COPY packages/common/package.json ./packages/common/
-COPY --from=builder /usr/src/app/packages/common/build ./packages/common/build
+COPY --from=builder /usr/src/app/packages/common/dist ./packages/common/dist
 COPY --from=builder /usr/src/app/packages/common/node_modules ./packages/common/node_modules
 
 COPY packages/backend/package.json ./packages/backend/
-COPY --from=builder /usr/src/app/packages/backend/build ./packages/backend/build
+COPY --from=builder /usr/src/app/packages/backend/dist ./packages/backend/dist
 COPY --from=builder /usr/src/app/packages/backend/node_modules ./packages/backend/node_modules
 
 ENV NODE_ENV=production
 ENV TYPEORM_CONNECTION=postgres
 ENV TYPEORM_SYNCHRONIZE=false
 ENV TYPEORM_LOGGING=true
-ENV TYPEORM_MIGRATIONS=build/migration/**/*.js
-ENV TYPEORM_ENTITIES=build/entity/**/*.js
+ENV TYPEORM_MIGRATIONS=dist/migration/**/*.js
+ENV TYPEORM_ENTITIES=dist/entity/**/*.js
 
 ENV PORT=80
 EXPOSE 80

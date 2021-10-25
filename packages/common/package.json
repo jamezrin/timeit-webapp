@@ -2,9 +2,8 @@
   "name": "@timeit/common",
   "version": "1.0.2",
   "description": "",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "typings": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch"
@@ -16,10 +15,7 @@
     "dist"
   ],
   "exports": {
-    ".": {
-      "require": "./build/index.js",
-      "default": "./build/index.js"
-    }
+    "./*": "./dist/index.js"
   },
   "devDependencies": {
     "@types/node": "14.17.29",

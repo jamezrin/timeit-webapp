@@ -9,4 +9,4 @@ if [ -n "$TIMEIT_RUN_MIGRATIONS" ]; then
 fi
 
 echo "=== Starting the server..."
-node /app/packages/backend/build/index.js
+node /app/packages/backend/dist/index.js

@@ -2,12 +2,12 @@
   "name": "@timeit/backend",
   "version": "1.0.2",
   "description": "",
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node build/index.js",
-    "dev": "tsc-watch --onSuccess \"node build/index.js\"",
+    "start": "node dist/index.js",
+    "dev": "tsc-watch --onSuccess \"node dist/index.js\"",
     "migrate": "tsc && typeorm migration:run"
   },
   "keywords": [],

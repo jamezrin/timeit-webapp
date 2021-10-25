@@ -7,15 +7,9 @@
   "database": "timeit_dev",
   "synchronize": false,
   "logging": true,
-  "entities": [
-    "build/entity/**/*.js"
-  ],
-  "migrations": [
-    "build/migration/**/*.js"
-  ],
-  "subscribers": [
-    "build/subscriber/**/*.js"
-  ],
+  "entities": ["dist/entity/**/*.js"],
+  "migrations": ["dist/migration/**/*.js"],
+  "subscribers": ["dist/subscriber/**/*.js"],
   "cli": {
     "entitiesDir": "src/entity",
     "migrationsDir": "src/migration",
