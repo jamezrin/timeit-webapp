@@ -12,7 +12,7 @@ import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import useDocumentTitle from '../../hooks/documentTitleHook';
 import { useToasts } from 'react-toast-notifications';
-import { RESOURCE_NOT_FOUND_ERROR } from 'common';
+import { RESOURCE_NOT_FOUND_ERROR } from '@timeit/common';
 import {
   requestProjectHistory,
   requestProjectInfo,

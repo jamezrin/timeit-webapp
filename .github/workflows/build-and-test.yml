@@ -20,5 +20,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --frozen-lockfile
-      - run: yarn workspace ${{ matrix.package }} build
-
+      - run: yarn workspace @timeit/${{ matrix.package }} build

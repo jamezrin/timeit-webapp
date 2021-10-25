@@ -21,7 +21,7 @@ import useDocumentTitle from '../../hooks/documentTitleHook';
 import { formatTitle, isResponseError } from '../../utils';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ACCOUNT_ALREADY_EXISTS_ERROR } from 'common';
+import { ACCOUNT_ALREADY_EXISTS_ERROR } from '@timeit/common';
 import { requestAccountCreation } from '../../api';
 
 const schema = yup.object().shape({

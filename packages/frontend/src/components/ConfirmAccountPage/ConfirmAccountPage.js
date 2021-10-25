@@ -9,7 +9,7 @@ import {
   EXPIRED_MAIL_TOKEN_ERROR,
   INACTIVE_ACCOUNT_ERROR,
   INVALID_CREDENTIALS_ERROR,
-} from 'common';
+} from '@timeit/common';
 import { requestConfirmAccount } from '../../api';
 
 export default function ConfirmAccountPage() {

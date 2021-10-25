@@ -20,7 +20,7 @@ COPY packages/frontend/src ./packages/frontend/src
 COPY packages/frontend/public ./packages/frontend/public
 
 RUN yarn install --frozen-lockfile
-RUN yarn workspace frontend build
+RUN yarn workspace @timeit/frontend build
 
 #
 # Production stage

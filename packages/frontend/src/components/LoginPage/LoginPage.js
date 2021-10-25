@@ -26,7 +26,10 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ArrowRightIcon } from '@chakra-ui/icons';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { INACTIVE_ACCOUNT_ERROR, INVALID_CREDENTIALS_ERROR } from 'common';
+import {
+  INACTIVE_ACCOUNT_ERROR,
+  INVALID_CREDENTIALS_ERROR,
+} from '@timeit/common';
 import { requestAuthentication } from '../../api';
 
 const schema = yup.object().shape({

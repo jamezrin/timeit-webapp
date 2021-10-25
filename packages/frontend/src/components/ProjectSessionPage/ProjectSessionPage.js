@@ -15,7 +15,7 @@ import {
   isResponseError,
   parseAndFormatTimestamp,
 } from '../../utils';
-import { RESOURCE_NOT_FOUND_ERROR } from 'common';
+import { RESOURCE_NOT_FOUND_ERROR } from '@timeit/common';
 import {
   requestProjectInfo,
   requestSessionEvents,

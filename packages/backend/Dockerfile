@@ -19,7 +19,7 @@ COPY packages/backend/tsconfig.json ./packages/backend/
 COPY packages/backend/src ./packages/backend/src
 
 RUN yarn install --frozen-lockfile
-RUN yarn workspace backend build
+RUN yarn workspace @timeit/backend build
 
 #
 # Production stage

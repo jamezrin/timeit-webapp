@@ -26,7 +26,7 @@ import {
   ACCOUNT_NOT_FOUND_ERROR,
   ALREADY_REQUESTED_MAIL_TOKEN_ERROR,
   INACTIVE_ACCOUNT_ERROR,
-} from 'common';
+} from '@timeit/common';
 import { requestPasswordReset } from '../../api';
 
 const schema = yup.object().shape({

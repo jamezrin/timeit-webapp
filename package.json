@@ -13,10 +13,10 @@
   },
   "scripts": {
     "dev": "concurrently \"yarn run dev:*\"",
-    "dev:common": "yarn workspace common dev",
-    "dev:frontend": "yarn workspace frontend start",
-    "dev:backend": "yarn workspace backend dev",
-    "prepare": "yarn workspace common build"
+    "dev:common": "yarn workspace @timeit/common dev",
+    "dev:frontend": "yarn workspace @timeit/frontend start",
+    "dev:backend": "yarn workspace @timeit/backend dev",
+    "prepare": "yarn workspace @timeit/common build"
   },
   "devDependencies": {
     "concurrently": "6.3.0"

@@ -19,7 +19,7 @@ import {
   RESOURCE_NOT_FOUND_ERROR,
   SESSION_ENDED_ERROR,
   UNKNOWN_SERVER_ERROR,
-} from 'common';
+} from '@timeit/common';
 
 const error = (type: string, message: string) => ({ error: { type, message } });
 

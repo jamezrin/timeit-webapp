@@ -15,7 +15,10 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { ACCOUNT_NOT_FOUND_ERROR, ALREADY_PROJECT_MEMBER_ERROR } from 'common';
+import {
+  ACCOUNT_NOT_FOUND_ERROR,
+  ALREADY_PROJECT_MEMBER_ERROR,
+} from '@timeit/common';
 import { isResponseError } from '../../utils';
 import { requestProjectInvite } from '../../api';
 

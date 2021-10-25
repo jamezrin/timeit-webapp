@@ -11,7 +11,7 @@ import MainLayout from '../MainLayout';
 import FullPageLoadSpinner from '../FullPageLoadSpinner';
 import { formatTitle, isMemberPrivileged, isResponseError } from '../../utils';
 import { useToasts } from 'react-toast-notifications';
-import { RESOURCE_NOT_FOUND_ERROR } from 'common';
+import { RESOURCE_NOT_FOUND_ERROR } from '@timeit/common';
 import { requestProjectInfo, requestProjectMembers } from '../../api';
 
 function ProjectPageContent({ projectInfo, setProjectInfo }) {

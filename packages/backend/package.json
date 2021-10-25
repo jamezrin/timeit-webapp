@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@timeit/backend",
   "version": "1.0.2",
   "description": "",
   "main": "build/index.js",
@@ -14,8 +14,8 @@
   "author": "Jaime Martínez Rincón",
   "license": "GPL-3.0",
   "dependencies": {
+    "@timeit/common": "*",
     "bcrypt": "^5.0.0",
-    "common": "*",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
