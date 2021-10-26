@@ -40,18 +40,20 @@ jobs:
         with:
           buildkitd-flags: --debug
           endpoint: builders
-      - name: Get package version
-        id: build_version
+      - name: Compute image variables
+        id: compute_variables
         run: |
           version=$(jq -r .version ./packages/${{ matrix.package }}/package.json)
-          echo "::set-output name=version::$version"
+          image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
+          full_image_tag="${image_name}:${version}-${{ matrix.platform }}"
+          echo "::set-output name=full_image_tag::${full_image_tag}"
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           file: ./packages/${{ matrix.package }}/Dockerfile
-          tags: ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}-${{ matrix.platform }}
+          tags: ${{ steps.compute_variables.outputs.full_image_tag }}
 
   create-manifest:
     needs: [build-packages]
@@ -68,22 +70,19 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - name: Get package version
-        id: build_version
+      - name: Build manifests
         run: |
           version=$(jq -r .version ./packages/${{ matrix.package }}/package.json)
-          echo "::set-output name=version::$version"
-      - name: Create versioned manifest
-        run: |
-          docker manifest create ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }} \
-            --amend ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}-arm64 \
-            --amend ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}-amd64
+          image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
 
-          docker manifest push ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}
-      - name: Create latest manifest 
-        run: |
-          docker manifest create ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:latest \
-            --amend ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}-arm64 \
-            --amend ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:${{ steps.build_version.outputs.version }}-amd64
+          echo "Creating manifest for ${version} tag"
+          docker manifest create ${image_name}:${version} \
+            --amend ${image_name}:${version}-arm64 \
+            --amend ${image_name}:${version}-amd64
+          docker manifest push ${image_name}:${version}
 
-          docker manifest push ${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}:latest
+          echo "Creating manifest for latest tag"
+          docker manifest create ${image_name}:latest \
+            --amend ${image_name}:${version}-arm64 \
+            --amend ${image_name}:${version}-amd64
+          docker manifest push ${image_name}:latest
