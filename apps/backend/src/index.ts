@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Connection, createConnection, getConnectionOptions } from 'typeorm';
+import { Connection, createConnection, ConnectionOptionsReader } from 'typeorm';
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -62,11 +62,14 @@ async function startExpress(connection: Connection, mailer: Mail) {
 
 async function startApp() {
   // read connection options from ormconfig file (or ENV variables)
-  const connectionOptions = await getConnectionOptions();
+  const connectionOptionsReader = new ConnectionOptionsReader({
+    root: process.cwd(),
+  });
 
   // do something with connectionOptions,
   // for example append a custom naming strategy or a custom logger
   // Object.assign(connectionOptions, { namingStrategy: new MyNamingStrategy() });
+  const connectionOptions = await connectionOptionsReader.get('default');
 
   // create a connection using modified connection options
   const connection = await createConnection(connectionOptions);
