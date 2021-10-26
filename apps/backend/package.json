@@ -13,7 +13,7 @@
   "author": "jamezrin",
   "license": "GPL-3.0",
   "dependencies": {
-    "@timeit/error-types": "*",
+    "@timeit/error-types": "workspace:*",
     "bcrypt": "^5.0.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
