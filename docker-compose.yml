@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  timeit-postgres:
+    image: postgres
+    volumes:
+      - timeit-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: timeit_dev
+      POSTGRES_USER: timeit_dev
+      POSTGRES_PASSWORD: timeit_dev
+    ports:
+      - 7001:5432
+  timeit-adminer:
+    image: adminer
+    ports:
+      - 7002:8080
+    depends_on:
+      - timeit-postgres
+volumes:
+  timeit-postgres-data: { }

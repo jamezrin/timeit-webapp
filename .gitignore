@@ -66,3 +66,14 @@ common/autoinstallers/*/.npmrc
 
 # Heft
 .heft
+
+# Visual Studio Code
+.vscode
+
+# IntelliJ IDEA
+.idea
+*.iml
+
+# Output artifacts
+temp
+dist

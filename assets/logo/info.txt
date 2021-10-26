@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: Montserrat-Medium
+font link: https://fonts.google.com/specimen/Montserrat
+font author: Julieta Ulanovsky
+font author site: http://www.zkysky.com.ar/
+
+
+icon designer: Veronika Geertsema König
+icon designer link: /Veronika.gk
+        
+{"bg":"#E6F2FE","icon-gradient-0":"#51A4FB","icon-gradient-1":"#51A4FB","font":"#193655","slogan":"#2d4a69"}
+      
