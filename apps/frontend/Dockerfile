@@ -6,6 +6,8 @@ FROM node:16-slim AS builder
 
 WORKDIR /usr/src/app
 
+RUN apt-get update && apt-get install -y python3 build-essential
+
 RUN npm install -g @microsoft/rush pnpm
 
 COPY . .
