@@ -6,20 +6,15 @@ FROM node:16-slim AS builder
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
-COPY yarn.lock ./
-COPY tsconfig.base.json ./
+RUN npm install -g @microsoft/rush pnpm
 
-COPY packages/common/package.json ./packages/common/
-COPY packages/common/tsconfig.json ./packages/common/
-COPY packages/common/src ./packages/common/src
+COPY . .
 
-COPY packages/backend/package.json ./packages/backend/
-COPY packages/backend/tsconfig.json ./packages/backend/
-COPY packages/backend/src ./packages/backend/src
+RUN rush install --purge
 
-RUN yarn install --frozen-lockfile
-RUN yarn workspace @timeit/backend build
+RUN rush build --to @timeit/backend
+
+RUN rush deploy -p @timeit/backend --overwrite
 
 #
 # Production stage
@@ -29,17 +24,7 @@ FROM node:16-slim
 
 WORKDIR /app
 
-COPY package.json ./
-COPY yarn.lock ./
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-
-COPY packages/common/package.json ./packages/common/
-COPY --from=builder /usr/src/app/packages/common/dist ./packages/common/dist
-COPY --from=builder /usr/src/app/packages/common/node_modules ./packages/common/node_modules
-
-COPY packages/backend/package.json ./packages/backend/
-COPY --from=builder /usr/src/app/packages/backend/dist ./packages/backend/dist
-COPY --from=builder /usr/src/app/packages/backend/node_modules ./packages/backend/node_modules
+COPY --from=builder /usr/src/app/common/deploy .
 
 ENV NODE_ENV=production
 ENV TYPEORM_CONNECTION=postgres
@@ -51,6 +36,6 @@ ENV TYPEORM_ENTITIES=dist/entity/**/*.js
 ENV PORT=80
 EXPOSE 80
 
-COPY packages/backend/docker-entrypoint.sh ./
+COPY apps/backend/docker-entrypoint.sh .
 RUN ["chmod", "+x", "docker-entrypoint.sh"]
 ENTRYPOINT ["bash", "/app/docker-entrypoint.sh"]
