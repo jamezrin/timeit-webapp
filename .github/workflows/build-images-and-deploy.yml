@@ -43,7 +43,7 @@ jobs:
       - name: Compute image variables
         id: compute_variables
         run: |
-          version=$(jq -r .version ./packages/${{ matrix.package }}/package.json)
+          version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
           image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
           full_image_tag="${image_name}:${version}-${{ matrix.platform }}"
           echo "::set-output name=full_image_tag::${full_image_tag}"
@@ -52,7 +52,7 @@ jobs:
         with:
           context: .
           push: true
-          file: ./packages/${{ matrix.package }}/Dockerfile
+          file: ./apps/${{ matrix.package }}/Dockerfile
           tags: ${{ steps.compute_variables.outputs.full_image_tag }}
 
   create-manifest:
@@ -72,7 +72,7 @@ jobs:
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Build manifests
         run: |
-          version=$(jq -r .version ./packages/${{ matrix.package }}/package.json)
+          version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
           image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
 
           echo "Creating manifest for ${version} tag"
