@@ -1,5 +1,7 @@
 import 'reflect-metadata';
 import { Connection, createConnection, ConnectionOptionsReader } from 'typeorm';
+import fs from 'fs/promises';
+import path from 'path';
 
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -60,10 +62,20 @@ async function startExpress(connection: Connection, mailer: Mail) {
   app.listen(process.env.PORT || 8080);
 }
 
+async function findPackageRoot(): Promise<string | null> {
+  for (const dir of module.paths) {
+    if (await fs.stat(dir).catch((e) => null)) {
+      return path.dirname(dir);
+    }
+  }
+
+  return null;
+}
+
 async function startApp() {
   // read connection options from ormconfig file (or ENV variables)
   const connectionOptionsReader = new ConnectionOptionsReader({
-    root: process.cwd(),
+    root: await findPackageRoot(),
   });
 
   // do something with connectionOptions,
