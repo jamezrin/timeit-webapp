@@ -24,9 +24,11 @@ RUN rush deploy -p @timeit/backend --overwrite
 
 FROM node:16-slim
 
-WORKDIR /app
+WORKDIR /deploy
 
-COPY --from=builder /usr/src/app/common/deploy .
+COPY --from=builder /usr/src/app/common/deploy /deploy
+
+WORKDIR /deploy/apps/backend
 
 ENV NODE_ENV=production
 ENV TYPEORM_CONNECTION=postgres
@@ -38,6 +40,5 @@ ENV TYPEORM_ENTITIES=dist/entity/**/*.js
 ENV PORT=80
 EXPOSE 80
 
-COPY apps/backend/docker-entrypoint.sh .
-RUN ["chmod", "+x", "docker-entrypoint.sh"]
-ENTRYPOINT ["bash", "/app/docker-entrypoint.sh"]
+RUN chmod +x docker-entrypoint.sh
+ENTRYPOINT ["bash", "docker-entrypoint.sh"]

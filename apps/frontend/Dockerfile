@@ -16,8 +16,6 @@ RUN rush install --purge
 
 RUN rush build --to @timeit/frontend
 
-RUN rush deploy -p @timeit/frontend --overwrite
-
 #
 # Production stage
 #
