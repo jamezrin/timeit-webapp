@@ -62,7 +62,7 @@ jobs:
       - name: Build package
         run: rush build --to @timeit/${{ matrix.package }}
       - name: Deploy package
-        if: ${{ matrix.deploy }} == 'true'
+        if: ${{ matrix.deploy }}
         run: rush deploy -p @timeit/${{ matrix.package }} --overwrite
       - name: Build and push
         uses: docker/build-push-action@v2
