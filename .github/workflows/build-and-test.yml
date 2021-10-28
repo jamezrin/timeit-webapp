@@ -18,5 +18,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install rush and pnpm
         run: npm install -g @microsoft/rush pnpm
-      - run: rush install
-      - run: rush build
+      - run: rush update
+      - run: rush rebuild
