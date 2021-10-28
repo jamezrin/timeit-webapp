@@ -1,28 +1,6 @@
-#
-# Build stage
-#
-
-FROM node:16-slim AS builder
-
-WORKDIR /usr/src/app
-
-RUN apt-get update && apt-get install -y python3 build-essential
-
-RUN npm install -g @microsoft/rush pnpm
-
-COPY . .
-
-RUN rush install --purge
-
-RUN rush build --to @timeit/frontend
-
-#
-# Production stage
-#
-
 FROM nginx
 
-COPY --from=builder /usr/src/app/apps/frontend/build /usr/share/nginx/html
+COPY ./apps/frontend/build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 

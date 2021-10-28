@@ -1,32 +1,8 @@
-#
-# Build stage
-#
-
-FROM node:16-slim AS builder
-
-WORKDIR /usr/src/app
-
-RUN apt-get update && apt-get install -y python3 build-essential
-
-RUN npm install -g @microsoft/rush pnpm
-
-COPY . .
-
-RUN rush install --purge
-
-RUN rush build --to @timeit/backend
-
-RUN rush deploy -p @timeit/backend --overwrite
-
-#
-# Production stage
-#
-
 FROM node:16-slim
 
 WORKDIR /deploy
 
-COPY --from=builder /usr/src/app/common/deploy /deploy
+COPY ./common/deploy /deploy
 
 WORKDIR /deploy/apps/backend
 
