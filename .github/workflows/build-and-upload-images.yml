@@ -1,11 +1,11 @@
-name: Build Images and Deploy to Personal Registry
+name: 'Build Images and Upload to Main Registry'
 
 on:
   push:
     branches: [master]
 
 concurrency:
-  group: build-images
+  group: build-and-upload-images
   cancel-in-progress: true
 
 env:
