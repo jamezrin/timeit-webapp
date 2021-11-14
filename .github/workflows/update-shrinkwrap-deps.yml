@@ -25,6 +25,8 @@ jobs:
       - run: rush rebuild
       - name: Commit and push updated shrinkwrap
         run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           REMOTE_HTTPS_URL="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}"
           git add common/config/rush/pnpm-lock.yaml
           git commit -m "Update pnpm lockfile"
