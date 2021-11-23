@@ -181,7 +181,7 @@ const dataController = {
             interval '1 day'
           )) AS period_date
         ) AS period_date_series
-        ORDER BY period_date DESC;
+        ORDER BY period_date ASC;
       `,
         [startDate, endDate, projectId, memberId],
       );
