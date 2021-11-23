@@ -1,4 +1,4 @@
-name: 'Check and Test'
+name: update-shrinkwrap-and-test
 
 on:
   push: {}
@@ -6,11 +6,9 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [16.x]
-
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -22,6 +20,8 @@ jobs:
       - name: Install dependencies with shrinkwrap update
         run: rush update
       - name: Commit and push updated shrinkwrap
+        continue-on-error: true
+        if: ${{ !startsWith(github.ref_name, 'renovate/') }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -32,3 +32,5 @@ jobs:
 
           git remote set-url --push origin $REMOTE_HTTPS_URL
           git push -u origin $GITHUB_REF
+      - name: Rebuild all projects
+        run: rush rebuild

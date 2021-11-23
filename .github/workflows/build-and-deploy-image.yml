@@ -1,11 +1,11 @@
-name: 'Build and Deploy'
+name: build-and-deploy-images
 
 on:
   workflow_run:
     types:
       - completed
-    branches: [main]
-    workflows: ['Check and Test']
+    branches: [master]
+    workflows: [update-shrinkwrap-and-test]
 
 concurrency:
   group: build-and-upload-images
@@ -17,7 +17,6 @@ env:
 jobs:
   build-packages:
     runs-on: ${{ matrix.runner }}
-
     strategy:
       fail-fast: true
       matrix:
@@ -76,8 +75,8 @@ jobs:
           tags: ${{ steps.compute_vars.outputs.full_image_tag }}
 
   create-manifest:
-    needs: [build-packages]
     runs-on: ubuntu-latest
+    needs: [build-packages]
     strategy:
       fail-fast: true
       matrix:
