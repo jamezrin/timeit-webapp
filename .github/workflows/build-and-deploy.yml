@@ -1,8 +1,11 @@
-name: 'Build Images and Upload to Main Registry'
+name: 'Build and Deploy'
 
 on:
-  push:
-    branches: [master]
+  workflow_run:
+    types:
+      - completed
+    branches: [main]
+    workflows: ['Check and Test']
 
 concurrency:
   group: build-and-upload-images

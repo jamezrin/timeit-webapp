@@ -1,12 +1,10 @@
-name: 'Renovate Integration: Shrinkwrap update and build'
+name: 'Check and Test'
 
 on:
-  push:
-    branches:
-      - 'renovate/**'
+  push: {}
 
 jobs:
-  build:
+  main:
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,14 +19,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install rush and pnpm
         run: npm install -g @microsoft/rush pnpm
-      - run: rush update
-      - run: rush rebuild
+      - name: Install dependencies with shrinkwrap update
+        run: rush update
       - name: Commit and push updated shrinkwrap
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           REMOTE_HTTPS_URL="https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}"
+
           git add common/config/rush/pnpm-lock.yaml
           git commit -m "Update pnpm lockfile"
+
           git remote set-url --push origin $REMOTE_HTTPS_URL
           git push -u origin $GITHUB_REF
