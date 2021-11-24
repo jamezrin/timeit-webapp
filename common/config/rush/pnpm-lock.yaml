@@ -42,7 +42,7 @@ importers:
       prettier: 2.4.1
       reflect-metadata: ^0.1.10
       tsc-watch: ^4.2.9
-      tsconfig-paths: 3.11.0
+      tsconfig-paths: 3.12.0
       typeorm: 0.2.41
       typescript: 4.4.4
     dependencies:
@@ -83,7 +83,7 @@ importers:
       eslint-config-prettier: 8.3.0_eslint@7.32.0
       eslint-plugin-prettier: 4.0.0_6e975bd57c7acf028c1a9ddbbf60c898
       prettier: 2.4.1
-      tsconfig-paths: 3.11.0
+      tsconfig-paths: 3.12.0
       typescript: 4.4.4
 
   ../../apps/frontend:
@@ -180,7 +180,7 @@ importers:
       eslint-config-prettier: 8.3.0
       eslint-plugin-prettier: 4.0.0
       prettier: 2.4.1
-      tsconfig-paths: 3.11.0
+      tsconfig-paths: 3.12.0
       typescript: 4.4.4
     devDependencies:
       '@types/node': 14.17.34
@@ -190,7 +190,7 @@ importers:
       eslint-config-prettier: 8.3.0_eslint@7.32.0
       eslint-plugin-prettier: 4.0.0_6e975bd57c7acf028c1a9ddbbf60c898
       prettier: 2.4.1
-      tsconfig-paths: 3.11.0
+      tsconfig-paths: 3.12.0
       typescript: 4.4.4
 
 packages:
@@ -6851,7 +6851,7 @@ packages:
       minimatch: 3.0.4
       object.values: 1.1.5
       resolve: 1.20.0
-      tsconfig-paths: 3.11.0
+      tsconfig-paths: 3.12.0
     dev: false
 
   /eslint-plugin-jest/24.7.0_f178490c6a6949e5c714e48d3ab36f98:
@@ -13942,8 +13942,8 @@ packages:
       typescript: 4.4.4
     dev: false
 
-  /tsconfig-paths/3.11.0:
-    resolution: {integrity: sha512-7ecdYDnIdmv639mmDwslG6KQg1Z9STTz1j7Gcz0xa+nshh/gKDAHcPxRbWOsA3SPp0tXP2leTcY9Kw+NAkfZzA==}
+  /tsconfig-paths/3.12.0:
+    resolution: {integrity: sha512-e5adrnOYT6zqVnWqZu7i/BQ3BnhzvGbjEjejFXO20lKIKpwTaupkCPgEfv4GZK1IBciJUEhYs3J3p75FdaTFVg==}
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.1
