@@ -96,7 +96,7 @@ importers:
       '@hookform/resolvers': 1.3.7
       '@nivo/core': 0.74.0
       '@nivo/line': 0.74.0
-      '@testing-library/jest-dom': 5.16.0
+      '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': workspace:*
@@ -137,7 +137,7 @@ importers:
       '@hookform/resolvers': 1.3.7_react-hook-form@6.15.8
       '@nivo/core': 0.74.0_react-dom@17.0.2+react@17.0.2
       '@nivo/line': 0.74.0_327722a7eac4cd9873beb2c631aa40e5
-      '@testing-library/jest-dom': 5.16.0
+      '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': link:../../libraries/error-types
@@ -3505,8 +3505,8 @@ packages:
       pretty-format: 27.3.1
     dev: false
 
-  /@testing-library/jest-dom/5.16.0:
-    resolution: {integrity: sha512-ECygvCL6ufPfHna4fsk7o24+3PVNhRbioDpFbfSVEZaglT6EjuRP+w8I5tzigFz1fobpvCrVRoKyR4qx2QUCxw==}
+  /@testing-library/jest-dom/5.16.1:
+    resolution: {integrity: sha512-ajUJdfDIuTCadB79ukO+0l8O+QwN0LiSxDaYUTI4LndbbUsGi6rWU1SCexXzBA2NSjlVB9/vbkasQIL3tmPBjw==}
     engines: {node: '>=8', npm: '>=6', yarn: '>=1'}
     dependencies:
       '@babel/runtime': 7.15.4
