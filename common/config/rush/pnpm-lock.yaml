@@ -15,7 +15,7 @@ importers:
       '@types/express-serve-static-core': 4.17.27
       '@types/jsonwebtoken': 8.5.6
       '@types/morgan': 1.9.3
-      '@types/node': 14.18.0
+      '@types/node': 14.18.2
       '@types/nodemailer': 6.4.4
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
@@ -72,7 +72,7 @@ importers:
       '@types/express-serve-static-core': 4.17.27
       '@types/jsonwebtoken': 8.5.6
       '@types/morgan': 1.9.3
-      '@types/node': 14.18.0
+      '@types/node': 14.18.2
       '@types/nodemailer': 6.4.4
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
@@ -173,7 +173,7 @@ importers:
 
   ../../libraries/error-types:
     specifiers:
-      '@types/node': 14.18.0
+      '@types/node': 14.18.2
       '@typescript-eslint/eslint-plugin': 5.8.0
       '@typescript-eslint/parser': 5.8.0
       eslint: 7.32.0
@@ -183,7 +183,7 @@ importers:
       tsconfig-paths: 3.12.0
       typescript: 4.5.2
     devDependencies:
-      '@types/node': 14.18.0
+      '@types/node': 14.18.2
       '@typescript-eslint/eslint-plugin': 5.8.0_9b359ee7090725b85e62787f9d39d391
       '@typescript-eslint/parser': 5.8.0_eslint@7.32.0+typescript@4.5.2
       eslint: 7.32.0
@@ -3725,8 +3725,8 @@ packages:
     resolution: {integrity: sha512-JcII3D5/OapPGx+eJ+Ik1SQGyt6WvuqdRfh9jUwL6/iHGjmyOriBDciBUu7lEIBTL2ijxwrR70WUnw5AEDmFvQ==}
     dev: true
 
-  /@types/node/14.18.0:
-    resolution: {integrity: sha512-0GeIl2kmVMXEnx8tg1SlG6Gg8vkqirrW752KqolYo1PHevhhZN3bhJ67qHj+bQaINhX0Ra3TlWwRvMCd9iEfNQ==}
+  /@types/node/14.18.2:
+    resolution: {integrity: sha512-fqtSN5xn/bBzDxMT77C1rJg6CsH/R49E7qsGuvdPJa20HtV5zSTuLJPNfnlyVH3wauKnkHdLggTVkOW/xP9oQg==}
     dev: true
 
   /@types/node/16.11.4:
