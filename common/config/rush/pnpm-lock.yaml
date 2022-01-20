@@ -108,7 +108,7 @@ importers:
       cross-env: 7.0.3
       framer-motion: 4.1.17
       husky: 7.0.4
-      lint-staged: 12.2.1
+      lint-staged: 12.2.2
       moment: 2.29.1
       prettier: 2.5.1
       react: 17.0.2
@@ -148,7 +148,7 @@ importers:
       axios: 0.25.0
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
       husky: 7.0.4
-      lint-staged: 12.2.1
+      lint-staged: 12.2.2
       moment: 2.29.1
       prettier: 2.5.1
       react: 17.0.2
@@ -8536,8 +8536,8 @@ packages:
     resolution: {integrity: sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=}
     dev: false
 
-  /lint-staged/12.2.1:
-    resolution: {integrity: sha512-VCVcA9C2Vt5HHxSR4EZVZFJcQRJH984CGBeY+cJ/xed4mBd+JidbM/xbKcCq5ASaygAV0iITtdsCTnID7h/1OQ==}
+  /lint-staged/12.2.2:
+    resolution: {integrity: sha512-bcHEoM1M/f+K1BYdHcEuIn8K+zMOSJR3mkny6PAuQiTgcSUcRbUWaUD6porAYypxF4k1vYZZ2HutZt1p94Z1jQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     hasBin: true
     dependencies:
