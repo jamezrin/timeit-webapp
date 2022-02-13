@@ -104,7 +104,7 @@ importers:
       '@types/node': 16.11.4
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
-      axios: 0.25.0
+      axios: 0.26.0
       cross-env: 7.0.3
       framer-motion: 4.1.17
       husky: 7.0.4
@@ -145,7 +145,7 @@ importers:
       '@types/node': 16.11.4
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.11
-      axios: 0.25.0
+      axios: 0.26.0
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
       husky: 7.0.4
       lint-staged: 12.3.3
@@ -4569,10 +4569,10 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /axios/0.25.0:
-    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
+  /axios/0.26.0:
+    resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
     dependencies:
-      follow-redirects: 1.14.7
+      follow-redirects: 1.14.8
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6876,8 +6876,8 @@ packages:
         optional: true
     dev: false
 
-  /follow-redirects/1.14.7:
-    resolution: {integrity: sha512-+hbxoLbFMbRKDwohX8GkTataGqO6Jb7jGwpAlwgy2bIz25XtRm7KEzJM76R1WiNT5SwZkX4Y75SwBolkpmE7iQ==}
+  /follow-redirects/1.14.8:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
