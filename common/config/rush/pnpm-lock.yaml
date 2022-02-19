@@ -27,7 +27,7 @@ importers:
       cross-env: 7.0.3
       dotenv: ^10.0.0
       eslint: 7.32.0
-      eslint-config-prettier: 8.3.0
+      eslint-config-prettier: 8.4.0
       eslint-plugin-prettier: 4.0.0
       express: ^4.17.1
       express-async-handler: ^1.2.0
@@ -80,8 +80,8 @@ importers:
       '@typescript-eslint/parser': 5.12.0_eslint@7.32.0+typescript@4.5.5
       cross-env: 7.0.3
       eslint: 7.32.0
-      eslint-config-prettier: 8.3.0_eslint@7.32.0
-      eslint-plugin-prettier: 4.0.0_6e6a25a49a944db0fa38418c3ba4bc86
+      eslint-config-prettier: 8.4.0_eslint@7.32.0
+      eslint-plugin-prettier: 4.0.0_ed3ee7322ae0bc2e5488ce09e4400c60
       prettier: 2.5.1
       tsconfig-paths: 3.12.0
       typescript: 4.5.5
@@ -177,7 +177,7 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.12.0
       '@typescript-eslint/parser': 5.12.0
       eslint: 7.32.0
-      eslint-config-prettier: 8.3.0
+      eslint-config-prettier: 8.4.0
       eslint-plugin-prettier: 4.0.0
       prettier: 2.5.1
       tsconfig-paths: 3.12.0
@@ -187,8 +187,8 @@ importers:
       '@typescript-eslint/eslint-plugin': 5.12.0_39008ab451aed7e12174fadc21405fee
       '@typescript-eslint/parser': 5.12.0_eslint@7.32.0+typescript@4.5.5
       eslint: 7.32.0
-      eslint-config-prettier: 8.3.0_eslint@7.32.0
-      eslint-plugin-prettier: 4.0.0_6e6a25a49a944db0fa38418c3ba4bc86
+      eslint-config-prettier: 8.4.0_eslint@7.32.0
+      eslint-plugin-prettier: 4.0.0_ed3ee7322ae0bc2e5488ce09e4400c60
       prettier: 2.5.1
       tsconfig-paths: 3.12.0
       typescript: 4.5.5
@@ -6178,8 +6178,8 @@ packages:
       source-map: 0.6.1
     dev: false
 
-  /eslint-config-prettier/8.3.0_eslint@7.32.0:
-    resolution: {integrity: sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==}
+  /eslint-config-prettier/8.4.0_eslint@7.32.0:
+    resolution: {integrity: sha512-CFotdUcMY18nGRo5KGsnNxpznzhkopOcOo0InID+sgQssPrzjvsyKZPvOgymTFeHrFuC3Tzdf2YndhXtULK9Iw==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -6310,7 +6310,7 @@ packages:
       minimatch: 3.0.4
     dev: false
 
-  /eslint-plugin-prettier/4.0.0_6e6a25a49a944db0fa38418c3ba4bc86:
+  /eslint-plugin-prettier/4.0.0_ed3ee7322ae0bc2e5488ce09e4400c60:
     resolution: {integrity: sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -6322,7 +6322,7 @@ packages:
         optional: true
     dependencies:
       eslint: 7.32.0
-      eslint-config-prettier: 8.3.0_eslint@7.32.0
+      eslint-config-prettier: 8.4.0_eslint@7.32.0
       prettier: 2.5.1
       prettier-linter-helpers: 1.0.0
     dev: true
