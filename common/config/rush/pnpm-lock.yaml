@@ -104,7 +104,7 @@ importers:
       '@types/node': 16.11.4
       '@types/react': 17.0.44
       '@types/react-dom': 17.0.16
-      axios: 0.26.0
+      axios: 0.27.2
       cross-env: 7.0.3
       framer-motion: 4.1.17
       husky: 7.0.4
@@ -145,7 +145,7 @@ importers:
       '@types/node': 16.11.4
       '@types/react': 17.0.44
       '@types/react-dom': 17.0.16
-      axios: 0.26.0
+      axios: 0.27.2
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
       husky: 7.0.4
       lint-staged: 12.3.4
@@ -4557,10 +4557,11 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
-  /axios/0.26.0:
-    resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
+  /axios/0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
     dependencies:
-      follow-redirects: 1.14.8
+      follow-redirects: 1.15.0
+      form-data: 4.0.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6869,6 +6870,16 @@ packages:
         optional: true
     dev: false
 
+  /follow-redirects/1.15.0:
+    resolution: {integrity: sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
+
   /fork-ts-checker-webpack-plugin/6.5.0_78932bb2e4085ad6ede3746f89742f9a:
     resolution: {integrity: sha512-cS178Y+xxtIjEUorcHddKS7yCMlrDPV31mt47blKKRfMd70Kxu5xruAFE2o9sDY6wVC5deuob/u/alD04YYHnw==}
     engines: {node: '>=10', yarn: '>=1.0.0'}
@@ -6903,6 +6914,15 @@ packages:
 
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.33
+    dev: false
+
+  /form-data/4.0.0:
+    resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}
     engines: {node: '>= 6'}
     dependencies:
       asynckit: 0.4.0
