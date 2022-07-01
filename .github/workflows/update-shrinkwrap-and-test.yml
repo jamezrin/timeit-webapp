@@ -3,6 +3,9 @@ name: update-shrinkwrap-and-test
 on:
   push: {}
 
+env:
+  BROWSERSLIST_IGNORE_OLD_DATA: "1"
+
 jobs:
   main:
     runs-on: ubuntu-latest

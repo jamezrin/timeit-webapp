@@ -13,6 +13,7 @@ concurrency:
 
 env:
   REGISTRY: harbor.jamezrin.name
+  BROWSERSLIST_IGNORE_OLD_DATA: "1"
 
 jobs:
   build-packages:
