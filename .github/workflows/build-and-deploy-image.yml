@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: registry.jamezrin.name
+  REGISTRY: harbor.jamezrin.name
 
 jobs:
   build-packages:
