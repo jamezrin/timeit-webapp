@@ -112,7 +112,7 @@ importers:
       moment: 2.29.3
       prettier: 2.6.2
       react: 17.0.2
-      react-base-table: 1.13.0
+      react-base-table: 1.13.2
       react-dates: 21.8.0
       react-dom: 17.0.2
       react-hook-form: 6.15.8
@@ -152,7 +152,7 @@ importers:
       moment: 2.29.3
       prettier: 2.6.2
       react: 17.0.2
-      react-base-table: 1.13.0_react-dom@17.0.2+react@17.0.2
+      react-base-table: 1.13.2_react-dom@17.0.2+react@17.0.2
       react-dates: 21.8.0_b1f42c2bb10abdda24565710306cdf0c
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.8_react@17.0.2
@@ -10447,13 +10447,13 @@ packages:
       whatwg-fetch: 3.6.2
     dev: false
 
-  /react-base-table/1.13.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-WivjxBKWc8CJOvubjpTABxNIInqYud2Su8bfxHKcvMmNm2XWe4RBdsJ2Zc0p9AHm/UeJbOt8D7J6a17Aow6b/A==}
+  /react-base-table/1.13.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-VhyKXZwEu8U/wH2eY3Ie3GJbvGP9wQzts26k1t/A7b8IS1OM31j8ul6HAvLmudpT33XqFPD7/KK18tfx/5I/eA==}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
       react-dom: ^16.0.0 || ^17.0.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.5
       classnames: 2.3.1
       memoize-one: 5.2.1
       prop-types: 15.7.2
@@ -10922,7 +10922,7 @@ packages:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0
       react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.16.5
       memoize-one: 5.2.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
