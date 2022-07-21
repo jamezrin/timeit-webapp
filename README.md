@@ -4,9 +4,9 @@
 
 ### Directorios relevantes de esta aplicación:
 
-- [common](./packages/common) (código compartido entre el frontend y el backend)
-- [frontend](./packages/frontend) (el código relevante al frontend)
-- [backend](./packages/backend) (el código relevante al backend)
+- [frontend](./apps/frontend) (el código relevante al frontend)
+- [backend](./apps/backend) (el código relevante al backend)
+- [libraries/error-types](./libraries/error-types) (librería con los tipos de errores, compartidos entre frontend y backend)
 - [assets](./assets) (iconos y recursos de la aplicación)
 
 ### Otros repositorios:
@@ -15,7 +15,7 @@
 
 ### Documentación original
 
-- [Anteproyecto](./docs/ANTEPROYECTO.pdf)
-- [Memoria](./docs/MEMORIA.pdf)
+- [Anteproyecto](./docs/pdf/ANTEPROYECTO.pdf)
+- [Memoria](./docs/pdf/MEMORIA.pdf)
 - [Manual de despliegue](https://www.notion.so/Manual-de-Despliegue-932bdd98fece408a97b1331be93ab88f)
 - [Presentación](https://docs.google.com/presentation/d/1cfs_5Zgb1OCZns8rmJ3oGpqP5sUZ2ToBySPHaz6if0g/edit?usp=sharing)
