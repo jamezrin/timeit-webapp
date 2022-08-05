@@ -43,7 +43,7 @@
     "@types/node": "14.18.23",
     "@types/nodemailer": "6.4.5",
     "@types/qs": "6.9.7",
-    "@types/serve-static": "1.13.10",
+    "@types/serve-static": "1.15.0",
     "@typescript-eslint/eslint-plugin": "5.30.3",
     "@typescript-eslint/parser": "5.30.3",
     "cross-env": "7.0.3",
