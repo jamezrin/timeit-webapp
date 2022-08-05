@@ -16,7 +16,7 @@ importers:
       '@types/jsonwebtoken': 8.5.8
       '@types/morgan': 1.9.3
       '@types/node': 14.18.23
-      '@types/nodemailer': 6.4.4
+      '@types/nodemailer': 6.4.5
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
       '@typescript-eslint/eslint-plugin': 5.30.3
@@ -73,7 +73,7 @@ importers:
       '@types/jsonwebtoken': 8.5.8
       '@types/morgan': 1.9.3
       '@types/node': 14.18.23
-      '@types/nodemailer': 6.4.4
+      '@types/nodemailer': 6.4.5
       '@types/qs': 6.9.7
       '@types/serve-static': 1.13.10
       '@typescript-eslint/eslint-plugin': 5.30.3_ede2cd86a4ccf56ebeae7b12802f1e9d
@@ -3659,10 +3659,10 @@ packages:
   /@types/node/16.11.4:
     resolution: {integrity: sha512-TMgXmy0v2xWyuCSCJM6NCna2snndD8yvQF67J29ipdzMcsPa9u+o0tjF5+EQNdhcuZplYuouYqpc4zcd5I6amQ==}
 
-  /@types/nodemailer/6.4.4:
-    resolution: {integrity: sha512-Ksw4t7iliXeYGvIQcSIgWQ5BLuC/mljIEbjf615svhZL10PE9t+ei8O9gDaD3FPCasUJn9KTLwz2JFJyiiyuqw==}
+  /@types/nodemailer/6.4.5:
+    resolution: {integrity: sha512-zuP3nBRQHI6M2PkXnGGy1Ww4VB+MyYHGgnfV2T+JR9KLkeWqPJuyVUgLpKXuFnA/b7pZaIDFh2sV4759B7jK1g==}
     dependencies:
-      '@types/node': 14.17.32
+      '@types/node': 16.11.4
     dev: true
 
   /@types/parse-json/4.0.0:
