@@ -1,6 +1,6 @@
 {
   "name": "@timeit/frontend",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "description": "React frontend for timeit",
   "author": "jamezrin",
   "license": "GPL-3.0",
