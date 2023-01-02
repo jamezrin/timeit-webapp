@@ -118,7 +118,7 @@ importers:
       react-hook-form: 6.15.8
       react-hook-form-input: 1.1.10
       react-icons: 4.4.0
-      react-router-dom: 5.3.3
+      react-router-dom: 5.3.4
       react-scripts: 5.0.1
       react-select: 4.3.1
       react-toast-notifications: 2.5.1
@@ -158,7 +158,7 @@ importers:
       react-hook-form: 6.15.8_react@17.0.2
       react-hook-form-input: 1.1.10_1a02a5cd45ef987428ba7026b4aba68c
       react-icons: 4.4.0_react@17.0.2
-      react-router-dom: 5.3.3_react@17.0.2
+      react-router-dom: 5.3.4_react@17.0.2
       react-scripts: 5.0.1_react@17.0.2+typescript@4.7.4
       react-select: 4.3.1_366bf783cd88495d965e3632dfc80354
       react-toast-notifications: 2.5.1_react-dom@17.0.2+react@17.0.2
@@ -7320,7 +7320,7 @@ packages:
   /history/4.10.1:
     resolution: {integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==}
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.18.9
       loose-envify: 1.4.0
       resolve-pathname: 3.0.0
       tiny-invariant: 1.1.0
@@ -8942,18 +8942,6 @@ packages:
   /min-indent/1.0.1:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
-    dev: false
-
-  /mini-create-react-context/0.4.1_prop-types@15.7.2+react@17.0.2:
-    resolution: {integrity: sha512-YWCYEmd5CQeHGSAKrYvXgmzzkrvssZcuuQDDeqkT+PziKGMgE+0MCCtcKbROzocGBG1meBLl2FotlRwf4gAzbQ==}
-    peerDependencies:
-      prop-types: ^15.0.0
-      react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
-    dependencies:
-      '@babel/runtime': 7.16.5
-      prop-types: 15.7.2
-      react: 17.0.2
-      tiny-warning: 1.0.3
     dev: false
 
   /mini-css-extract-plugin/2.4.5_webpack@5.65.0:
@@ -10794,31 +10782,30 @@ packages:
       use-sidecar: 1.0.5_react@17.0.2
     dev: false
 
-  /react-router-dom/5.3.3_react@17.0.2:
-    resolution: {integrity: sha512-Ov0tGPMBgqmbu5CDmN++tv2HQ9HlWDuWIIqn4b88gjlAN5IHI+4ZUZRcpz9Hl0azFIwihbLDYw1OiHGRo7ZIng==}
+  /react-router-dom/5.3.4_react@17.0.2:
+    resolution: {integrity: sha512-m4EqFMHv/Ih4kpcBCONHbkT68KoAeHN4p3lAGoNryfHi0dMy0kCzEZakiKRsvg5wHZ/JLrLW8o8KomWiz/qbYQ==}
     peerDependencies:
       react: '>=15'
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.18.9
       history: 4.10.1
       loose-envify: 1.4.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-router: 5.3.3_react@17.0.2
+      react-router: 5.3.4_react@17.0.2
       tiny-invariant: 1.1.0
       tiny-warning: 1.0.3
     dev: false
 
-  /react-router/5.3.3_react@17.0.2:
-    resolution: {integrity: sha512-mzQGUvS3bM84TnbtMYR8ZjKnuPJ71IjSzR+DE6UkUqvN4czWIqEs17yLL8xkAycv4ev0AiN+IGrWu88vJs/p2w==}
+  /react-router/5.3.4_react@17.0.2:
+    resolution: {integrity: sha512-Ys9K+ppnJah3QuaRiLxk+jDWOR1MekYQrlytiXxC1RyfbdsZkS5pvKAzCCr031xHixZwpnsYNT5xysdFHQaYsA==}
     peerDependencies:
       react: '>=15'
     dependencies:
-      '@babel/runtime': 7.16.5
+      '@babel/runtime': 7.18.9
       history: 4.10.1
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
-      mini-create-react-context: 0.4.1_prop-types@15.7.2+react@17.0.2
       path-to-regexp: 1.8.0
       prop-types: 15.7.2
       react: 17.0.2
