@@ -117,7 +117,7 @@ importers:
       react-dom: 17.0.2
       react-hook-form: 6.15.8
       react-hook-form-input: 1.1.10
-      react-icons: 4.4.0
+      react-icons: 4.7.1
       react-router-dom: 5.3.4
       react-scripts: 5.0.1
       react-select: 4.3.1
@@ -157,7 +157,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.8_react@17.0.2
       react-hook-form-input: 1.1.10_1a02a5cd45ef987428ba7026b4aba68c
-      react-icons: 4.4.0_react@17.0.2
+      react-icons: 4.7.1_react@17.0.2
       react-router-dom: 5.3.4_react@17.0.2
       react-scripts: 5.0.1_react@17.0.2+typescript@4.7.4
       react-select: 4.3.1_366bf783cd88495d965e3632dfc80354
@@ -10693,8 +10693,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-icons/4.4.0_react@17.0.2:
-    resolution: {integrity: sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==}
+  /react-icons/4.7.1_react@17.0.2:
+    resolution: {integrity: sha512-yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw==}
     peerDependencies:
       react: '*'
     dependencies:
