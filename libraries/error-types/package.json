@@ -24,6 +24,6 @@
     "eslint-plugin-prettier": "4.2.1",
     "prettier": "2.8.6",
     "tsconfig-paths": "3.14.2",
-    "typescript": "4.9.4"
+    "typescript": "4.9.5"
   }
 }
