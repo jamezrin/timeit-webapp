@@ -123,7 +123,7 @@ importers:
       react-select: 4.3.1
       react-toast-notifications: 2.5.1
       react-unsplash-wrapper: 1.1.5
-      react-virtualized: 9.22.3
+      react-virtualized: 9.22.5
       react-with-styles: 5.0.0
       typescript: 4.9.5
       use-resize-observer: 8.0.0
@@ -163,7 +163,7 @@ importers:
       react-select: 4.3.1_b496300fcd31c20cebed1f50af39eeb4
       react-toast-notifications: 2.5.1_react-dom@17.0.2+react@17.0.2
       react-unsplash-wrapper: 1.1.5_react-dom@17.0.2+react@17.0.2
-      react-virtualized: 9.22.3_react-dom@17.0.2+react@17.0.2
+      react-virtualized: 9.22.5_react-dom@17.0.2+react@17.0.2
       react-with-styles: 5.0.0_react-dom@17.0.2+react@17.0.2
       typescript: 4.9.5
       use-resize-observer: 8.0.0_react-dom@17.0.2+react@17.0.2
@@ -6027,7 +6027,7 @@ packages:
   /dom-helpers/5.2.1:
     resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.18.9
       csstype: 3.0.9
     dev: false
 
@@ -11023,13 +11023,13 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /react-virtualized/9.22.3_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-MKovKMxWTcwPSxE1kK1HcheQTWfuCxAuBoSTf2gwyMM21NdX/PXUhnoP8Uc5dRKd+nKm8v41R36OellhdCpkrw==}
+  /react-virtualized/9.22.5_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-YqQMRzlVANBv1L/7r63OHa2b0ZsAaDp1UhVNEdUaXI8A5u6hTpA5NYtUueLH2rFuY/27mTGIBl7ZhqFKzw18YQ==}
     peerDependencies:
-      react: ^15.3.0 || ^16.0.0-alpha
-      react-dom: ^15.3.0 || ^16.0.0-alpha
+      react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
+      react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.18.9
       clsx: 1.1.1
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
