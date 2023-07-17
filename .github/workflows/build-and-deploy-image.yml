@@ -52,7 +52,7 @@ jobs:
         run: |
           version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
           image_name="${{ env.REGISTRY }}/library/timeit-${{ matrix.package }}"
-          full_image_tag="${image_name}:${version}-${{ matrix.platform }}"
+          full_image_tag="${image_name}-${{ matrix.platform }}:${version}"
           echo "::set-output name=full_image_tag::${full_image_tag}"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -97,8 +97,8 @@ jobs:
 
           echo "Creating manifest for ${version} tag"
           docker manifest create ${image_name}:${version} \
-            --amend ${image_name}:${version}-arm64 \
-            --amend ${image_name}:${version}-amd64
+            --amend ${image_name}-arm64:${version} \
+            --amend ${image_name}-amd64:${version}
           docker manifest push ${image_name}:${version}
 
           echo "Re-tagging latest"
