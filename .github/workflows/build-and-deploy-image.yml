@@ -101,8 +101,6 @@ jobs:
             --amend ${image_name}:${version}-amd64
           docker manifest push ${image_name}:${version}
 
-          echo "Creating manifest for latest tag"
-          docker manifest create ${image_name}:latest \
-            --amend ${image_name}:${version}-arm64 \
-            --amend ${image_name}:${version}-amd64
-          docker manifest push ${image_name}:latest
+          echo "Re-tagging latest"
+          docker tag ${image_name}:${version} ${image_name}:latest
+          docker push ${image_name}:latest
