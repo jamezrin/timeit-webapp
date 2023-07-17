@@ -51,7 +51,7 @@ jobs:
         id: compute_vars
         run: |
           version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
-          image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
+          image_name="${{ env.REGISTRY }}/library/timeit-${{ matrix.package }}"
           full_image_tag="${image_name}:${version}-${{ matrix.platform }}"
           echo "::set-output name=full_image_tag::${full_image_tag}"
       - name: Use Node.js ${{ matrix.node-version }}
@@ -93,7 +93,7 @@ jobs:
       - name: Build manifests
         run: |
           version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
-          image_name="${{ env.REGISTRY }}/timeit-webapp/timeit-${{ matrix.package }}"
+          image_name="${{ env.REGISTRY }}/library/timeit-${{ matrix.package }}"
 
           echo "Creating manifest for ${version} tag"
           docker manifest create ${image_name}:${version} \
