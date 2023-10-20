@@ -11,7 +11,7 @@ importers:
       '@types/bcrypt': 5.0.1
       '@types/cookie-parser': 1.4.5
       '@types/cors': 2.8.15
-      '@types/express': 4.17.17
+      '@types/express': 4.17.20
       '@types/express-serve-static-core': 4.17.33
       '@types/jsonwebtoken': 8.5.9
       '@types/morgan': 1.9.4
@@ -68,7 +68,7 @@ importers:
       '@types/bcrypt': 5.0.1
       '@types/cookie-parser': 1.4.5
       '@types/cors': 2.8.15
-      '@types/express': 4.17.17
+      '@types/express': 4.17.20
       '@types/express-serve-static-core': 4.17.33
       '@types/jsonwebtoken': 8.5.9
       '@types/morgan': 1.9.4
@@ -3578,7 +3578,7 @@ packages:
     resolution: {integrity: sha512-a6bTJ21vFOGIkwM0kzh9Yr89ziVxq4vYH2fQ6N8AeipEzai/cFK6aGMArIkUeIdRIgpwQa+2bXiLuUJCpSf2Cg==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 16.18.11
+      '@types/node': 16.18.24
 
   /@types/bonjour/3.5.10:
     resolution: {integrity: sha512-p7ienRMiS41Nu2/igbJxxLDWrSZ0WxM8UQgCeO9KhoVF7cOVFkrKsiDr1EsJIla8vV3oEEjGcz11jc5yimhzZw==}
@@ -3596,12 +3596,12 @@ packages:
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 16.18.24
 
   /@types/cookie-parser/1.4.5:
     resolution: {integrity: sha512-cbpH1NldYslPt7WRHXZFm+G7DTfUg57dQSCf1qrHwT8wtGX41JHLYf3Cieiqg7waPWjorVgcSSllZov+A1PJbg==}
     dependencies:
-      '@types/express': 4.17.17
+      '@types/express': 4.17.20
     dev: true
 
   /@types/cors/2.8.15:
@@ -3639,8 +3639,8 @@ packages:
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
 
-  /@types/express/4.17.17:
-    resolution: {integrity: sha512-Q4FmmuLGBG58btUnfS1c1r/NQdlp3DMfGDGig8WhfpA2YRUtEkxAjkZb0yvplJGYdF1fsQ81iMDcH24sSCNC/Q==}
+  /@types/express/4.17.20:
+    resolution: {integrity: sha512-rOaqlkgEvOW495xErXMsmyX3WKBInbhG5eqojXYi3cGUaLoRDlXa5d52fkfWZT963AZ3v2eZ4MbKE6WpDAGVsw==}
     dependencies:
       '@types/body-parser': 1.19.1
       '@types/express-serve-static-core': 4.17.33
@@ -3793,7 +3793,7 @@ packages:
   /@types/serve-index/1.9.1:
     resolution: {integrity: sha512-d/Hs3nWDxNL2xAczmOVZNj92YZCS6RGxfBPjKzuu/XirCgXdpKEb88dYNbrYGint6IVWLNP+yonwVAuRC0T2Dg==}
     dependencies:
-      '@types/express': 4.17.17
+      '@types/express': 4.17.20
     dev: false
 
   /@types/serve-static/1.15.1:
