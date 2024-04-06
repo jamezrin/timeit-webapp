@@ -39,7 +39,7 @@
     "@types/express": "4.17.21",
     "@types/express-serve-static-core": "4.17.39",
     "@types/jsonwebtoken": "8.5.9",
-    "@types/morgan": "1.9.7",
+    "@types/morgan": "1.9.9",
     "@types/node": "14.18.63",
     "@types/nodemailer": "6.4.13",
     "@types/qs": "6.9.9",
