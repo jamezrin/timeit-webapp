@@ -8,7 +8,7 @@ importers:
   ../../apps/backend:
     specifiers:
       '@timeit/error-types': workspace:*
-      '@types/bcrypt': 5.0.1
+      '@types/bcrypt': 5.0.2
       '@types/cookie-parser': 1.4.5
       '@types/cors': 2.8.15
       '@types/express': 4.17.20
@@ -65,7 +65,7 @@ importers:
       tsc-watch: 4.5.0_typescript@4.9.5
       typeorm: 0.2.44_pg@8.7.1
     devDependencies:
-      '@types/bcrypt': 5.0.1
+      '@types/bcrypt': 5.0.2
       '@types/cookie-parser': 1.4.5
       '@types/cors': 2.8.15
       '@types/express': 4.17.20
@@ -3568,10 +3568,10 @@ packages:
       '@babel/types': 7.16.0
     dev: false
 
-  /@types/bcrypt/5.0.1:
-    resolution: {integrity: sha512-dIIrEsLV1/v0AUNI8oHMaRRTSeVjoy5ID8oclJavtPj8CwPJoD1eFoNXEypuu6k091brEzBeOo3LlxeAH9zRZg==}
+  /@types/bcrypt/5.0.2:
+    resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
     dependencies:
-      '@types/node': 16.18.24
+      '@types/node': 16.18.59
     dev: true
 
   /@types/body-parser/1.19.1:
@@ -3738,7 +3738,6 @@ packages:
 
   /@types/node/16.18.59:
     resolution: {integrity: sha512-PJ1w2cNeKUEdey4LiPra0ZuxZFOGvetswE8qHRriV/sUkL5Al4tTmPV9D2+Y/TPIxTHHgxTfRjZVKWhPw/ORhQ==}
-    dev: false
 
   /@types/nodemailer/6.4.13:
     resolution: {integrity: sha512-889Vq/77eEpidCwh52sVWpbnqQmIwL8yVBekNbrztVEaWKOCRH3Eq6hjIJh1jwsGDEAJEH0RR+YhpH9mfELLKA==}
