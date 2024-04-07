@@ -17,7 +17,7 @@ importers:
       '@types/morgan': 1.9.9
       '@types/node': 14.18.63
       '@types/nodemailer': 6.4.14
-      '@types/qs': 6.9.9
+      '@types/qs': 6.9.14
       '@types/serve-static': 1.15.4
       '@typescript-eslint/eslint-plugin': 5.59.0
       '@typescript-eslint/parser': 5.59.0
@@ -74,7 +74,7 @@ importers:
       '@types/morgan': 1.9.9
       '@types/node': 14.18.63
       '@types/nodemailer': 6.4.14
-      '@types/qs': 6.9.9
+      '@types/qs': 6.9.14
       '@types/serve-static': 1.15.4
       '@typescript-eslint/eslint-plugin': 5.59.0_85663cbdbde695c9416a20daac0d1946
       '@typescript-eslint/parser': 5.59.0_eslint@7.32.0+typescript@4.9.5
@@ -3636,7 +3636,7 @@ packages:
     resolution: {integrity: sha512-BiEUfAiGCOllomsRAZOiMFP7LAnrifHpt56pc4Z7l9K6ACyN06Ns1JLMBxwkfLOjJRlSf06NwWsT7yzfpaVpyQ==}
     dependencies:
       '@types/node': 16.18.24
-      '@types/qs': 6.9.9
+      '@types/qs': 6.9.14
       '@types/range-parser': 1.2.4
       '@types/send': 0.17.3
 
@@ -3645,7 +3645,7 @@ packages:
     dependencies:
       '@types/body-parser': 1.19.1
       '@types/express-serve-static-core': 4.17.39
-      '@types/qs': 6.9.9
+      '@types/qs': 6.9.14
       '@types/serve-static': 1.15.4
 
   /@types/graceful-fs/4.1.5:
@@ -3764,8 +3764,8 @@ packages:
     resolution: {integrity: sha512-L28j2FcJfSZOnL1WBjDYp2vUHCeIFlyYI/53EwD/rKUBQ7MtUUfbQWiyKJGpcnv4/WgrhWsFKrcPstcAt/J0tQ==}
     dev: false
 
-  /@types/qs/6.9.9:
-    resolution: {integrity: sha512-wYLxw35euwqGvTDx6zfY1vokBFnsK0HNrzc6xNHchxfO2hpuRg74GbkEW7e3sSmPvj0TjCDT1VCa6OtHXnubsg==}
+  /@types/qs/6.9.14:
+    resolution: {integrity: sha512-5khscbd3SwWMhFqylJBLQ0zIu7c1K6Vz0uBIt915BI3zV0q1nfjRQD3RqSBcPaO6PHEF4ov/t9y89fSiyThlPA==}
 
   /@types/range-parser/1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
