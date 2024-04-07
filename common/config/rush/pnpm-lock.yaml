@@ -101,7 +101,7 @@ importers:
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': workspace:*
       '@types/jest': 27.5.2
-      '@types/node': 16.18.59
+      '@types/node': 16.18.95
       '@types/react': 17.0.69
       '@types/react-dom': 17.0.22
       axios: 0.27.2
@@ -142,7 +142,7 @@ importers:
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': link:../../libraries/error-types
       '@types/jest': 27.5.2
-      '@types/node': 16.18.59
+      '@types/node': 16.18.95
       '@types/react': 17.0.69
       '@types/react-dom': 17.0.22
       axios: 0.27.2
@@ -3738,6 +3738,10 @@ packages:
 
   /@types/node/16.18.59:
     resolution: {integrity: sha512-PJ1w2cNeKUEdey4LiPra0ZuxZFOGvetswE8qHRriV/sUkL5Al4tTmPV9D2+Y/TPIxTHHgxTfRjZVKWhPw/ORhQ==}
+
+  /@types/node/16.18.95:
+    resolution: {integrity: sha512-z9w+CcR7ahc7UhsKe+PGB25nmPmCERQBAdLdFHhoZ6+FfgSr7gUvdQI0eLH2t7ue8u5wKsLdde6cHKPjhC8vGg==}
+    dev: false
 
   /@types/nodemailer/6.4.13:
     resolution: {integrity: sha512-889Vq/77eEpidCwh52sVWpbnqQmIwL8yVBekNbrztVEaWKOCRH3Eq6hjIJh1jwsGDEAJEH0RR+YhpH9mfELLKA==}
