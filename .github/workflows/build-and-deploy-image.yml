@@ -34,7 +34,7 @@ jobs:
           - package: backend
             deploy: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Login to my Registry
         uses: docker/login-action@v1
         with:
@@ -83,7 +83,7 @@ jobs:
       matrix:
         package: ['frontend', 'backend']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Login to my Registry
         uses: docker/login-action@v1
         with:
