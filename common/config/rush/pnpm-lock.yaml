@@ -40,7 +40,7 @@ importers:
       nodemailer: ^6.4.6
       pg: ^8.0.0
       prettier: 2.8.8
-      reflect-metadata: ^0.1.10
+      reflect-metadata: ^0.2.0
       tsc-watch: ^4.2.9
       tsconfig-paths: 3.14.2
       typeorm: 0.2.44
@@ -61,7 +61,7 @@ importers:
       nanoid: 3.1.30
       nodemailer: 6.7.0
       pg: 8.7.1
-      reflect-metadata: 0.1.13
+      reflect-metadata: 0.2.2
       tsc-watch: 4.5.0_typescript@4.9.5
       typeorm: 0.2.44_pg@8.7.1
     devDependencies:
@@ -11185,6 +11185,10 @@ packages:
 
   /reflect-metadata/0.1.13:
     resolution: {integrity: sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==}
+    dev: false
+
+  /reflect-metadata/0.2.2:
+    resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
     dev: false
 
   /reflect.ownkeys/0.2.0:
