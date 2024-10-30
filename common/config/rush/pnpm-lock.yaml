@@ -16,7 +16,7 @@ importers:
       '@types/jsonwebtoken': 8.5.9
       '@types/morgan': 1.9.9
       '@types/node': 14.18.63
-      '@types/nodemailer': 6.4.14
+      '@types/nodemailer': 6.4.16
       '@types/qs': 6.9.15
       '@types/serve-static': 1.15.7
       '@typescript-eslint/eslint-plugin': 5.62.0
@@ -73,7 +73,7 @@ importers:
       '@types/jsonwebtoken': 8.5.9
       '@types/morgan': 1.9.9
       '@types/node': 14.18.63
-      '@types/nodemailer': 6.4.14
+      '@types/nodemailer': 6.4.16
       '@types/qs': 6.9.15
       '@types/serve-static': 1.15.7
       '@typescript-eslint/eslint-plugin': 5.62.0_47334185917a715e217310a014ab436b
@@ -3804,7 +3804,6 @@ packages:
 
   /@types/node/16.18.116:
     resolution: {integrity: sha512-mLigUvhoaADRewggiby+XfAAFOUOMCm/SwL5DAJ+CMUGjSLIGMsJVN7BOKftuQSHGjUmS/W7hVht8fcNbi/MRA==}
-    dev: false
 
   /@types/node/16.18.59:
     resolution: {integrity: sha512-PJ1w2cNeKUEdey4LiPra0ZuxZFOGvetswE8qHRriV/sUkL5Al4tTmPV9D2+Y/TPIxTHHgxTfRjZVKWhPw/ORhQ==}
@@ -3815,10 +3814,10 @@ packages:
   /@types/node/16.18.96:
     resolution: {integrity: sha512-84iSqGXoO+Ha16j8pRZ/L90vDMKX04QTYMTfYeE1WrjWaZXuchBehGUZEpNgx7JnmlrIHdnABmpjrQjhCnNldQ==}
 
-  /@types/nodemailer/6.4.14:
-    resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
+  /@types/nodemailer/6.4.16:
+    resolution: {integrity: sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==}
     dependencies:
-      '@types/node': 16.18.95
+      '@types/node': 16.18.116
     dev: true
 
   /@types/parse-json/4.0.0:
