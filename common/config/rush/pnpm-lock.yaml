@@ -101,7 +101,7 @@ importers:
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': workspace:*
       '@types/jest': 27.5.2
-      '@types/node': 16.18.96
+      '@types/node': 16.18.116
       '@types/react': 17.0.80
       '@types/react-dom': 17.0.25
       axios: 0.28.1
@@ -142,7 +142,7 @@ importers:
       '@testing-library/user-event': 13.5.0
       '@timeit/error-types': link:../../libraries/error-types
       '@types/jest': 27.5.2
-      '@types/node': 16.18.96
+      '@types/node': 16.18.116
       '@types/react': 17.0.80
       '@types/react-dom': 17.0.25
       axios: 0.28.1
@@ -3801,6 +3801,10 @@ packages:
   /@types/node/16.18.11:
     resolution: {integrity: sha512-3oJbGBUWuS6ahSnEq1eN2XrCyf4YsWI8OyCvo7c64zQJNplk3mO84t53o8lfTk+2ji59g5ycfc6qQ3fdHliHuA==}
     dev: true
+
+  /@types/node/16.18.116:
+    resolution: {integrity: sha512-mLigUvhoaADRewggiby+XfAAFOUOMCm/SwL5DAJ+CMUGjSLIGMsJVN7BOKftuQSHGjUmS/W7hVht8fcNbi/MRA==}
+    dev: false
 
   /@types/node/16.18.59:
     resolution: {integrity: sha512-PJ1w2cNeKUEdey4LiPra0ZuxZFOGvetswE8qHRriV/sUkL5Al4tTmPV9D2+Y/TPIxTHHgxTfRjZVKWhPw/ORhQ==}
