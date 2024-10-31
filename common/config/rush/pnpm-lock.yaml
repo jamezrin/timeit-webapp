@@ -112,7 +112,7 @@ importers:
       moment: 2.30.1
       prettier: 2.8.8
       react: 17.0.2
-      react-base-table: 1.13.4
+      react-base-table: 1.13.5
       react-dates: 21.8.0
       react-dom: 17.0.2
       react-hook-form: 6.15.8
@@ -152,7 +152,7 @@ importers:
       moment: 2.30.1
       prettier: 2.8.8
       react: 17.0.2
-      react-base-table: 1.13.4_react-dom@17.0.2+react@17.0.2
+      react-base-table: 1.13.5_react-dom@17.0.2+react@17.0.2
       react-dates: 21.8.0_9b1ca21b7717c0c6c5933ec16e3df3e6
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.8_react@17.0.2
@@ -10673,8 +10673,8 @@ packages:
       whatwg-fetch: 3.6.2
     dev: false
 
-  /react-base-table/1.13.4_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-HEMjAvERnF8CsRkJFLyeZrtv0Rv1w8EfTNiwhTXjSu5KNuHoHZho1P2CB7UvSqq4NcqNeZt8j0xyziJyKSrQng==}
+  /react-base-table/1.13.5_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-THzOQ2gbhVYLFl+GT04vcGDSU+zwcNJ6bZ6GKy+xEByH80V3GOFu7/aw94xMcsoQzuc6kYY6dr5sUKF9ED98YQ==}
     peerDependencies:
       react: ^16.0.0 || ^17.0.0
       react-dom: ^16.0.0 || ^17.0.0
