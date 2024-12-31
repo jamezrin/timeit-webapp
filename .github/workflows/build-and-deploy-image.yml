@@ -34,7 +34,7 @@ jobs:
           - package: backend
             deploy: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
@@ -100,7 +100,7 @@ jobs:
       matrix:
         package: ['frontend', 'backend']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Tailscale
         uses: tailscale/github-action@v2
         with:
