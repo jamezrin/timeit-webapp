@@ -28,7 +28,7 @@ jobs:
           - platform: amd64
             runner: ubuntu-latest
           - platform: arm64
-            runner: self-hosted
+            runner: arc-runner-timeit-webapp
           - package: frontend
             deploy: false
           - package: backend
