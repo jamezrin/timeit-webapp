@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: harbor.jamezrin.name
+  REGISTRY: harbor.jamezrin.com
   BROWSERSLIST_IGNORE_OLD_DATA: "1"
 
 jobs:
