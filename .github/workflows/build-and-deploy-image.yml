@@ -18,9 +18,6 @@ env:
 jobs:
   build-packages:
     runs-on: ${{ matrix.runner }}
-    container:
-      image: ubuntu
-      options: --cap-add=NET_ADMIN --device=/dev/net/tun
     strategy:
       fail-fast: true
       matrix:
@@ -97,9 +94,6 @@ jobs:
 
   create-manifest:
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu
-      options: --cap-add=NET_ADMIN --device=/dev/net/tun
     needs: [build-packages]
     strategy:
       fail-fast: true
