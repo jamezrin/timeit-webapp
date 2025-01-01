@@ -42,6 +42,8 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       # Workaround for https://github.com/tailscale/github-action/issues/108
+      - name: Install dig (dnsutils)
+        run: sudo apt-get update -q && sudo apt-get install -yq dnsutils
       - name: Build DNS resolutions
         id: build_hosts_resolutions
         run: |
@@ -108,6 +110,8 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
           tags: tag:ci
       # Workaround for https://github.com/tailscale/github-action/issues/108
+      - name: Install dig (dnsutils)
+        run: sudo apt-get update -q && sudo apt-get install -yq dnsutils
       - name: Build DNS resolutions
         id: build_hosts_resolutions
         run: |
