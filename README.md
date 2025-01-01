@@ -1,4 +1,4 @@
-# timeit-webapp ([demo](https://timeit.jamezrin.name/))
+# timeit-webapp ([demo](https://timeit.jamezrin.com/))
 
 ## Información
 
