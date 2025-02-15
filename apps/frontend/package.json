@@ -21,7 +21,7 @@
     "@types/node": "16.18.126",
     "@types/react": "17.0.83",
     "@types/react-dom": "17.0.26",
-    "axios": "0.28.1",
+    "axios": "0.29.0",
     "framer-motion": "4.1.17",
     "husky": "7.0.4",
     "lint-staged": "12.5.0",
