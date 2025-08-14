@@ -19,7 +19,7 @@
     "@testing-library/user-event": "13.5.0",
     "@types/jest": "27.5.2",
     "@types/node": "16.18.126",
-    "@types/react": "17.0.83",
+    "@types/react": "17.0.87",
     "@types/react-dom": "17.0.26",
     "axios": "0.29.0",
     "framer-motion": "4.1.17",
