@@ -95,8 +95,8 @@ importers:
         specifier: 6.4.17
         version: 6.4.17
       '@types/qs':
-        specifier: 6.9.18
-        version: 6.9.18
+        specifier: 6.14.0
+        version: 6.14.0
       '@types/serve-static':
         specifier: 1.15.8
         version: 1.15.8
@@ -2136,8 +2136,8 @@ packages:
   '@types/q@1.5.8':
     resolution: {integrity: sha512-hroOstUScF6zhIi+5+x0dzqrHA1EJi+Irri6b1fxolMTqqHIV/Cg77EtnQcZqZCu8hR3mX2BzIxN4/GzI68Kfw==}
 
-  '@types/qs@6.9.18':
-    resolution: {integrity: sha512-kK7dgTYDyGqS+e2Q4aK9X3D7q234CIZ1Bv0q/7Z5IwRDoADNU81xXJK/YVyLbLTZCoIwUoDoffFeF+p/eIklAA==}
+  '@types/qs@6.14.0':
+    resolution: {integrity: sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
@@ -9808,7 +9808,7 @@ snapshots:
   '@types/express-serve-static-core@4.19.6':
     dependencies:
       '@types/node': 16.18.118
-      '@types/qs': 6.9.18
+      '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
 
@@ -9816,7 +9816,7 @@ snapshots:
     dependencies:
       '@types/body-parser': 1.19.5
       '@types/express-serve-static-core': 4.19.6
-      '@types/qs': 6.9.18
+      '@types/qs': 6.14.0
       '@types/serve-static': 1.15.8
 
   '@types/graceful-fs@4.1.9':
@@ -9888,7 +9888,7 @@ snapshots:
 
   '@types/q@1.5.8': {}
 
-  '@types/qs@6.9.18': {}
+  '@types/qs@6.14.0': {}
 
   '@types/range-parser@1.2.7': {}
 
