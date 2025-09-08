@@ -34,7 +34,7 @@ jobs:
           - package: backend
             deploy: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Tailscale
         uses: jamezrin/tailscale-github-action@99c7279a6807867ea643810bbdb20d275a88f3a9
         with:
@@ -102,7 +102,7 @@ jobs:
       matrix:
         package: ['frontend', 'backend']
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
       - name: Tailscale
         uses: jamezrin/tailscale-github-action@99c7279a6807867ea643810bbdb20d275a88f3a9
         with:
