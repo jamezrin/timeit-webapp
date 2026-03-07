@@ -12,12 +12,15 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  REGISTRY: harbor-ingress-tailscale.tail11c31.ts.net
+  REGISTRY: ghcr.io
   BROWSERSLIST_IGNORE_OLD_DATA: "1"
 
 jobs:
   build-packages:
     runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: true
       matrix:
@@ -28,50 +31,28 @@ jobs:
           - platform: amd64
             runner: ubuntu-latest
           - platform: arm64
-            runner: arc-runner-timeit-webapp
+            runner: ubuntu-24.04-arm
           - package: frontend
             deploy: false
           - package: backend
             deploy: true
     steps:
       - uses: actions/checkout@v3
-      - name: Tailscale
-        uses: jamezrin/tailscale-github-action@99c7279a6807867ea643810bbdb20d275a88f3a9
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-      # Workaround for https://github.com/tailscale/github-action/issues/108
-      - name: Install dig (dnsutils)
-        run: sudo apt-get update -q && sudo apt-get install -yq dnsutils
-      - name: Build DNS resolutions
-        id: build_hosts_resolutions
-        run: |
-          registry_ip=$(sudo dig +short ${{ env.REGISTRY }})
-          echo "hosts=${{ env.REGISTRY }}:$registry_ip" >> "$GITHUB_OUTPUT"
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: |
-            network=host
-          buildkitd-config-inline: |
-            [dns]
-              nameservers=["100.100.100.100"]
       - name: Login to registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Compute image variables
         id: compute_vars
         run: |
           version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
-          image_name="${{ env.REGISTRY }}/library/timeit-${{ matrix.package }}"
+          image_name="${{ env.REGISTRY }}/${{ github.repository_owner }}/timeit-${{ matrix.package }}"
           full_image_tag="${image_name}:${version}-${{ matrix.platform }}"
-          echo "::set-output name=full_image_tag::${full_image_tag}"
+          echo "full_image_tag=${full_image_tag}" >> "$GITHUB_OUTPUT"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
@@ -89,7 +70,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          add-hosts: ${{ steps.build_hosts_resolutions.outputs.hosts }}
           file: ./apps/${{ matrix.package }}/Dockerfile
           push: true
           tags: ${{ steps.compute_vars.outputs.full_image_tag }}
@@ -97,46 +77,27 @@ jobs:
   create-manifest:
     runs-on: ubuntu-latest
     needs: [build-packages]
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: true
       matrix:
         package: ['frontend', 'backend']
     steps:
       - uses: actions/checkout@v3
-      - name: Tailscale
-        uses: jamezrin/tailscale-github-action@99c7279a6807867ea643810bbdb20d275a88f3a9
-        with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
-      # Workaround for https://github.com/tailscale/github-action/issues/108
-      - name: Install dig (dnsutils)
-        run: sudo apt-get update -q && sudo apt-get install -yq dnsutils
-      - name: Build DNS resolutions
-        id: build_hosts_resolutions
-        run: |
-          registry_ip=$(sudo dig +short ${{ env.REGISTRY }})
-          echo "hosts=${{ env.REGISTRY }}:$registry_ip" >> "$GITHUB_OUTPUT"
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: |
-            network=host
-          buildkitd-config-inline: |
-            [dns]
-              nameservers=["100.100.100.100"]
       - name: Login to registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build manifests
         run: |
           version=$(jq -r .version ./apps/${{ matrix.package }}/package.json)
-          image_name="${{ env.REGISTRY }}/library/timeit-${{ matrix.package }}"
+          image_name="${{ env.REGISTRY }}/${{ github.repository_owner }}/timeit-${{ matrix.package }}"
 
           echo "Creating manifest for ${version} tag"
           docker buildx imagetools create -t ${image_name}:${version} \
